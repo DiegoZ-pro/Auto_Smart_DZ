@@ -1,0 +1,35 @@
+/* ============================================================================
+   MAIN LAYOUT STYLES - ADMIN/MECÁNICO
+   ============================================================================ */
+
+.mainLayout {
+  min-height: 100vh;
+  background-color: #F9FAFB;
+}
+
+.mainContent {
+  margin-top: 64px;
+  margin-left: 240px;
+  min-height: calc(100vh - 64px);
+  transition: margin-left 0.3s ease;
+}
+
+.contentWrapper {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .mainContent {
+    margin-left: 0;
+  }
+
+  .contentWrapper {
+    padding: 1rem;
+  }
+}

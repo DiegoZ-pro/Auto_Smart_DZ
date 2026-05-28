@@ -1,0 +1,552 @@
+/* ============================================================================
+   RECEPCIÓN DE VEHÍCULO - STYLES
+   ============================================================================ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* ============================================================================
+   HEADER
+   ============================================================================ */
+
+.header {
+  margin-bottom: 2rem;
+}
+
+.title {
+  font-size: 1.875rem;
+  font-weight: 700;
+  color: #f59e0b;
+  margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* ============================================================================
+   FORM
+   ============================================================================ */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.section {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #E5E7EB;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #1F2937;
+  margin: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #E5E7EB;
+}
+
+/* Mode Buttons */
+.modeButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modeBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  color: #6B7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modeBtn:hover {
+  background: #F9FAFB;
+  border-color: #f59e0b;
+  color: #f59e0b;
+}
+
+.modeBtn.active {
+  background: #0066CC;
+  border-color: #f59e0b;
+  color: white;
+}
+
+/* Search Container */
+.searchContainer {
+  position: relative;
+}
+
+.searchBox {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9CA3AF;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.875rem 1rem 0.875rem 3rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.searching {
+  text-align: center;
+  padding: 1rem;
+  color: #6B7280;
+  font-size: 0.875rem;
+}
+
+/* Resultados */
+.resultados {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 0.5rem;
+}
+
+.resultadoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.resultadoItem:hover {
+  background: #F0F7FF;
+  border-color: #f59e0b;
+}
+
+.resultadoItem svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.resultadoInfo {
+  flex: 1;
+}
+
+.resultadoNombre {
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 0.25rem;
+}
+
+.resultadoTel {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.noResultados {
+  text-align: center;
+  padding: 2rem;
+  color: #9CA3AF;
+  font-size: 0.875rem;
+}
+
+/* Mensaje Informativo */
+.infoMessage {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.infoMessage svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.infoMessage p {
+  margin: 0;
+  color: #1E40AF;
+  font-size: 0.9375rem;
+}
+
+/* Cliente/Vehículo Seleccionado */
+.clienteSeleccionado,
+.vehiculoSeleccionado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem;
+  background: #F0F7FF;
+  border: 2px solid #0066CC;
+  border-radius: 8px;
+}
+
+.clienteInfo,
+.vehiculoInfo {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.clienteInfo svg,
+.vehiculoInfo svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.clienteNombre,
+.vehiculoMarca {
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 0.25rem;
+}
+
+.clienteTel,
+.vehiculoPlaca {
+  font-size: 0.875rem;
+  color: #6B7280;
+}
+
+.btnCambiar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: white;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  color: #6B7280;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btnCambiar:hover {
+  background: #FEE2E2;
+  border-color: #DC2626;
+  color: #DC2626;
+}
+
+/* Vehículos Lista */
+.vehiculosLista {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.vehiculoItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vehiculoItem:hover {
+  background: #F0F7FF;
+  border-color: #f59e0b;
+}
+
+.vehiculoItem svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.subsection {
+  margin-bottom: 1.5rem;
+}
+
+.subsectionTitle {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 1rem 0;
+}
+
+/* Grid Layouts */
+.grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+}
+
+/* Form Groups */
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.input,
+.textarea {
+  padding: 0.75rem 1rem;
+  border: 1px solid #D1D5DB;
+  border-radius: 8px;
+  font-size: 0.9375rem;
+  color: #1F2937;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.input:focus,
+.textarea:focus {
+  outline: none;
+  border-color: #f59e0b;
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #9CA3AF;
+}
+
+.textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* ============================================================================
+   UPLOAD AREA
+   ============================================================================ */
+
+.uploadArea {
+  position: relative;
+  border: 2px dashed #D1D5DB;
+  border-radius: 12px;
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: all 0.2s;
+  background: #F9FAFB;
+}
+
+.uploadArea:hover {
+  border-color: #f59e0b;
+  background: #F0F7FF;
+}
+
+.fileInput {
+  position: absolute;
+  width: 0.1px;
+  height: 0.1px;
+  opacity: 0;
+  overflow: hidden;
+  z-index: -1;
+}
+
+.uploadLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  cursor: pointer;
+  color: #6B7280;
+}
+
+.uploadLabel svg {
+  color: #9CA3AF;
+}
+
+.uploadText {
+  font-size: 1rem;
+  margin: 0;
+}
+
+.uploadText strong {
+  color: #f59e0b;
+}
+
+.uploadHint {
+  font-size: 0.875rem;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+/* File List */
+.fileList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.fileItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  background: #F9FAFB;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+}
+
+.fileItem svg {
+  color: #f59e0b;
+  flex-shrink: 0;
+}
+
+.fileItem span {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #374151;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.removeFileBtn {
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 6px;
+  color: #6B7280;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.removeFileBtn:hover {
+  background: #FEE2E2;
+  border-color: #EF4444;
+  color: #DC2626;
+}
+
+/* ============================================================================
+   SUBMIT BUTTON
+   ============================================================================ */
+
+.submitBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: #F59E0B;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 2px 4px rgba(245, 158, 11, 0.2);
+}
+
+.submitBtn:hover {
+  background: #D97706;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.submitBtn:disabled {
+  background: #9CA3AF;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .grid2 {
+    grid-template-columns: 1fr;
+  }
+
+  .uploadArea {
+    padding: 2rem 1rem;
+  }
+}

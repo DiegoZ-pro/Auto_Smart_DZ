@@ -1,0 +1,452 @@
+/* ============================================================================
+   HOME - ESTILOS PRINCIPALES
+   ============================================================================ */
+
+.pageWrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ============================================================================
+   HERO SECTION - CAROUSEL
+   ============================================================================ */
+
+.hero {
+  position: relative;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: background-image 0.5s ease-in-out;
+}
+
+.heroContent {
+  text-align: center;
+  color: white;
+  z-index: 1;
+  max-width: 900px;
+  padding: 0 24px;
+}
+
+.heroTitle {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.heroHighlight {
+  color: #FCD34D;
+}
+
+.heroDescription {
+  font-size: 18px;
+  margin-bottom: 32px;
+  color: rgba(255, 255, 255, 0.95);
+}
+
+.heroCTA {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: white;
+  color: #0066CC;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.heroCTA:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Carousel Controls */
+.carouselButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s;
+  z-index: 2;
+}
+
+.carouselButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.carouselButtonLeft {
+  left: 24px;
+}
+
+.carouselButtonRight {
+  right: 24px;
+}
+
+.carouselIndicators {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  z-index: 2;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.indicatorActive {
+  background: #FCD34D;
+  width: 32px;
+  border-radius: 6px;
+}
+
+/* ============================================================================
+   MARCAS SECTION
+   ============================================================================ */
+
+.brandsSection {
+  padding: 80px 0;
+  background: white;
+}
+
+.sectionTitle {
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 48px;
+  color: #1f2937;
+}
+
+.titleHighlight {
+  color: #0066CC;
+}
+
+.brandsGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 24px;
+}
+
+.brandCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s;
+}
+
+.brandCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.brandLogo {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  object-fit: contain;
+}
+
+/* ============================================================================
+   QUIÉNES SOMOS SECTION
+   ============================================================================ */
+
+.aboutSection {
+  padding: 80px 0;
+  background: #f9fafb;
+}
+
+.aboutGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  align-items: center;
+}
+
+.aboutText {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.aboutTitle {
+  font-size: 36px;
+  font-weight: 700;
+  color: #0066CC;
+  margin-bottom: 8px;
+}
+
+.aboutDescription {
+  font-size: 16px;
+  line-height: 1.7;
+  color: #6b7280;
+}
+
+.aboutItem {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #374151;
+}
+
+.aboutItem strong {
+  color: #1f2937;
+}
+
+.aboutButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 28px;
+  background: #0066CC;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s;
+  align-self: flex-start;
+}
+
+.aboutButton:hover {
+  background: #0052A3;
+  transform: translateY(-2px);
+}
+
+.aboutImage {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.aboutImageReal {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ============================================================================
+   CALIDAD Y CONFIANZA SECTION
+   ============================================================================ */
+
+.qualitySection {
+  padding: 100px 24px;
+  background: #1e3a5f;
+  color: white;
+  text-align: center;
+}
+
+.qualityContent {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qualityIcon {
+  color: #FCD34D;
+  margin-bottom: 24px;
+}
+
+.qualityTitle {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.qualityDescription {
+  font-size: 18px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 32px;
+}
+
+.qualityButton {
+  display: inline-block;
+  padding: 14px 40px;
+  background: #FCD34D;
+  color: #1e3a5f;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.qualityButton:hover {
+  background: #F59E0B;
+  transform: translateY(-2px);
+}
+
+/* ============================================================================
+   SERVICIOS DESTACADOS SECTION
+   ============================================================================ */
+
+.servicesSection {
+  padding: 80px 0;
+  background: white;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.serviceCard {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 40px;
+  transition: all 0.3s;
+}
+
+.serviceCard:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+}
+
+.serviceIcon {
+  width: 64px;
+  height: 64px;
+  background: #0066CC;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  margin-bottom: 24px;
+}
+
+.serviceTitle {
+  font-size: 24px;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 12px;
+}
+
+.serviceDescription {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #6b7280;
+  margin-bottom: 24px;
+}
+
+.serviceButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 28px;
+  background: #FCD34D;
+  color: #1f2937;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.serviceButton:hover {
+  background: #F59E0B;
+  transform: translateX(4px);
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 1024px) {
+  .brandsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .aboutGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .servicesGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .heroTitle {
+    font-size: 32px;
+  }
+
+  .heroDescription {
+    font-size: 16px;
+  }
+
+  .brandsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sectionTitle {
+    font-size: 28px;
+  }
+
+  .qualityTitle {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    height: 400px;
+  }
+
+  .heroTitle {
+    font-size: 24px;
+  }
+
+  .carouselButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .brandsGrid {
+    grid-template-columns: 1fr;
+  }
+}

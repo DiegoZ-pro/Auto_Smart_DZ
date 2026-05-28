@@ -1,0 +1,207 @@
+/* ============================================================================
+   HEADER STYLES - ADMIN/MECÁNICO
+   ============================================================================ */
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background-color: #1E293B;
+  border-bottom: 1px solid #334155;
+  z-index: 100;
+}
+
+.headerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 1.5rem;
+}
+
+/* ============================================================================
+   LOGO
+   ============================================================================ */
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.logoAuto {
+  color: #F1F5F9;
+}
+
+.logoSmart {
+  color: #EF4444;
+}
+
+/* ============================================================================
+   HEADER RIGHT
+   ============================================================================ */
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ============================================================================
+   NOTIFICACIONES
+   ============================================================================ */
+
+.notificationBtn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: none;
+  background-color: transparent;
+  color: #94A3B8;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.notificationBtn:hover {
+  background-color: #334155;
+  color: #F1F5F9;
+}
+
+.badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background-color: #0066CC;
+  color: white;
+  font-size: 0.625rem;
+  font-weight: 600;
+  border-radius: 9px;
+  line-height: 1;
+}
+
+/* ============================================================================
+   USER DROPDOWN
+   ============================================================================ */
+
+.userDropdown {
+  position: relative;
+}
+
+.userBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #334155;
+  background-color: #334155;
+  color: #F1F5F9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.userBtn:hover {
+  border-color: #0066CC;
+  background-color: #0066CC;
+}
+
+.userAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #0066CC 0%, #004999 100%);
+  color: white;
+  font-weight: 600;
+  border-radius: 50%;
+  font-size: 0.875rem;
+}
+
+.userName {
+  font-weight: 500;
+  color: #F1F5F9;
+  font-size: 0.9375rem;
+}
+
+.dropdownOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 200px;
+  background-color: white;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: none;
+  background-color: transparent;
+  color: #374151;
+  font-size: 0.9375rem;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dropdownItem:hover {
+  background-color: #F3F4F6;
+  color: #0066CC;
+}
+
+.dropdownItem:not(:last-child) {
+  border-bottom: 1px solid #F3F4F6;
+}
+
+/* ============================================================================
+   RESPONSIVE
+   ============================================================================ */
+
+@media (max-width: 768px) {
+  .headerContent {
+    padding: 0 1rem;
+  }
+
+  .logoText {
+    font-size: 1.125rem;
+  }
+
+  .userName {
+    display: none;
+  }
+
+  .userBtn {
+    padding: 0.5rem;
+  }
+}

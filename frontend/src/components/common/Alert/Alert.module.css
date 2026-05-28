@@ -1,0 +1,141 @@
+/* ============================================================================
+   ALERT STYLES - Alertas visuales en pantalla
+   ============================================================================ */
+
+.alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid;
+  margin-bottom: 20px;
+  width: 100%;
+  box-sizing: border-box;
+  animation: slideDown 0.3s ease-out;
+  position: relative;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.iconWrapper {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+  line-height: 1.4;
+}
+
+.message {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+  word-wrap: break-word;
+}
+
+.closeButton {
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+  opacity: 0.7;
+  margin-top: 2px;
+}
+
+.closeButton:hover {
+  opacity: 1;
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== VARIANTES ==================== */
+
+/* Error - Rojo */
+.error {
+  background-color: #FEE2E2;
+  border-color: #FCA5A5;
+  color: #991B1B;
+}
+
+.error .icon {
+  color: #DC2626;
+}
+
+.error .closeButton:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+}
+
+/* Success - Verde */
+.success {
+  background-color: #D1FAE5;
+  border-color: #6EE7B7;
+  color: #065F46;
+}
+
+.success .icon {
+  color: #10B981;
+}
+
+.success .closeButton:hover {
+  background-color: rgba(16, 185, 129, 0.1);
+}
+
+/* Warning - Amarillo */
+.warning {
+  background-color: #FEF3C7;
+  border-color: #FDE047;
+  color: #92400E;
+}
+
+.warning .icon {
+  color: #F59E0B;
+}
+
+.warning .closeButton:hover {
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+/* Info - Azul */
+.info {
+  background-color: #DBEAFE;
+  border-color: #93C5FD;
+  color: #1E40AF;
+}
+
+.info .icon {
+  color: #3B82F6;
+}
+
+.info .closeButton:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}

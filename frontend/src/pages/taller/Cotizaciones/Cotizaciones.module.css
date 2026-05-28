@@ -1,0 +1,389 @@
+/* ============================================================================
+   COTIZACIONES MODULE CSS — con editor split-panel estilo DiagnosticoTecnico
+   ============================================================================ */
+
+.wrapper { padding: 28px 32px; min-height: 100%; }
+
+.pageTitle   { font-size: 1.75rem; font-weight: 700; color: #1d4ed8; margin: 0 0 4px 0; }
+.pageSubtitle{ font-size: 0.9rem; color: #6b7280; margin: 0 0 20px 0; }
+
+/* ─── alertas ─────────────────────────────────────────────────────────────── */
+.alert {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px; border-radius: 8px;
+  font-size: 0.875rem; font-weight: 500; margin-bottom: 16px;
+}
+.alert button { margin-left: auto; background: none; border: none; cursor: pointer; opacity: 0.6; display: flex; align-items: center; }
+.alertError   { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.alertSuccess { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; }
+.alertInfo    { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+
+/* ─── botones generales ───────────────────────────────────────────────────── */
+.topActions { display: flex; justify-content: flex-end; margin-bottom: 16px; }
+
+.btnPrimary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 20px; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600;
+  cursor: pointer; transition: background 0.15s;
+}
+.btnPrimary:hover { background: #1e40af; }
+
+.btnSecondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 9px 18px; background: #f1f5f9; color: #475569;
+  border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.875rem;
+  font-weight: 500; cursor: pointer; transition: background 0.15s;
+}
+.btnSecondary:hover { background: #e2e8f0; }
+
+.btnRefresh {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; background: #f1f5f9; border: 1px solid #e2e8f0;
+  border-radius: 8px; color: #64748b; cursor: pointer; transition: background 0.15s;
+}
+.btnRefresh:hover { background: #e2e8f0; }
+
+.btnGuardar {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 12px 32px; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; transition: background 0.15s;
+}
+.btnGuardar:hover    { background: #1e40af; }
+.btnGuardar:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btnAgregar {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 0 18px; height: 42px; background: #1d4ed8; color: #fff;
+  border: none; border-radius: 8px; font-size: 0.875rem; font-weight: 600;
+  cursor: pointer; white-space: nowrap; transition: background 0.15s;
+}
+.btnAgregar:hover { background: #1e40af; }
+
+.acciones { display: flex; align-items: center; gap: 6px; }
+
+.btnIconEdit, .btnIconSend, .btnIconDown {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 30px; height: 30px; border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s;
+}
+.btnIconEdit { background: #eff6ff; color: #3b82f6; }
+.btnIconEdit:hover { background: #dbeafe; }
+.btnIconSend { background: #f0fdf4; color: #16a34a; }
+.btnIconSend:hover { background: #dcfce7; }
+.btnIconDown { background: #fff7ed; color: #ea580c; }
+.btnIconDown:hover { background: #ffedd5; }
+
+.btnEliminar {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; background: #fef2f2; color: #dc2626;
+  border: none; border-radius: 6px; cursor: pointer; transition: background 0.15s;
+}
+.btnEliminar:hover { background: #fecaca; }
+
+/* ─── vista lista ─────────────────────────────────────────────────────────── */
+.card {
+  background: #fff; border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.04);
+  padding: 24px; margin-bottom: 16px;
+}
+
+.filtrosRow { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+
+.searchBox { position: relative; flex: 1; min-width: 220px; }
+.searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+.searchInput {
+  width: 100%; height: 38px; padding: 0 12px 0 38px;
+  border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem;
+  color: #1e293b; background: #f8fafc; outline: none; box-sizing: border-box; transition: border-color 0.15s;
+}
+.searchInput:focus { border-color: #3b82f6; background: #fff; }
+
+.select {
+  height: 38px; padding: 0 12px; border: 1px solid #e2e8f0;
+  border-radius: 8px; font-size: 0.875rem; color: #1e293b; background: #f8fafc; cursor: pointer; outline: none;
+}
+
+.tableWrap { overflow-x: auto; }
+.table { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.table thead tr { background: #2563eb; }
+.table thead th {
+  padding: 12px 16px; text-align: left; font-weight: 600;
+  font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.04em; color: #fff; white-space: nowrap;
+}
+.table thead th:first-child { border-radius: 8px 0 0 0; }
+.table thead th:last-child  { border-radius: 0 8px 0 0; }
+.table tbody tr { border-bottom: 1px solid #f1f5f9; transition: background 0.1s; }
+.table tbody tr:hover { background: #f8fafc; }
+.table tbody td { padding: 14px 16px; color: #374151; vertical-align: middle; }
+.numCot   { font-family: monospace; font-size: 0.8rem; color: #1e293b !important; font-weight: 600; }
+.totalCell { font-weight: 700; color: #1e293b !important; }
+
+.badgeVeh { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #eff6ff; color: #1d4ed8; }
+.badgeLab { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; background: #fff7ed; color: #c2410c; }
+.badgeEstado { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+
+.emptyState {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 12px; padding: 48px 24px; color: #94a3b8; text-align: center;
+}
+.emptyState p { margin: 0; font-size: 0.9rem; }
+.spin { animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── editor: barra superior ──────────────────────────────────────────────── */
+.editorTopBar {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 16px;
+}
+.editorTitle {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 1.1rem; font-weight: 700; color: #1e293b; margin: 0;
+}
+.editorTitle svg { color: #2563eb; }
+.editorCotNum {
+  font-family: monospace; font-size: 0.85rem; font-weight: 600;
+  color: #3b82f6; background: #eff6ff; padding: 2px 10px; border-radius: 6px;
+}
+
+/* ─── editor: layout split ────────────────────────────────────────────────── */
+.editorLayout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 16px;
+  align-items: start;
+  min-height: calc(100vh - 240px);
+}
+@media (max-width: 860px) { .editorLayout { grid-template-columns: 1fr; } }
+
+/* ─── panel izquierdo del editor ─────────────────────────────────────────── */
+.editorPanelLista {
+  background: #fff; border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+  overflow: hidden; position: sticky; top: 16px;
+}
+
+.editorListaHeader {
+  padding: 12px 14px; border-bottom: 1px solid #f1f5f9;
+  background: #fafbfc; display: flex; flex-direction: column; gap: 8px;
+}
+
+/* fila de dropdowns + refresh — igual a la imagen */
+.editorDropdownRow {
+  display: flex; align-items: center; gap: 6px;
+}
+.editorSelect {
+  flex: 1; height: 32px; padding: 0 8px;
+  border: 1px solid #e2e8f0; border-radius: 7px;
+  font-size: 0.78rem; color: #374151; background: #fff;
+  cursor: pointer; outline: none; min-width: 0;
+}
+.editorSelect:focus { border-color: #3b82f6; }
+
+.btnRefreshSm {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; flex-shrink: 0;
+  background: #f1f5f9; border: 1px solid #e2e8f0;
+  border-radius: 7px; color: #64748b; cursor: pointer; transition: background 0.15s;
+}
+.btnRefreshSm:hover { background: #e2e8f0; }
+
+.editorSearchBox { position: relative; }
+.editorSearchIcon { position: absolute; left: 9px; top: 50%; transform: translateY(-50%); color: #94a3b8; pointer-events: none; }
+.editorSearchInput {
+  width: 100%; height: 34px; padding: 0 10px 0 28px;
+  border: 1px solid #e2e8f0; border-radius: 7px; font-size: 0.8rem;
+  color: #1e293b; background: #fff; outline: none; box-sizing: border-box; transition: border-color 0.15s;
+}
+.editorSearchInput:focus { border-color: #3b82f6; }
+
+.editorFiltrosRow { display: flex; gap: 6px; }
+
+.tab {
+  display: inline-flex; align-items: center; gap: 4px; flex: 1; justify-content: center;
+  padding: 5px 8px; background: #f1f5f9; border: 1px solid #e2e8f0;
+  border-radius: 7px; font-size: 0.75rem; color: #475569; cursor: pointer; transition: all 0.15s;
+}
+.tab:hover { background: #e2e8f0; }
+.tabActive {
+  display: inline-flex; align-items: center; gap: 4px; flex: 1; justify-content: center;
+  padding: 5px 8px; background: #1d4ed8; border: 1px solid #1d4ed8;
+  border-radius: 7px; font-size: 0.75rem; color: #fff; cursor: pointer; font-weight: 700;
+}
+
+.editorLista { max-height: calc(100vh - 340px); overflow-y: auto; }
+
+.editorListaEmpty {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  padding: 32px 16px; color: #94a3b8; font-size: 0.8rem; text-align: center;
+}
+.editorListaEmpty p { margin: 0; }
+
+/* item de orden en panel izquierdo */
+.editorOrdenItem {
+  padding: 12px 14px; border-bottom: 1px solid #f8fafc;
+  cursor: pointer; transition: background 0.1s; user-select: none;
+}
+.editorOrdenItem:hover { background: #f8fafc; }
+.editorOrdenItemActiva { background: #eff6ff !important; border-left: 3px solid #2563eb; }
+
+.editorOrdenTop { display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px; }
+.editorOrdenTopLeft { display: flex; align-items: center; gap: 5px; }
+.prioridadDot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.editorOrdenNum { font-family: monospace; font-size: 0.8rem; font-weight: 700; color: #1e293b; }
+
+.tipoBadgeVeh { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.62rem; font-weight: 700; background: #eff6ff; color: #2563eb; }
+.tipoBadgeLab { display: inline-block; padding: 1px 6px; border-radius: 4px; font-size: 0.62rem; font-weight: 700; background: #fff7ed; color: #c2410c; }
+
+.editorOrdenCliente { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: #374151; font-weight: 600; margin: 0 0 2px; }
+.editorOrdenSujeto  { display: flex; align-items: center; gap: 4px; font-size: 0.72rem; color: #64748b; margin: 0 0 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.editorOrdenBottom { display: flex; align-items: center; justify-content: space-between; }
+.editorEstadoBadge { display: inline-block; padding: 2px 7px; border-radius: 6px; font-size: 0.65rem; font-weight: 600; }
+.editorOrdenFecha  { font-size: 0.68rem; color: #94a3b8; }
+.chevron { color: #cbd5e1; }
+
+.cotExistente {
+  display: flex; align-items: center; gap: 5px; margin-top: 6px;
+  padding: 4px 8px; background: #f0fdf4; border-radius: 5px;
+  font-size: 0.68rem; color: #16a34a; font-weight: 600;
+}
+.cotExistenteBadge {
+  display: inline-block; padding: 1px 6px; border-radius: 10px;
+  font-size: 0.62rem; font-weight: 700;
+}
+
+/* botones de acción rápida dentro de la card */
+.cardAcciones {
+  display: flex; gap: 6px; margin-top: 7px;
+}
+.btnCardSend, .btnCardDown {
+  display: inline-flex; align-items: center; gap: 4px;
+  flex: 1; justify-content: center;
+  padding: 4px 0; border: none; border-radius: 6px;
+  font-size: 0.68rem; font-weight: 700; cursor: pointer; transition: opacity 0.15s;
+}
+.btnCardSend { background: #dcfce7; color: #15803d; }
+.btnCardSend:hover { opacity: 0.8; }
+.btnCardDown { background: #ffedd5; color: #c2410c; }
+.btnCardDown:hover { opacity: 0.8; }
+
+/* ─── panel derecho del editor ────────────────────────────────────────────── */
+.editorPanelForm {
+  background: #fff; border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07), 0 4px 16px rgba(0,0,0,0.04);
+  min-height: 500px; overflow: hidden;
+}
+
+.editorFormVacio {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 12px; padding: 80px 40px; color: #94a3b8; text-align: center; min-height: 500px;
+}
+.editorFormVacioIcon {
+  width: 72px; height: 72px; border-radius: 50%; background: #f1f5f9;
+  display: flex; align-items: center; justify-content: center; color: #cbd5e1;
+}
+.editorFormVacio h3 { font-size: 1rem; font-weight: 700; color: #374151; margin: 0; }
+.editorFormVacio p  { font-size: 0.875rem; max-width: 260px; margin: 0; line-height: 1.5; }
+
+.editorFormContent { padding: 24px; }
+
+/* encabezado del panel de formulario */
+.formPanelHeader {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f1f5f9;
+}
+.formPanelTitle {
+  font-size: 1.05rem; font-weight: 700; color: #1e293b; margin: 0 0 4px;
+}
+.formPanelCotNum {
+  font-family: monospace; font-size: 0.82rem; font-weight: 600;
+  color: #3b82f6; background: #eff6ff; padding: 2px 8px; border-radius: 5px;
+}
+.formPanelAcciones { display: flex; align-items: center; gap: 8px; }
+
+/* ─── info de la orden ────────────────────────────────────────────────────── */
+.infoOrden {
+  background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 10px; padding: 18px 20px; margin-bottom: 24px;
+}
+.infoOrdenTitle { font-size: 0.82rem; font-weight: 700; color: #1e293b; margin: 0 0 12px; }
+.infoOrdenGrid  { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px 20px; margin-bottom: 0; }
+@media (max-width: 700px) { .infoOrdenGrid { grid-template-columns: 1fr; } }
+
+.infoItem  { display: flex; flex-direction: column; gap: 2px; }
+.infoLabel { font-size: 0.62rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; }
+.infoValor { font-size: 0.85rem; font-weight: 600; color: #1e293b; }
+
+/* problema reportado */
+.infoProblema {
+  margin-top: 14px; padding-top: 12px; border-top: 1px solid #e2e8f0;
+}
+.infoProblemaLabel {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 5px;
+}
+.infoProblemaTexto {
+  font-size: 0.82rem; color: #374151; line-height: 1.55;
+  margin: 0; padding: 8px 12px; background: #fff;
+  border: 1px solid #e2e8f0; border-radius: 6px;
+}
+
+/* diagnóstico técnico — destacado */
+.infoDiagnostico {
+  margin-top: 10px; padding: 12px 14px;
+  background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px;
+}
+.infoDiagnosticoLabel {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.05em; color: #92400e; margin-bottom: 5px;
+}
+.infoDiagnosticoTexto { font-size: 0.82rem; color: #78350f; line-height: 1.6; margin: 0; }
+
+/* ─── secciones del formulario ────────────────────────────────────────────── */
+.seccion { margin-bottom: 24px; }
+.seccionTitle {
+  font-size: 0.875rem; font-weight: 700; color: #1e293b;
+  margin: 0 0 14px; padding-bottom: 8px; border-bottom: 1px solid #f1f5f9;
+}
+
+.itemInputRow {
+  display: flex; align-items: center; gap: 8px;
+  background: #f8fafc; border: 1px dashed #cbd5e1;
+  border-radius: 8px; padding: 10px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.inputDescripcion { flex: 1; min-width: 160px; height: 42px; padding: 0 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; color: #1e293b; outline: none; background: #fff; transition: border-color 0.15s; }
+.inputDescripcion:focus { border-color: #3b82f6; }
+.inputCantidad  { width: 72px; height: 42px; padding: 0 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; color: #1e293b; outline: none; background: #fff; transition: border-color 0.15s; }
+.inputCantidad:focus  { border-color: #3b82f6; }
+.inputPrecio    { width: 120px; height: 42px; padding: 0 10px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; color: #1e293b; outline: none; background: #fff; transition: border-color 0.15s; }
+.inputPrecio:focus    { border-color: #3b82f6; }
+
+.itemsVacio { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 28px; color: #94a3b8; font-size: 0.8rem; border: 1px solid #f1f5f9; border-radius: 8px; background: #f8fafc; }
+.itemsVacio p { margin: 0; }
+
+.itemsTable { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.itemsTable thead tr { background: #f1f5f9; }
+.itemsTable thead th { padding: 9px 14px; text-align: left; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: #64748b; }
+.itemsTable tbody tr { border-bottom: 1px solid #f1f5f9; }
+.itemsTable tbody td { padding: 11px 14px; color: #374151; vertical-align: middle; }
+
+.costosBox { border: 1px solid #e2e8f0; border-radius: 10px; overflow: hidden; }
+.manoObraRow { display: flex; align-items: center; gap: 16px; padding: 14px 18px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+.manoObraLabel { font-size: 0.875rem; font-weight: 600; color: #374151; white-space: nowrap; }
+.inputManoObra { width: 160px; height: 38px; padding: 0 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; color: #1e293b; outline: none; background: #fff; transition: border-color 0.15s; }
+.inputManoObra:focus { border-color: #3b82f6; }
+
+.resumenCostos { padding: 14px 18px; }
+.costoRow { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 0.875rem; color: #374151; border-bottom: 1px solid #f1f5f9; }
+.costoRowTotal { display: flex; justify-content: space-between; align-items: center; padding: 10px 0 0; font-size: 1rem; font-weight: 700; color: #1d4ed8; margin-top: 4px; }
+
+.inputFecha { height: 42px; padding: 0 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.875rem; color: #1e293b; outline: none; background: #f8fafc; cursor: pointer; transition: border-color 0.15s; }
+.inputFecha:focus { border-color: #3b82f6; background: #fff; }
+
+.textareaTerminos { width: 100%; padding: 12px; border: 1px solid #e2e8f0; border-radius: 8px; font-size: 0.78rem; color: #374151; line-height: 1.6; resize: vertical; outline: none; background: #f8fafc; font-family: inherit; box-sizing: border-box; transition: border-color 0.15s; }
+.textareaTerminos:focus { border-color: #3b82f6; background: #fff; }
+
+.formFooter { display: flex; justify-content: flex-end; padding-top: 16px; margin-top: 8px; border-top: 1px solid #f1f5f9; }
