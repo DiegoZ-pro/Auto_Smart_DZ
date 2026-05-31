@@ -169,7 +169,11 @@
 
 .copyright {
   background: rgba(0, 0, 0, 0.2);
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  flex-wrap: wrap;
   padding: 20px 24px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
@@ -178,6 +182,20 @@
   margin: 0;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.8);
+}
+
+.termsLink {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: color 0.2s;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: 24px;
+}
+
+.termsLink:hover {
+  color: white;
+  text-decoration: underline;
 }
 
 /* ============================================================================

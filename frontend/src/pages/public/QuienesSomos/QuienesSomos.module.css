@@ -1,0 +1,386 @@
+/* ============================================================
+   QUIÉNES SOMOS
+   ============================================================ */
+
+.page {
+  min-height: 100vh;
+  background: var(--color-bg-secondary);
+}
+
+/* Hero */
+.hero {
+  min-height: 520px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+  position: relative;
+}
+
+.heroContent {
+  max-width: 860px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.heroTag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  margin-bottom: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.heroTitle {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.2;
+  margin: 0 0 20px;
+}
+
+.heroHighlight {
+  color: var(--color-secondary);
+}
+
+.heroSubtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.88);
+  line-height: 1.7;
+  margin-bottom: 36px;
+  max-width: 620px;
+}
+
+.heroBadges {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.heroBadge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: var(--radius-lg);
+  padding: 16px 28px;
+  backdrop-filter: blur(8px);
+}
+
+.badgeNumber {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-secondary);
+  line-height: 1;
+}
+
+.badgeLabel {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 4px;
+}
+
+.heroBtn {
+  display: inline-block;
+  background: var(--color-secondary);
+  color: var(--color-bg-dark);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 36px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-base);
+}
+
+.heroBtn:hover {
+  background: var(--color-secondary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Container */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Historia */
+.historia {
+  padding: 80px 0;
+  background: var(--color-bg-primary);
+}
+
+.historiaGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+}
+
+.sectionTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin: 0 0 24px;
+}
+
+.historiaText p {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  margin-bottom: 16px;
+  font-size: 15px;
+}
+
+.historiaStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.statCard {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.statCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.statNumber {
+  display: block;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.statLabel {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+/* Misión y Visión */
+.misionVision {
+  padding: 80px 0;
+  background: var(--color-bg-secondary);
+}
+
+.mvGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.mvCard {
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-xl);
+  padding: 40px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-base);
+}
+
+.mvCard:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+
+.mvIcon {
+  display: flex;
+  justify-content: center;
+  color: var(--color-primary);
+  margin-bottom: 20px;
+}
+
+.mvTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+}
+
+.mvText {
+  color: var(--color-text-secondary);
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+/* Valores */
+.valoresSection {
+  padding: 80px 0;
+  background: var(--color-bg-primary);
+}
+
+.sectionTitleCenter {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  text-align: center;
+  margin: 0 0 16px;
+}
+
+.sectionSubtitle {
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: 48px;
+}
+
+.valoresGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.valorCard {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-lg);
+  padding: 32px 24px;
+  text-align: center;
+  transition: all var(--transition-base);
+}
+
+.valorCard:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-3px);
+}
+
+.valorIcon {
+  color: var(--color-primary);
+  margin-bottom: 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.valorTitulo {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 10px;
+}
+
+.valorDesc {
+  font-size: 14px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+}
+
+/* CTA */
+.cta {
+  padding: 80px 24px;
+  background: linear-gradient(135deg, #0066CC 0%, #003D7A 100%);
+  text-align: center;
+}
+
+.ctaTitle {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.ctaSubtitle {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+  margin-bottom: 36px;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ctaBtnPrimary {
+  background: var(--color-secondary);
+  color: var(--color-bg-dark);
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  transition: all var(--transition-base);
+}
+
+.ctaBtnPrimary:hover {
+  background: var(--color-secondary-dark);
+  transform: translateY(-2px);
+}
+
+.ctaBtnSecondary {
+  background: transparent;
+  color: #fff;
+  font-weight: 700;
+  font-size: 15px;
+  padding: 14px 32px;
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  transition: all var(--transition-base);
+}
+
+.ctaBtnSecondary:hover {
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .hero {
+    min-height: 420px;
+    padding: 60px 24px;
+  }
+
+  .historiaGrid,
+  .mvGrid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .valoresGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 380px;
+    padding: 48px 20px;
+  }
+
+  .valoresGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .historiaStats {
+    grid-template-columns: 1fr 1fr;
+  }
+}

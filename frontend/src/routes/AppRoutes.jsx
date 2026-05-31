@@ -10,6 +10,9 @@ import PublicRoute from './PublicRoute';
 import Home from '../pages/public/Home/Home';
 import Login from '../pages/public/Login/Login';
 import Register from '../pages/public/Register/Register';
+import QuienesSomos from '../pages/public/QuienesSomos/QuienesSomos';
+import Contacto from '../pages/public/Contacto/Contacto';
+import TerminosCondiciones from '../pages/public/TerminosCondiciones/TerminosCondiciones';
 
 // Páginas de cliente
 import AgendarCita from '../pages/cliente/AgendarCita/AgendarCita';
@@ -61,6 +64,11 @@ const AppRoutes = () => {
 
       {/* Agendar Cita - No requiere PublicRoute porque maneja auth internamente */}
       <Route path="/agendar-cita" element={<AgendarCita />} />
+
+      {/* Páginas informativas públicas */}
+      <Route path="/quienes-somos" element={<QuienesSomos />} />
+      <Route path="/contacto" element={<Contacto />} />
+      <Route path="/terminos-condiciones" element={<TerminosCondiciones />} />
 
       {/* ==================== RUTAS PRIVADAS - TALLER ==================== */}
       

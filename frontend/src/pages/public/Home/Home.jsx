@@ -31,7 +31,7 @@ const Home = () => {
       description: 'Diagnóstico preciso y reparaciones con equipos de última generación.',
       cta: 'Servicio Taller',
       link: '/login',
-      backgroundImage: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?w=1920&q=80'
+      backgroundImage: '/images/heroes/hero-1.jpg'
     },
     {
       title: 'Repuestos Originales',
@@ -39,7 +39,7 @@ const Home = () => {
       description: 'Contamos con las mejores marcas del mercado automotriz.',
       cta: 'Ver Catálogo',
       link: '/login',
-      backgroundImage: 'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1920&q=80'
+      backgroundImage: '/images/heroes/hero-2.jpg'
     },
     {
       title: 'Atención Personalizada',
@@ -47,35 +47,34 @@ const Home = () => {
       description: 'Nuestro equipo está comprometido con tu satisfacción.',
       cta: 'Agendar Cita',
       link: '/agendar-cita',
-      backgroundImage: 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=1920&q=80'
+      backgroundImage: '/images/heroes/hero-3.jpg'
     }
   ];
 
   const brands = [
-    { 
-      name: 'IMCRUZ', 
-      logo: 'https://cladera.org/foda/images/subcat-867.jpg' 
+    {
+      name: 'IMCRUZ',
+      logo: '/images/brands/logo-imcruz.jpg'
     },
-    { 
-      name: 'Toyosa S.A.', 
-      logo: 'https://cladera.org/foda/images/subcat-3249.jpg' 
+    {
+      name: 'Toyosa S.A.',
+      logo: '/images/brands/logo-toyosa.jpg'
     },
-    { 
-      name: 'Taiyo Motors', 
-      logo: 'https://images.squarespace-cdn.com/content/v1/63a213464d134b7c095ecd09/1671566225449-968O8CLNCQ0N99B8AYY3/Logo_Taiyo_Motors-01.png' 
+    {
+      name: 'Taiyo Motors',
+      logo: '/images/brands/logo-taiyo.png'
     },
-    { 
-      name: 'Mitsubishi', 
-      logo: 'https://upload.wikimedia.org/wikipedia/commons/b/b7/Mitsubishi-logo.png' 
+    {
+      name: 'Mitsubishi',
+      logo: '/images/brands/logo-mitsubishi.png'
     },
-    { 
-      name: 'Ford', 
-      logo: 'https://1000marcas.net/wp-content/uploads/2020/01/Ford-Logo-2003.png' 
+    {
+      name: 'Ford',
+      logo: '/images/brands/logo-ford.png'
     }
   ];
 
-  // Imagen para la sección "Quiénes Somos"
-  const aboutImage = 'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?w=800&q=80';
+  const aboutImage = '/images/about/taller-mecanico.jpg';
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % slides.length);

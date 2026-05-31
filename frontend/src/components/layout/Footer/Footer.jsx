@@ -132,6 +132,9 @@ const Footer = () => {
       {/* Copyright Bar */}
       <div className={styles.copyright}>
         <p>© {new Date().getFullYear()} AutoSmart. Todos los derechos reservados.</p>
+        <Link to="/terminos-condiciones" className={styles.termsLink}>
+          Términos y Condiciones
+        </Link>
       </div>
     </footer>
   );

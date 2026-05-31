@@ -4,7 +4,7 @@
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChevronDown, User, LogOut, Wrench, Calendar, Newspaper, MessageCircle } from 'lucide-react';
+import { ChevronDown, User, LogOut, Wrench, Calendar, Users, Phone } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
 import styles from './Navbar.module.css';
 
@@ -50,20 +50,15 @@ const Navbar = () => {
             <span>Agendar Cita</span>
           </Link>
 
-          <Link to="/noticias" className={styles.navLink}>
-            <Newspaper size={18} />
-            <span>Noticias</span>
+          <Link to="/quienes-somos" className={styles.navLink}>
+            <Users size={18} />
+            <span>Quiénes Somos</span>
           </Link>
 
-          <a 
-            href="https://wa.me/59167522948" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className={styles.navLink}
-          >
-            <MessageCircle size={18} />
-            <span>WhatsApp</span>
-          </a>
+          <Link to="/contacto" className={styles.navLink}>
+            <Phone size={18} />
+            <span>Contacto</span>
+          </Link>
 
           {/* Auth Section */}
           {user ? (
