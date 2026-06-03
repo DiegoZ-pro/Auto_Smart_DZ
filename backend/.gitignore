@@ -19,6 +19,7 @@ uploads/*
 # Testing
 coverage/
 .nyc_output/
+junit.xml
 
 # IDE
 .vscode/
