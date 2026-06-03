@@ -243,7 +243,6 @@ describe('ordenesService.getAllOrdenes', () => {
 
 // tests de asignar mecanico
 describe('ordenesService.asignarMecanico', () => {
-  // hace 2 consultas
   test('asigna mecanico y retorna la orden', async () => {
     const ordenConMecanico = {
       ...mockOrden,
@@ -260,5 +259,203 @@ describe('ordenesService.asignarMecanico', () => {
     expect(result.mecanico_asignado_id).toBe(7);
     expect(result.mecanico_nombre).toBe('Carlos García');
     expect(query).toHaveBeenCalledTimes(2);
+  });
+});
+
+// tests de getAllOrdenes con filtros adicionales
+describe('ordenesService.getAllOrdenes — filtros adicionales', () => {
+  test('filtra por tipo_orden_id', async () => {
+    query.mockResolvedValueOnce([mockOrden]);
+
+    await ordenesService.getAllOrdenes({ tipo_orden_id: 1 });
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('tipo_orden_id');
+    expect(query.mock.calls[0][1]).toContain(1);
+  });
+
+  test('filtra por mecanico_id', async () => {
+    query.mockResolvedValueOnce([mockOrden]);
+
+    await ordenesService.getAllOrdenes({ mecanico_id: 7 });
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('mecanico_asignado_id');
+    expect(query.mock.calls[0][1]).toContain(7);
+  });
+
+  test('filtra por search (numero de orden o placa)', async () => {
+    query.mockResolvedValueOnce([mockOrden]);
+
+    await ordenesService.getAllOrdenes({ search: 'VEH-2026' });
+
+    const params = query.mock.calls[0][1];
+    expect(params).toContain('%VEH-2026%');
+  });
+
+  test('filtra por rango de fechas fecha_desde y fecha_hasta', async () => {
+    query.mockResolvedValueOnce([mockOrden]);
+
+    await ordenesService.getAllOrdenes({
+      fecha_desde: '2026-04-01',
+      fecha_hasta: '2026-04-30',
+    });
+
+    const sql = query.mock.calls[0][0];
+    const params = query.mock.calls[0][1];
+    expect(sql).toContain('fecha_recepcion >=');
+    expect(params).toContain('2026-04-01');
+    expect(params).toContain('2026-04-30');
+  });
+});
+
+// tests de updateOrden
+describe('ordenesService.updateOrden', () => {
+  test('actualiza descripcion_problema y costo_estimado', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{
+        ...mockOrden,
+        descripcion_problema: 'Falla en motor',
+        costo_estimado: 500,
+      }]);
+
+    const result = await ordenesService.updateOrden(1, {
+      descripcion_problema: 'Falla en motor',
+      costo_estimado: 500,
+    }, 10);
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('descripcion_problema');
+    expect(sql).toContain('costo_estimado');
+    expect(result.descripcion_problema).toBe('Falla en motor');
+  });
+
+  test('actualiza diagnostico_tecnico y trabajo_realizado', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{ ...mockOrden }]);
+
+    await ordenesService.updateOrden(1, {
+      diagnostico_tecnico: 'Desgaste de frenos',
+      trabajo_realizado: 'Cambio de pastillas',
+    }, 10);
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('diagnostico_tecnico');
+    expect(sql).toContain('trabajo_realizado');
+  });
+
+  test('actualiza mecanico_asignado_id y prioridad_id', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{ ...mockOrden, mecanico_asignado_id: 3, prioridad_id: 3 }]);
+
+    const result = await ordenesService.updateOrden(1, {
+      mecanico_asignado_id: 3,
+      prioridad_id: 3,
+    }, 10);
+
+    expect(result.mecanico_asignado_id).toBe(3);
+  });
+
+  test('actualiza fecha_entrega_estimada y hora_entrega_estimada', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{ ...mockOrden }]);
+
+    await ordenesService.updateOrden(1, {
+      fecha_entrega_estimada: '2026-05-01',
+      hora_entrega_estimada: '16:00:00',
+    }, 10);
+
+    const params = query.mock.calls[0][1];
+    expect(params).toContain('2026-05-01');
+    expect(params).toContain('16:00:00');
+  });
+
+  test('lanza error si no hay campos para actualizar', async () => {
+    await expect(ordenesService.updateOrden(1, {}, 10))
+      .rejects.toThrow('No hay campos para actualizar');
+  });
+});
+
+// tests de getHistorialEstados
+describe('ordenesService.getHistorialEstados', () => {
+  test('retorna el historial de cambios de estado', async () => {
+    const mockHistorial = [
+      {
+        id: 1,
+        orden_trabajo_id: 1,
+        estado_anterior_nombre: 'recepcionado',
+        estado_nuevo_nombre: 'en_diagnostico',
+        cambiado_por_nombre: 'Admin User',
+        fecha_cambio: '2026-04-23',
+      },
+    ];
+    query.mockResolvedValueOnce(mockHistorial);
+
+    const result = await ordenesService.getHistorialEstados(1);
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result[0].estado_nuevo_nombre).toBe('en_diagnostico');
+    expect(query.mock.calls[0][1]).toContain(1);
+  });
+
+  test('retorna vacio si no hay historial', async () => {
+    query.mockResolvedValueOnce([]);
+
+    const result = await ordenesService.getHistorialEstados(999);
+
+    expect(result).toEqual([]);
+  });
+});
+
+// tests de getOrdenesKanban
+describe('ordenesService.getOrdenesKanban', () => {
+  test('agrupa las ordenes por estado_id', async () => {
+    const ordenes = [
+      { ...mockOrden, id: 1, estado_id: 1 },
+      { ...mockOrden, id: 2, estado_id: 1 },
+      { ...mockOrden, id: 3, estado_id: 2 },
+    ];
+    query.mockResolvedValueOnce(ordenes);
+
+    const result = await ordenesService.getOrdenesKanban(1);
+
+    expect(result[1].length).toBe(2);
+    expect(result[2].length).toBe(1);
+  });
+
+  test('retorna objeto vacio si no hay ordenes', async () => {
+    query.mockResolvedValueOnce([]);
+
+    const result = await ordenesService.getOrdenesKanban(1);
+
+    expect(Object.keys(result).length).toBe(0);
+  });
+});
+
+// tests de getEstadisticas de ordenes
+describe('ordenesService.getEstadisticas', () => {
+  test('retorna estadisticas de ordenes entre dos fechas', async () => {
+    query.mockResolvedValueOnce([{
+      total_ordenes: 50,
+      total_clientes: 30,
+      ordenes_completadas: 35,
+      ordenes_pendientes: 5,
+      ordenes_en_proceso: 8,
+      ordenes_canceladas: 2,
+      ingresos_totales: 25000,
+      ticket_promedio: 714.28,
+      tiempo_promedio_dias: 3.5,
+    }]);
+
+    const result = await ordenesService.getEstadisticas('2026-04-01', '2026-04-30');
+
+    expect(result.total_ordenes).toBe(50);
+    expect(result.ingresos_totales).toBe(25000);
+    expect(query.mock.calls[0][1]).toContain('2026-04-01');
+    expect(query.mock.calls[0][1]).toContain('2026-04-30');
   });
 });

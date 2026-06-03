@@ -1,4 +1,4 @@
-// tests del modulo de citas
+// tests del modulo de citas — cobertura extendida
 
 // mocks
 jest.mock('../src/config/database', () => ({
@@ -207,5 +207,132 @@ describe('citasService.getCitasByCliente', () => {
     const result = await citasService.getCitasByCliente(99);
 
     expect(result).toEqual([]);
+  });
+});
+
+// tests de getAllCitas
+describe('citasService.getAllCitas', () => {
+  test('retorna todas las citas sin filtros', async () => {
+    query.mockResolvedValueOnce([mockCita, { ...mockCita, id: 2 }]);
+
+    const result = await citasService.getAllCitas();
+
+    expect(Array.isArray(result)).toBe(true);
+    expect(result.length).toBe(2);
+  });
+
+  test('filtra por estado_id', async () => {
+    query.mockResolvedValueOnce([mockCita]);
+
+    await citasService.getAllCitas({ estado_id: 1 });
+
+    const sql = query.mock.calls[0][0];
+    const params = query.mock.calls[0][1];
+    expect(sql).toContain('estado_id');
+    expect(params).toContain(1);
+  });
+
+  test('filtra por cliente_id', async () => {
+    query.mockResolvedValueOnce([mockCita]);
+
+    await citasService.getAllCitas({ cliente_id: 5 });
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('cliente_id');
+    expect(query.mock.calls[0][1]).toContain(5);
+  });
+
+  test('filtra por fecha exacta', async () => {
+    query.mockResolvedValueOnce([mockCita]);
+
+    await citasService.getAllCitas({ fecha: '2026-05-10' });
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('fecha_cita = ?');
+    expect(query.mock.calls[0][1]).toContain('2026-05-10');
+  });
+
+  test('filtra por rango fecha_desde y fecha_hasta', async () => {
+    query.mockResolvedValueOnce([mockCita]);
+
+    await citasService.getAllCitas({ fecha_desde: '2026-05-01', fecha_hasta: '2026-05-31' });
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('>=');
+    expect(sql).toContain('<=');
+    expect(query.mock.calls[0][1]).toContain('2026-05-01');
+    expect(query.mock.calls[0][1]).toContain('2026-05-31');
+  });
+
+  test('retorna vacio si no hay citas', async () => {
+    query.mockResolvedValueOnce([]);
+
+    const result = await citasService.getAllCitas({ estado_id: 99 });
+
+    expect(result).toEqual([]);
+  });
+});
+
+// tests de updateCita
+describe('citasService.updateCita', () => {
+  test('actualiza nombre y telefono del cliente en la cita', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{ ...mockCita, nombre_cliente: 'Nuevo Nombre' }]);
+
+    const result = await citasService.updateCita(1, {
+      nombre_cliente: 'Nuevo Nombre',
+      telefono_cliente: '79999999',
+    });
+
+    const sql = query.mock.calls[0][0];
+    expect(sql).toContain('nombre_cliente');
+    expect(result.nombre_cliente).toBe('Nuevo Nombre');
+  });
+
+  test('actualiza motivo como JSON', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{ ...mockCita, motivo: JSON.stringify(['Cambio de aceite']) }]);
+
+    await citasService.updateCita(1, { motivo: ['Cambio de aceite'] });
+
+    const params = query.mock.calls[0][1];
+    expect(params).toContain(JSON.stringify(['Cambio de aceite']));
+  });
+
+  test('actualiza estado_id de la cita', async () => {
+    query
+      .mockResolvedValueOnce({ affectedRows: 1 })
+      .mockResolvedValueOnce([{ ...mockCita, estado_id: 2 }]);
+
+    const result = await citasService.updateCita(1, { estado_id: 2 });
+
+    expect(result.estado_id).toBe(2);
+  });
+
+  test('lanza error si no hay campos para actualizar', async () => {
+    await expect(citasService.updateCita(1, {}))
+      .rejects.toThrow('No hay campos para actualizar');
+  });
+});
+
+// tests de getEstadisticas de citas
+describe('citasService.getEstadisticas', () => {
+  test('retorna estadisticas entre dos fechas', async () => {
+    query.mockResolvedValueOnce([{
+      total_citas: 30,
+      citas_pendientes: 5,
+      citas_confirmadas: 10,
+      citas_canceladas: 3,
+      citas_completadas: 12,
+    }]);
+
+    const result = await citasService.getEstadisticas('2026-05-01', '2026-05-31');
+
+    expect(result.total_citas).toBe(30);
+    expect(result.citas_completadas).toBe(12);
+    expect(query.mock.calls[0][1]).toContain('2026-05-01');
+    expect(query.mock.calls[0][1]).toContain('2026-05-31');
   });
 });
