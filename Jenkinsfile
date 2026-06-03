@@ -36,10 +36,10 @@ pipeline {
                     publishHTML(target: [
                         allowMissing         : false,
                         alwaysLinkToLastBuild: true,
-                        keepAll              : true,
-                        reportDir            : 'backend/coverage/lcov-report',
-                        reportFiles          : 'index.html',
-                        reportName           : 'Coverage Report'
+                        keepAll : true,
+                        reportDir : 'backend/coverage/lcov-report',
+                        reportFiles : 'index.html',
+                        reportName : 'Coverage Report'
                     ])
                 }
             }
