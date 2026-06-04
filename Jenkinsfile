@@ -48,10 +48,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completado — 139 tests OK.'
+            echo 'Pipeline completado - 139 tests OK.'
         }
         failure {
-            echo 'El pipeline falló. Revisa los logs.'
+            echo 'El pipeline falló, ponte a llorar o revisa los logs. xD'
         }
     }
 }
