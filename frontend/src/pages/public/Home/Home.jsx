@@ -1,6 +1,4 @@
-// ============================================================================
 // HOME - PÁGINA PRINCIPAL PÚBLICA
-// ============================================================================
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -53,24 +51,24 @@ const Home = () => {
 
   const brands = [
     {
-      name: 'IMCRUZ',
-      logo: '/images/brands/logo-imcruz.jpg'
+      name: 'Audi',
+      logo: '/images/brands/logo-audi.jpg'
     },
     {
-      name: 'Toyosa S.A.',
-      logo: '/images/brands/logo-toyosa.jpg'
+      name: 'Peugeot',
+      logo: '/images/brands/logo-peugeot.jpg'
     },
     {
-      name: 'Taiyo Motors',
-      logo: '/images/brands/logo-taiyo.png'
+      name: 'BMW',
+      logo: '/images/brands/logo-bmw.jpg'
     },
     {
-      name: 'Mitsubishi',
-      logo: '/images/brands/logo-mitsubishi.png'
+      name: 'Mercedes Benz',
+      logo: '/images/brands/logo-mercedesbenz.jpg'
     },
     {
-      name: 'Ford',
-      logo: '/images/brands/logo-ford.png'
+      name: 'Porsche',
+      logo: '/images/brands/logo-porsche.jpg'
     }
   ];
 
@@ -89,9 +87,7 @@ const Home = () => {
       <Navbar />
 
       <main className={styles.main}>
-        {/* ================================================================
-            HERO SECTION - CAROUSEL
-            ================================================================ */}
+        {/* HERO SECTION - CAROUSEL */}
         <section 
           className={styles.hero}
           style={{
@@ -146,9 +142,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* ================================================================
-            MARCAS CON LAS QUE TRABAJAMOS
-            ================================================================ */}
+        {/* MARCAS CON LAS QUE TRABAJAMOS */}
         <section className={styles.brandsSection}>
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>
@@ -168,9 +162,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* ================================================================
-            QUIÉNES SOMOS
-            ================================================================ */}
+        {/* QUIÉNES SOMOS */}
         <section className={styles.aboutSection}>
           <div className={styles.container}>
             <div className={styles.aboutGrid}>
@@ -205,9 +197,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* ================================================================
-            CALIDAD Y CONFIANZA GARANTIZADA
-            ================================================================ */}
+        {/* CALIDAD Y CONFIANZA GARANTIZADA */}
         <section className={styles.qualitySection}>
           <div className={styles.qualityContent}>
             <Shield size={64} className={styles.qualityIcon} />
@@ -221,9 +211,7 @@ const Home = () => {
           </div>
         </section>
 
-        {/* ================================================================
-            NUESTROS SERVICIOS DESTACADOS
-            ================================================================ */}
+        {/* NUESTROS SERVICIOS DESTACADOS */}
         <section className={styles.servicesSection}>
           <div className={styles.container}>
             <h2 className={styles.sectionTitle}>
