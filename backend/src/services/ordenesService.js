@@ -162,6 +162,20 @@ const createOrden = async (ordenData, userId) => {
     // PASO 1: CREAR CLIENTE SI ES NECESARIO
     // ======================================================================
     if (!finalClienteId && cliente) {
+      // Verificar si ya existe un cliente con el mismo número de teléfono
+      if (cliente.telefono) {
+        const [existingByPhone] = await connection.execute(
+          'SELECT c.id FROM clientes c WHERE c.telefono = ? LIMIT 1',
+          [cliente.telefono]
+        );
+        if (existingByPhone.length > 0) {
+          finalClienteId = existingByPhone[0].id;
+          console.log(`[createOrden] Client with phone ${cliente.telefono} already exists, reusing id=${finalClienteId}`);
+        }
+      }
+    }
+
+    if (!finalClienteId && cliente) {
       console.log(`[createOrden] Creating new client: ${cliente.nombreCompleto}`);
 
       const [roleResult] = await connection.execute(

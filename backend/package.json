@@ -41,11 +41,21 @@
           "outputDirectory": ".",
           "outputName": "junit.xml"
         }
+      ],
+      [
+        "jest-html-reporters",
+        {
+          "publicPath": "./html-report",
+          "filename": "report.html",
+          "openReport": false,
+          "pageTitle": "AutoSmart - Test Results"
+        }
       ]
     ]
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "jest-html-reporters": "^3.1.7",
     "jest-junit": "^16.0.0",
     "nodemon": "^3.0.2"
   },

@@ -1,0 +1,37 @@
+# Environment variables — NEVER commit secrets
+.env
+.env.local
+.env.production
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# Training artifacts (large binary files — keep only best.pt)
+runs/
+*.onnx
+*.tflite
+*.pb
+
+# macOS
+.DS_Store
+
+# Logs
+*.log

@@ -27,6 +27,9 @@ const RecepcionLaboratorio = () => {
   const [buscandoCliente, setBuscandoCliente] = useState(false);
   const [mostrarResultados, setMostrarResultados] = useState(false);
 
+  // Estado - Duplicado por teléfono
+  const [clienteDuplicado, setClienteDuplicado] = useState(null);
+
   // Estados - Formulario
   const [formData, setFormData] = useState({
     nombreCliente: '',
@@ -73,6 +76,28 @@ const RecepcionLaboratorio = () => {
     return () => clearTimeout(timeoutId);
   }, [busquedaCliente]);
 
+  // Verificar duplicado por teléfono cuando se crea cliente nuevo
+  useEffect(() => {
+    if (clienteMode !== 'new' || formData.telefonoCliente.trim().length < 7) {
+      setClienteDuplicado(null);
+      return;
+    }
+    const timeout = setTimeout(async () => {
+      try {
+        const response = await clientesService.getAll({ search: formData.telefonoCliente.trim() });
+        if (response.success && response.data?.length > 0) {
+          const match = response.data.find(c => c.telefono === formData.telefonoCliente.trim());
+          setClienteDuplicado(match || null);
+        } else {
+          setClienteDuplicado(null);
+        }
+      } catch {
+        setClienteDuplicado(null);
+      }
+    }, 500);
+    return () => clearTimeout(timeout);
+  }, [formData.telefonoCliente, clienteMode]);
+
   // Seleccionar cliente
   const handleSelectCliente = (cliente) => {
     setClienteSeleccionado(cliente);
@@ -93,6 +118,7 @@ const RecepcionLaboratorio = () => {
     setBusquedaCliente('');
     setClientesBusqueda([]);
     setMostrarResultados(false);
+    setClienteDuplicado(null);
   };
 
   // Cambiar modo cliente
@@ -102,6 +128,7 @@ const RecepcionLaboratorio = () => {
     setBusquedaCliente('');
     setClientesBusqueda([]);
     setMostrarResultados(false);
+    setClienteDuplicado(null);
     setFormData(prev => ({
       ...prev,
       nombreCliente: '',
@@ -146,6 +173,12 @@ const RecepcionLaboratorio = () => {
       archivos: prev.archivos.filter((_, i) => i !== index)
     }));
     setFileNames(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const usarClienteExistente = (cliente) => {
+    handleSelectCliente(cliente);
+    setClienteMode('search');
+    setClienteDuplicado(null);
   };
 
   // Validar formulario
@@ -368,39 +401,56 @@ const RecepcionLaboratorio = () => {
                   )}
                 </>
               ) : (
-                <div className={styles.grid2}>
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>
-                      <User size={16} />
-                      Nombre Completo Cliente*
-                    </label>
-                    <input
-                      type="text"
-                      name="nombreCliente"
-                      className={styles.input}
-                      placeholder="Ej: Juan Pérez"
-                      value={formData.nombreCliente}
-                      onChange={handleInputChange}
-                      required
-                    />
+                <>
+                  <div className={styles.grid2}>
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>
+                        <User size={16} />
+                        Nombre Completo Cliente*
+                      </label>
+                      <input
+                        type="text"
+                        name="nombreCliente"
+                        className={styles.input}
+                        placeholder="Ej: Juan Pérez"
+                        value={formData.nombreCliente}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
+
+                    <div className={styles.formGroup}>
+                      <label className={styles.label}>
+                        <Phone size={16} />
+                        Teléfono Cliente*
+                      </label>
+                      <input
+                        type="tel"
+                        name="telefonoCliente"
+                        className={styles.input}
+                        placeholder="Ej: 75123456"
+                        value={formData.telefonoCliente}
+                        onChange={handleInputChange}
+                        required
+                      />
+                    </div>
                   </div>
 
-                  <div className={styles.formGroup}>
-                    <label className={styles.label}>
-                      <Phone size={16} />
-                      Teléfono Cliente*
-                    </label>
-                    <input
-                      type="tel"
-                      name="telefonoCliente"
-                      className={styles.input}
-                      placeholder="Ej: 75123456"
-                      value={formData.telefonoCliente}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </div>
-                </div>
+                  {clienteDuplicado && (
+                    <div className={styles.warningDuplicado}>
+                      <div className={styles.warningTexto}>
+                        <strong>Cliente existente:</strong> Ya existe un cliente con este teléfono, {clienteDuplicado.nombre_completo}
+                      </div>
+                      <button
+                        type="button"
+                        className={styles.btnUsarExistente}
+                        onClick={() => usarClienteExistente(clienteDuplicado)}
+                      >
+                        Usar este cliente
+                      </button>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 

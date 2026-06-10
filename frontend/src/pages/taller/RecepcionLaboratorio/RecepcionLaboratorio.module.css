@@ -195,6 +195,41 @@
   font-size: 0.875rem;
 }
 
+/* Advertencia duplicado por teléfono */
+.warningDuplicado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.875rem 1.25rem;
+  background: #FFFBEB;
+  border: 1px solid #FCD34D;
+  border-radius: 8px;
+  margin-top: 0.75rem;
+}
+
+.warningTexto {
+  font-size: 0.875rem;
+  color: #92400E;
+}
+
+.btnUsarExistente {
+  flex-shrink: 0;
+  padding: 0.5rem 1rem;
+  background: #F59E0B;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btnUsarExistente:hover {
+  background: #D97706;
+}
+
 /* Mensaje Informativo */
 .infoMessage {
   display: flex;

@@ -34,12 +34,20 @@ pipeline {
                 always {
                     junit 'backend/junit.xml'
                     publishHTML(target: [
-                        allowMissing         : false,
+                        allowMissing : false,
                         alwaysLinkToLastBuild: true,
                         keepAll : true,
                         reportDir : 'backend/coverage/lcov-report',
                         reportFiles : 'index.html',
                         reportName : 'Coverage Report'
+                    ])
+                    publishHTML(target: [
+                        allowMissing : false,
+                        alwaysLinkToLastBuild: true,
+                        keepAll : true,
+                        reportDir : 'backend/html-report',
+                        reportFiles : 'report.html',
+                        reportName : 'Test Results Report'
                     ])
                 }
             }
