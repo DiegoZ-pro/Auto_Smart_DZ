@@ -20,7 +20,6 @@ uploads/*
 coverage/
 .nyc_output/
 junit.xml
-html-report/
 
 # IDE
 .vscode/

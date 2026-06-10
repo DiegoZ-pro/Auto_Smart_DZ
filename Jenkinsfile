@@ -41,14 +41,6 @@ pipeline {
                         reportFiles : 'index.html',
                         reportName : 'Coverage Report'
                     ])
-                    publishHTML(target: [
-                        allowMissing : false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll : true,
-                        reportDir : 'backend/html-report',
-                        reportFiles : 'report.html',
-                        reportName : 'Test Results Report'
-                    ])
                 }
             }
         }
