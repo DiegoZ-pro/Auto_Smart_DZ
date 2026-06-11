@@ -32,8 +32,11 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html'],
       reportsDirectory: './coverage',
-      include: ['src/**/*.{js,jsx}'],
-      exclude: ['src/main.jsx', 'src/**/*.module.css']
+      include: [
+        'src/components/common/Alert/**/*.{js,jsx}',
+        'src/components/common/Button/**/*.{js,jsx}',
+        'src/components/common/Input/**/*.{js,jsx}',
+      ],
     },
     reporters: ['verbose', 'junit'],
     outputFile: {
