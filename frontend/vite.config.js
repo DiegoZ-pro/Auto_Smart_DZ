@@ -22,5 +22,22 @@ export default defineConfig({
     port: 5173,
     host: true,
     open: true
+  },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/tests/setup.js',
+    css: true,
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      reportsDirectory: './coverage',
+      include: ['src/**/*.{js,jsx}'],
+      exclude: ['src/main.jsx', 'src/**/*.module.css']
+    },
+    reporters: ['verbose', 'junit'],
+    outputFile: {
+      junit: './junit-frontend.xml'
+    }
   }
 })
