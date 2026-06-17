@@ -36,6 +36,7 @@ export default defineConfig({
         'src/components/common/Alert/**/*.{js,jsx}',
         'src/components/common/Button/**/*.{js,jsx}',
         'src/components/common/Input/**/*.{js,jsx}',
+        'src/pages/public/Login/**/*.{js,jsx}',
       ],
     },
     reporters: ['verbose', 'junit'],
