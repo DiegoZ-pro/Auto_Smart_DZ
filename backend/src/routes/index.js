@@ -18,6 +18,7 @@ const archivosRoutes = require('./archivos.routes');
 const notificacionesRoutes = require('./notificaciones.routes');
 const citasRoutes = require('./citas.routes');
 const configuracionRoutes = require('./configuracion.routes');
+const chatRoutes = require('./chat.routes');
 
 /**
  * @route   GET /api
@@ -39,7 +40,8 @@ router.get('/', (req, res) => {
       cotizaciones: '/api/cotizaciones',
       archivos: '/api/archivos',
       notificaciones: '/api/notificaciones',
-      citas: '/api/citas'
+      citas: '/api/citas',
+      chat: '/api/chat'
     }
   });
 });
@@ -69,5 +71,6 @@ router.use('/archivos', archivosRoutes);
 router.use('/notificaciones', notificacionesRoutes);
 router.use('/citas', citasRoutes);
 router.use('/configuracion', configuracionRoutes);
+router.use('/chat', chatRoutes);
 
 module.exports = router;

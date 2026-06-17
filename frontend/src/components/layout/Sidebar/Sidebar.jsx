@@ -5,13 +5,12 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { 
-  Car, 
-  FlaskConical, 
+  Car,
+  FlaskConical,
   Wrench,
-  FileText, 
-  DollarSign, 
+  FileText,
+  DollarSign,
   LayoutDashboard,
-  Brain,
   Scan,
   Users,
   Calendar,
@@ -38,7 +37,6 @@ const Sidebar = () => {
       { icon: FileText, label: 'Cotizaciones', path: '/taller/cotizaciones' },
       { icon: FileText, label: 'Órdenes de Trabajo', path: '/taller/ordenes' },
       { icon: LayoutDashboard, label: 'Kanban de Tareas', path: '/taller/kanban' },
-      { icon: Brain, label: 'Diagnóstico con IA', path: '/taller/diagnostico-ia' },
       { icon: Scan, label: 'Escaneo 3D', path: '/taller/escaneo-3d' },
       { icon: Calendar, label: 'Control de Citas', path: '/taller/citas' },
       { icon: Users, label: 'Gestión de Usuarios', path: '/taller/usuarios' },
@@ -47,7 +45,6 @@ const Sidebar = () => {
     mecanico: [
       { icon: Wrench, label: 'Diagnóstico Técnico', path: '/taller/diagnostico-tecnico' },
       { icon: LayoutDashboard, label: 'Kanban de Tareas', path: '/taller/kanban' },
-      { icon: Brain, label: 'Diagnóstico con IA', path: '/taller/diagnostico-ia' },
       { icon: Scan, label: 'Escaneo 3D', path: '/taller/escaneo-3d' },
     ]
   };

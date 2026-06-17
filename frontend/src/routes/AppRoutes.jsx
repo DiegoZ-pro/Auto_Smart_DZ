@@ -33,7 +33,7 @@ import GestionUsuarios from '../pages/taller/GestionUsuarios/GestionUsuarios'
 import KPIsTaller from '../pages/taller/KPIsTaller/KPIsTaller'
 import ConfiguracionTaller from '../pages/taller/ConfiguracionTaller/ConfiguracionTaller'
 import ControlCitas from '../pages/taller/ControlCitas/ControlCitas'
-import DiagnosticoIA from '../pages/taller/DiagnosticoIA/DiagnosticoIA';
+import Escaneo3D from '../pages/taller/Escaneo3D/Escaneo3D';
 
 const AppRoutes = () => {
   return (
@@ -110,7 +110,7 @@ const AppRoutes = () => {
 
         {/* Admin y Mecánico */}
         <Route path="diagnostico-tecnico" element={<DiagnosticoTecnico />} />
-        <Route path="diagnostico-ia" element={<DiagnosticoIA />} />
+        <Route path="escaneo-3d" element={<Escaneo3D />} />
         <Route path="kanban" element={<KanbanTareas />} />
         <Route path="mi-perfil" element={<MiPerfilTaller />} />
 
