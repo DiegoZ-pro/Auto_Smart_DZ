@@ -1,11 +1,9 @@
-// ============================================================================
-// CONFIGURACIÓN DE BASE DE DATOS MYSQL
-// ============================================================================
+// Configuración de la conexión a MySQL
 
 const mysql = require('mysql2/promise');
 require('dotenv').config();
 
-// Crear pool de conexiones
+// Pool de conexiones para no abrir una por cada query
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   port: process.env.DB_PORT || 3307,
@@ -19,7 +17,7 @@ const pool = mysql.createPool({
   keepAliveInitialDelay: 0
 });
 
-// Función para probar la conexión
+// Verifica que la conexión al motor esté andando
 const testConnection = async () => {
   try {
     const connection = await pool.getConnection();
@@ -32,7 +30,7 @@ const testConnection = async () => {
   }
 };
 
-// Función helper para ejecutar queries
+// Ejecuta una query y devuelve los resultados directamente
 const query = async (sql, params) => {
   try {
     const [results] = await pool.execute(sql, params);
@@ -43,7 +41,7 @@ const query = async (sql, params) => {
   }
 };
 
-// Función helper para transacciones
+// Maneja una transacción: hace commit si todo va bien, rollback si algo falla
 const transaction = async (callback) => {
   const connection = await pool.getConnection();
   await connection.beginTransaction();

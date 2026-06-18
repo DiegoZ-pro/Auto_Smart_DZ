@@ -1,6 +1,5 @@
-// tests del modulo de ordenes
+// Tests del módulo de órdenes de trabajo
 
-// mocks
 jest.mock('../src/config/database', () => ({
   query: jest.fn(),
   transaction: jest.fn(),
@@ -9,7 +8,7 @@ jest.mock('../src/config/database', () => ({
 const { query, transaction } = require('../src/config/database');
 const ordenesService = require('../src/services/ordenesService');
 
-// datos de prueba
+// Datos de prueba
 const mockOrden = {
   id: 1,
   numero_orden: 'VEH-2026-000001',
@@ -63,10 +62,9 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de crear orden
+// Tests de crear orden
 describe('ordenesService.createOrden', () => {
-  // helper para simular la transaccion
-  // hace 3 consultas internas
+  // Simula la transacción interna que hace 3 consultas
   const setupTransactionMock = ({ tipo = 'vehiculo', contador = 0, insertId = 1 } = {}) => {
     transaction.mockImplementation(async (cb) => {
       const conn = {
@@ -154,7 +152,7 @@ describe('ordenesService.createOrden', () => {
   });
 });
 
-// tests de obtener orden por id
+// Tests de obtener orden por id
 describe('ordenesService.getOrdenById', () => {
   test('retorna la orden completa', async () => {
     query.mockResolvedValueOnce([mockOrden]);
@@ -175,9 +173,8 @@ describe('ordenesService.getOrdenById', () => {
   });
 });
 
-// tests de cambio de estado
+// Tests de cambio de estado
 describe('ordenesService.cambiarEstado', () => {
-  // hace 4 consultas internas
   test('cambia estado y guarda historial', async () => {
     const ordenActualizada = { ...mockOrden, estado_id: 2, estado_nombre: 'en_diagnostico' };
 
@@ -202,7 +199,7 @@ describe('ordenesService.cambiarEstado', () => {
   });
 });
 
-// tests de obtener ordenes
+// Tests de obtener órdenes con filtros
 describe('ordenesService.getAllOrdenes', () => {
   test('retorna todas las ordenes', async () => {
     query.mockResolvedValueOnce([mockOrden, { ...mockOrden, id: 2 }]);
@@ -241,7 +238,7 @@ describe('ordenesService.getAllOrdenes', () => {
   });
 });
 
-// tests de asignar mecanico
+// Tests de asignar mecánico
 describe('ordenesService.asignarMecanico', () => {
   test('asigna mecanico y retorna la orden', async () => {
     const ordenConMecanico = {
@@ -262,7 +259,7 @@ describe('ordenesService.asignarMecanico', () => {
   });
 });
 
-// tests de getAllOrdenes con filtros adicionales
+// Tests de filtros adicionales en getAllOrdenes
 describe('ordenesService.getAllOrdenes — filtros adicionales', () => {
   test('filtra por tipo_orden_id', async () => {
     query.mockResolvedValueOnce([mockOrden]);
@@ -309,7 +306,7 @@ describe('ordenesService.getAllOrdenes — filtros adicionales', () => {
   });
 });
 
-// tests de updateOrden
+// Tests de actualizar orden
 describe('ordenesService.updateOrden', () => {
   test('actualiza descripcion_problema y costo_estimado', async () => {
     query
@@ -380,7 +377,7 @@ describe('ordenesService.updateOrden', () => {
   });
 });
 
-// tests de getHistorialEstados
+// Tests del historial de estados
 describe('ordenesService.getHistorialEstados', () => {
   test('retorna el historial de cambios de estado', async () => {
     const mockHistorial = [
@@ -411,7 +408,7 @@ describe('ordenesService.getHistorialEstados', () => {
   });
 });
 
-// tests de getOrdenesKanban
+// Tests del agrupamiento para el Kanban
 describe('ordenesService.getOrdenesKanban', () => {
   test('agrupa las ordenes por estado_id', async () => {
     const ordenes = [
@@ -436,7 +433,7 @@ describe('ordenesService.getOrdenesKanban', () => {
   });
 });
 
-// tests de getEstadisticas de ordenes
+// Tests de estadísticas de órdenes
 describe('ordenesService.getEstadisticas', () => {
   test('retorna estadisticas de ordenes entre dos fechas', async () => {
     query.mockResolvedValueOnce([{

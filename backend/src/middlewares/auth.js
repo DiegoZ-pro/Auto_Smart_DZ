@@ -1,28 +1,23 @@
-// ============================================================================
-// MIDDLEWARE DE AUTENTICACIÓN Y AUTORIZACIÓN
-// ============================================================================
+// Middlewares de autenticación y autorización
 
 const { verifyAccessToken } = require('../utils/jwt');
 const { unauthorized, forbidden } = require('../utils/responses');
 
-/**
- * Middleware para verificar que el usuario esté autenticado
- */
+// Verifica que el request incluya un JWT válido
 const authenticate = async (req, res, next) => {
   try {
-    // Obtener token del header
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       return unauthorized(res, 'Token no proporcionado');
     }
 
-    const token = authHeader.substring(7); // Remover "Bearer "
+    // Quita el prefijo "Bearer " para quedarse solo con el token
+    const token = authHeader.substring(7);
 
-    // Verificar token
     const decoded = verifyAccessToken(token);
 
-    // Agregar información del usuario al request
+    // Guarda los datos del usuario en el request para que los usen los controladores
     req.user = {
       id: decoded.id,
       email: decoded.email,
@@ -38,22 +33,19 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-/**
- * Middleware para verificar roles específicos
- * Uso: authorize(['admin', 'mecanico'])
- */
+// Comprueba que el usuario tenga uno de los roles permitidos
+// Uso: authorize(['admin', 'mecanico'])
 const authorize = (roles = []) => {
   return (req, res, next) => {
     if (!req.user) {
       return unauthorized(res, 'Usuario no autenticado');
     }
 
-    // Si roles es un string, convertir a array
+    // Acepta tanto string como array para mayor comodidad
     if (typeof roles === 'string') {
       roles = [roles];
     }
 
-    // Verificar si el rol del usuario está en la lista permitida
     if (!roles.includes(req.user.rol)) {
       return forbidden(res, 'No tienes permisos para realizar esta acción');
     }
@@ -62,9 +54,7 @@ const authorize = (roles = []) => {
   };
 };
 
-/**
- * Middleware para verificar que sea Admin
- */
+// Solo pasa si el usuario es administrador
 const isAdmin = (req, res, next) => {
   if (!req.user || req.user.rol !== 'admin') {
     return forbidden(res, 'Se requieren permisos de administrador');
@@ -72,9 +62,7 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
-/**
- * Middleware para verificar que sea Admin o Mecánico
- */
+// Pasa si el usuario es admin o mecánico
 const isAdminOrMechanic = (req, res, next) => {
   if (!req.user || !['admin', 'mecanico'].includes(req.user.rol)) {
     return forbidden(res, 'Se requieren permisos de administrador o mecánico');
@@ -82,9 +70,7 @@ const isAdminOrMechanic = (req, res, next) => {
   next();
 };
 
-/**
- * Middleware para verificar que sea el mismo usuario o admin
- */
+// Pasa si el usuario está accediendo a sus propios datos o si es admin
 const isSelfOrAdmin = (req, res, next) => {
   const userId = parseInt(req.params.id);
   

@@ -9,7 +9,7 @@ import {
 import { diagnosticoService } from '../../../services/diagnosticoService'
 import styles from './DiagnosticoTecnico.module.css'
 
-// ─── colores por estado ────────────────────────────────────────────────────────
+// Colores y etiquetas por estado de orden para las tarjetas del listado
 
 const ESTADO_COLORES = {
   recepcionado:        { bg: '#eff6ff', color: '#2563eb', label: 'Recepcionado' },
@@ -38,10 +38,7 @@ const ESTADOS_DISPONIBLES = [
   { id: 7, nombre: 'entregado'           },
 ]
 
-// ─────────────────────────────────────────────────────────────────────────────
-
 export default function DiagnosticoTecnico() {
-  // lista de órdenes
   const [ordenes, setOrdenes]         = useState([])
   const [loading, setLoading]         = useState(false)
   const [busqueda, setBusqueda]       = useState('')
@@ -70,7 +67,7 @@ export default function DiagnosticoTecnico() {
     observaciones:          '',
   })
 
-  // ─── carga inicial ──────────────────────────────────────────────────────────
+  // Carga las órdenes y los catálogos necesarios
 
   const cargarOrdenes = useCallback(async () => {
     setLoading(true)
@@ -99,7 +96,7 @@ export default function DiagnosticoTecnico() {
   useEffect(() => { cargarOrdenes() }, [cargarOrdenes])
   useEffect(() => { cargarMecanicos() }, [cargarMecanicos])
 
-  // ─── abrir orden ────────────────────────────────────────────────────────────
+  // Abre el panel lateral de detalle al seleccionar una orden
 
   const handleSeleccionarOrden = async (orden) => {
     setLoadingOrden(true)
@@ -128,7 +125,7 @@ export default function DiagnosticoTecnico() {
     }
   }
 
-  // ─── guardar diagnóstico ────────────────────────────────────────────────────
+  // Guarda los cambios del diagnóstico en el backend
 
   const handleGuardar = async () => {
     if (!ordenActiva) return
@@ -164,7 +161,7 @@ export default function DiagnosticoTecnico() {
     }
   }
 
-  // ─── helpers ────────────────────────────────────────────────────────────────
+  // Funciones de apoyo para formatear y calcular datos de la UI
 
   const mostrarExito = (msg) => { setExito(msg); setTimeout(() => setExito(''), 3000) }
 
@@ -197,7 +194,6 @@ export default function DiagnosticoTecnico() {
     return [o.tipo_pieza, o.marca_pieza].filter(Boolean).join(' · ') || '—'
   }
 
-  // ─── render ──────────────────────────────────────────────────────────────────
 
   return (
     <div className={styles.wrapper}>

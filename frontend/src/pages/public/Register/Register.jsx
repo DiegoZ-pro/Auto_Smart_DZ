@@ -1,6 +1,4 @@
-// ============================================================================
-// PÁGINA DE REGISTRO
-// ============================================================================
+// Página de registro de nuevos clientes
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -45,11 +43,9 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Limpiar errores previos
     setSubmitError('');
     setErrors({});
-    
-    // Validar formulario
+
     const validation = validateRegisterForm(formData);
     
     if (!validation.isValid) {
@@ -57,7 +53,7 @@ const Register = () => {
       return;
     }
 
-    // Preparar datos para el backend
+    // Solo enviamos los campos que necesita el backend (sin confirmPassword)
     const registerData = {
       nombreCompleto: formData.nombreCompleto,
       email: formData.email,
@@ -70,17 +66,17 @@ const Register = () => {
     if (result.success) {
       await logout();
       
-      // Redirigir al login con un mensaje de éxito
-      navigate('/login', { 
-        state: { 
+      // Redirige al login y pre-llena el email para que el usuario no lo tenga que escribir de nuevo
+      navigate('/login', {
+        state: {
           message: 'Registro exitoso. Por favor, inicia sesión con tu email y contraseña.',
-          email: formData.email // Pre-llenar el email en el login
-        } 
+          email: formData.email
+        }
       });
     } else {
       setSubmitError(result.error || 'Error desconocido al registrarse');
       
-      // Si el error es de email duplicado, resaltar el campo email
+      // Si el error menciona email, resalta ese campo para que el usuario lo note
       if (result.error?.toLowerCase().includes('email') || 
           result.error?.toLowerCase().includes('correo') ||
           result.error?.toLowerCase().includes('registrado')) {

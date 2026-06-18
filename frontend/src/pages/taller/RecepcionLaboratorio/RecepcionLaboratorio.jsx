@@ -1,7 +1,4 @@
-// ============================================================================
-// RECEPCIÓN DE LABORATORIO - TALLER
-// Formulario con búsqueda de clientes - DISEÑO EXACTO A RECEPCIÓN VEHÍCULO
-// ============================================================================
+// Formulario de recepción de laboratorio — sigue el mismo diseño que RecepcionVehiculo
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';

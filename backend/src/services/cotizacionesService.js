@@ -1,15 +1,8 @@
-// ============================================================================
-// SERVICIO DE COTIZACIONES (BACKEND)
-// Fix aplicado: getCotizacionById y getAllCotizaciones incluyen tipo_pieza,
-// marca_pieza, modelo_origen, numero_parte.
-// createCotizacion usa transaction() + connection.execute() (patrón correcto).
-// ============================================================================
+// Servicio de cotizaciones
 
 const { query, transaction } = require('../config/database');
 
-/**
- * Obtener todas las cotizaciones
- */
+// Lista cotizaciones con datos completos del vehículo, cliente y orden
 const getAllCotizaciones = async (filters = {}) => {
   let sql = `
     SELECT cot.*,
@@ -67,9 +60,7 @@ const getAllCotizaciones = async (filters = {}) => {
   return cotizaciones;
 };
 
-/**
- * Obtener cotización por ID
- */
+// Devuelve una cotización con todos los datos y parsea los ítems del JSON
 const getCotizacionById = async (cotizacionId) => {
   const [cotizacion] = await query(
     `SELECT cot.*,
@@ -107,7 +98,7 @@ const getCotizacionById = async (cotizacionId) => {
     throw new Error('Cotización no encontrada');
   }
 
-  // Parsear items_cotizacion si es string JSON
+  // Los ítems se almacenan como JSON string en la BD
   if (typeof cotizacion.items_cotizacion === 'string') {
     cotizacion.items_cotizacion = JSON.parse(cotizacion.items_cotizacion);
   }
@@ -115,9 +106,7 @@ const getCotizacionById = async (cotizacionId) => {
   return cotizacion;
 };
 
-/**
- * Obtener cotización por número
- */
+// Busca por número de cotización (formato COT-YYYY-NNNNNN)
 const getCotizacionByNumero = async (numeroCotizacion) => {
   const [cotizacion] = await query(
     'SELECT * FROM cotizaciones WHERE numero_cotizacion = ?',
@@ -126,10 +115,7 @@ const getCotizacionByNumero = async (numeroCotizacion) => {
   return cotizacion;
 };
 
-/**
- * Crear cotización
- * Usa transaction() + connection.execute() para que result.insertId funcione
- */
+// Crea una cotización dentro de una transacción para garantizar el número correlativo
 const createCotizacion = async (cotizacionData, userId) => {
   const {
     orden_trabajo_id,
@@ -141,7 +127,7 @@ const createCotizacion = async (cotizacionData, userId) => {
     terminos_condiciones
   } = cotizacionData;
 
-  // Validar que la orden exista
+  // Verifica que la orden exista antes de crear la cotización
   const [orden] = await query(
     'SELECT id FROM ordenes_trabajo WHERE id = ?',
     [orden_trabajo_id]
@@ -151,7 +137,7 @@ const createCotizacion = async (cotizacionData, userId) => {
     throw new Error('Orden de trabajo no encontrada');
   }
 
-  // Calcular totales
+  // Calcula el subtotal sumando cantidad * precio de cada ítem
   const subtotal = items_cotizacion.reduce((sum, item) => {
     return sum + (parseFloat(item.cantidad) * parseFloat(item.precio_unitario));
   }, 0);
@@ -162,7 +148,7 @@ const createCotizacion = async (cotizacionData, userId) => {
   const total = subtotal + manoObraValor - descuentoValor + impuestosValor;
 
   return await transaction(async (connection) => {
-    // Generar número de cotización COT-YYYY-NNNNNN
+    // Genera el correlativo del año (ej: COT-2026-000001)
     const year = new Date().getFullYear();
 
     const [count] = await connection.execute(
@@ -174,7 +160,7 @@ const createCotizacion = async (cotizacionData, userId) => {
     const contador = count[0].total + 1;
     const numero_cotizacion = `COT-${year}-${String(contador).padStart(6, '0')}`;
 
-    // Insertar cotización
+    // Inserta la cotización
     const [result] = await connection.execute(
       `INSERT INTO cotizaciones (
         numero_cotizacion, orden_trabajo_id, items_cotizacion,
@@ -196,7 +182,7 @@ const createCotizacion = async (cotizacionData, userId) => {
       ]
     );
 
-    // Actualizar costo estimado en la orden
+    // Refleja el total de la cotización como costo estimado en la orden
     await connection.execute(
       'UPDATE ordenes_trabajo SET costo_estimado = ? WHERE id = ?',
       [total, orden_trabajo_id]
@@ -206,9 +192,7 @@ const createCotizacion = async (cotizacionData, userId) => {
   });
 };
 
-/**
- * Actualizar cotización
- */
+// Actualiza los campos que vengan en cotizacionData y recalcula el total si hay ítems
 const updateCotizacion = async (cotizacionId, cotizacionData, userId) => {
   const {
     items_cotizacion,
@@ -261,9 +245,7 @@ const updateCotizacion = async (cotizacionId, cotizacionData, userId) => {
   return await getCotizacionById(cotizacionId);
 };
 
-/**
- * Enviar cotización (estado → enviada)
- */
+// Cambia el estado a "enviada" y registra la fecha de envío
 const enviarCotizacion = async (cotizacionId) => {
   await query(
     `UPDATE cotizaciones SET estado_id = 2, fecha_envio = NOW() WHERE id = ?`,
@@ -272,9 +254,7 @@ const enviarCotizacion = async (cotizacionId) => {
   return await getCotizacionById(cotizacionId);
 };
 
-/**
- * Aprobar cotización
- */
+// Aprueba la cotización y actualiza el costo final en la orden
 const aprobarCotizacion = async (cotizacionId) => {
   await query(
     `UPDATE cotizaciones SET estado_id = 3, fecha_respuesta = NOW() WHERE id = ?`,
@@ -288,9 +268,7 @@ const aprobarCotizacion = async (cotizacionId) => {
   return cotizacion;
 };
 
-/**
- * Rechazar cotización
- */
+// Rechaza la cotización y registra la fecha de respuesta
 const rechazarCotizacion = async (cotizacionId) => {
   await query(
     `UPDATE cotizaciones SET estado_id = 4, fecha_respuesta = NOW() WHERE id = ?`,
@@ -299,9 +277,7 @@ const rechazarCotizacion = async (cotizacionId) => {
   return await getCotizacionById(cotizacionId);
 };
 
-/**
- * Obtener cotizaciones de una orden
- */
+// Todas las cotizaciones asociadas a una orden
 const getCotizacionesByOrden = async (ordenTrabajoId) => {
   const cotizaciones = await query(
     `SELECT cot.*, ec.estado as estado_nombre

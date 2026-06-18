@@ -1,6 +1,4 @@
-// ============================================================================
-// COMPONENTE INPUT - Input reutilizable
-// ============================================================================
+// Input reutilizable con soporte para label, íconos, errores y required
 
 import styles from './Input.module.css';
 

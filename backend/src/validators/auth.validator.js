@@ -1,13 +1,9 @@
-// ============================================================================
-// VALIDADORES DE AUTENTICACIÓN
-// ============================================================================
+// Validadores de los endpoints de autenticación usando Joi
 
 const Joi = require('joi');
 const { validationError } = require('../utils/responses');
 
-/**
- * Validar registro de usuario
- */
+// Valida el body del registro
 const validateRegister = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required().messages({
@@ -43,9 +39,7 @@ const validateRegister = (req, res, next) => {
   next();
 };
 
-/**
- * Validar login
- */
+// Valida el body del login
 const validateLogin = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required().messages({
@@ -70,9 +64,7 @@ const validateLogin = (req, res, next) => {
   next();
 };
 
-/**
- * Validar refresh token
- */
+// Valida que venga el refresh token en el body
 const validateRefreshToken = (req, res, next) => {
   const schema = Joi.object({
     refreshToken: Joi.string().required().messages({
@@ -93,9 +85,7 @@ const validateRefreshToken = (req, res, next) => {
   next();
 };
 
-/**
- * Validar cambio de contraseña
- */
+// Valida el body para cambio de contraseña
 const validateChangePassword = (req, res, next) => {
   const schema = Joi.object({
     oldPassword: Joi.string().required().messages({
@@ -120,9 +110,7 @@ const validateChangePassword = (req, res, next) => {
   next();
 };
 
-/**
- * Validar actualización de perfil propio
- */
+// Valida el body para actualizar el perfil propio
 const validateUpdateProfile = (req, res, next) => {
   const schema = Joi.object({
     nombreCompleto: Joi.string().min(3).max(150).required().messages({

@@ -1,11 +1,8 @@
-// ============================================================================
-// CONFIGURACIÓN DE AXIOS - API CLIENT
-// ============================================================================
+// Instancia de Axios configurada para toda la app
 
 import axios from 'axios';
 import config from '../config/config';
 
-// Crear instancia de Axios
 const api = axios.create({
   baseURL: config.apiUrl,
   timeout: config.apiTimeout,
@@ -14,7 +11,7 @@ const api = axios.create({
   }
 });
 
-// Interceptor de Request - Agregar token
+// Adjunta el access token a cada request automáticamente
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('autosmart_access_token');
@@ -30,7 +27,7 @@ api.interceptors.request.use(
   }
 );
 
-// Interceptor de Response - Manejar errores y refresh token
+// Maneja errores de respuesta: renueva el token si está vencido
 api.interceptors.response.use(
   (response) => {
     return response;
@@ -38,8 +35,7 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Si el error es 401 y no hemos intentado refrescar el token
-    // Excluir endpoints de autenticación para no interferir con login/register
+    // Intenta renovar el token solo si el error es 401 y no es un endpoint de auth
     const isAuthEndpoint = originalRequest.url?.includes('/auth/login') ||
       originalRequest.url?.includes('/auth/register') ||
       originalRequest.url?.includes('/auth/refresh');
@@ -70,7 +66,7 @@ api.interceptors.response.use(
 
         return api(originalRequest);
       } catch (refreshError) {
-        // Si falla el refresh, limpiar y redirigir al login
+        // Si el refresh también falla, redirige al login y limpia el storage
         localStorage.removeItem('autosmart_access_token');
         localStorage.removeItem('autosmart_refresh_token');
         localStorage.removeItem('autosmart_user');
@@ -80,7 +76,7 @@ api.interceptors.response.use(
       }
     }
 
-    // Extraer el mensaje real del backend para errores no-401
+    // Extrae el mensaje de error del backend para que useAuth pueda mostrarlo
     const message = error.response?.data?.message || error.message;
     const enhancedError = new Error(message);
     enhancedError.response = error.response;

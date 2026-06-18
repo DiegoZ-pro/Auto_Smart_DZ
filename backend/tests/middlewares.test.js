@@ -1,4 +1,4 @@
-// tests de middlewares de autorizacion
+// Tests de los middlewares de autorización
 
 jest.mock('../src/utils/jwt', () => ({
   verifyAccessToken: jest.fn(),
@@ -18,7 +18,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de authorize
+// Tests de authorize
 describe('Middleware authorize', () => {
   test('permite pasar si el rol esta en la lista', () => {
     const req = { user: { id: 1, email: 'a@a.com', rol: 'admin' } };
@@ -64,7 +64,7 @@ describe('Middleware authorize', () => {
   });
 });
 
-// tests de isAdmin
+// Tests de isAdmin
 describe('Middleware isAdmin', () => {
   test('permite pasar al usuario admin', () => {
     const req = { user: { id: 1, rol: 'admin' } };
@@ -110,7 +110,7 @@ describe('Middleware isAdmin', () => {
   });
 });
 
-// tests de isAdminOrMechanic
+// Tests de isAdminOrMechanic
 describe('Middleware isAdminOrMechanic', () => {
   test('permite pasar al admin', () => {
     const req = { user: { id: 1, rol: 'admin' } };
@@ -155,7 +155,7 @@ describe('Middleware isAdminOrMechanic', () => {
   });
 });
 
-// tests de isSelfOrAdmin
+// Tests de isSelfOrAdmin
 describe('Middleware isSelfOrAdmin', () => {
   test('permite al usuario acceder a su propio recurso', () => {
     const req = {

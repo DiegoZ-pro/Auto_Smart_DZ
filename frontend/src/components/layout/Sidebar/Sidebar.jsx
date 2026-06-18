@@ -1,6 +1,4 @@
-// ============================================================================
-// SIDEBAR - ADMIN/MECÁNICO
-// ============================================================================
+// Sidebar de navegación del área de taller
 
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
@@ -27,7 +25,7 @@ const Sidebar = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
 
-  // Menú según rol
+  // Ítems del menú según el rol del usuario
   const menuItems = {
     admin: [
       { icon: BarChart3, label: 'KPIs Taller', path: '/taller/kpis' },

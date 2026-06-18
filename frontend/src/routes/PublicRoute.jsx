@@ -1,6 +1,4 @@
-// ============================================================================
-// PUBLIC ROUTE - Redirige a dashboard si ya está autenticado
-// ============================================================================
+// Ruta pública: redirige al usuario autenticado a su área correspondiente
 
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -8,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 const PublicRoute = ({ children }) => {
   const { user, loading } = useAuth();
 
-  // Mostrar loading mientras se verifica autenticación
+  // Muestra un spinner mientras carga el estado de autenticación
   if (loading) {
     return (
       <div style={{
@@ -28,7 +26,7 @@ const PublicRoute = ({ children }) => {
     );
   }
 
-  // Si ya está autenticado, redirigir según rol
+  // Si ya tiene sesión activa, no tiene sentido mostrar login o registro
   if (user) {
     if (user.rol === 'admin' || user.rol === 'mecanico') {
       return <Navigate to="/dashboard" replace />;

@@ -1,4 +1,4 @@
-// tests del modulo de clientes
+// Tests del módulo de clientes
 
 jest.mock('../src/config/database', () => ({
   query: jest.fn(),
@@ -29,7 +29,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de getAllClientes
+// Tests de listar clientes
 describe('clientesService.getAllClientes', () => {
   test('retorna lista de clientes sin filtros', async () => {
     query.mockResolvedValueOnce([mockCliente, { ...mockCliente, id: 6 }]);
@@ -70,7 +70,7 @@ describe('clientesService.getAllClientes', () => {
   });
 });
 
-// tests de getClienteById
+// Tests de obtener cliente por ID
 describe('clientesService.getClienteById', () => {
   test('retorna el cliente correcto', async () => {
     query.mockResolvedValueOnce([mockCliente]);
@@ -89,7 +89,7 @@ describe('clientesService.getClienteById', () => {
   });
 });
 
-// tests de getClienteByUsuarioId
+// Tests de buscar cliente por usuario
 describe('clientesService.getClienteByUsuarioId', () => {
   test('retorna cliente asociado al usuario', async () => {
     query.mockResolvedValueOnce([mockCliente]);
@@ -108,7 +108,7 @@ describe('clientesService.getClienteByUsuarioId', () => {
   });
 });
 
-// tests de updateCliente
+// Tests de actualizar cliente
 describe('clientesService.updateCliente', () => {
   test('actualiza campos y retorna cliente', async () => {
     query
@@ -142,7 +142,7 @@ describe('clientesService.updateCliente', () => {
   });
 });
 
-// tests de getVehiculosCliente
+// Tests de vehículos del cliente
 describe('clientesService.getVehiculosCliente', () => {
   test('retorna vehiculos del cliente', async () => {
     const mockVehiculos = [
@@ -166,7 +166,7 @@ describe('clientesService.getVehiculosCliente', () => {
   });
 });
 
-// tests de getEstadisticasCliente
+// Tests de estadísticas del cliente
 describe('clientesService.getEstadisticasCliente', () => {
   test('retorna estadisticas combinadas de dos consultas', async () => {
     query
@@ -205,7 +205,7 @@ describe('clientesService.getEstadisticasCliente', () => {
   });
 });
 
-// tests de searchClientes
+// Tests de búsqueda de clientes
 describe('clientesService.searchClientes', () => {
   test('retorna clientes que coinciden con el termino', async () => {
     query.mockResolvedValueOnce([mockCliente]);

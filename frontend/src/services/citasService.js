@@ -1,13 +1,8 @@
-// ============================================================================
-// SERVICIO DE CITAS - API CALLS
-// ============================================================================
+// Servicio de citas del frontend
 
 import api from './api';
 
-/**
- * Obtener horarios disponibles para una fecha específica
- * GET /api/citas/horarios-disponibles?fecha=YYYY-MM-DD
- */
+// GET /api/citas/horarios-disponibles?fecha=YYYY-MM-DD
 export const getHorariosDisponibles = async (fecha) => {
   const response = await api.get('/citas/horarios-disponibles', {
     params: { fecha }
@@ -15,73 +10,49 @@ export const getHorariosDisponibles = async (fecha) => {
   return response.data;
 };
 
-/**
- * Crear nueva cita
- * POST /api/citas
- */
+// POST /api/citas
 export const crearCita = async (citaData) => {
   const response = await api.post('/citas', citaData);
   return response.data;
 };
 
-/**
- * Obtener citas del cliente autenticado
- * GET /api/citas/cliente/:clienteId
- */
+// GET /api/citas/cliente/:clienteId
 export const getCitasByCliente = async (clienteId) => {
   const response = await api.get(`/citas/cliente/${clienteId}`);
   return response.data;
 };
 
-/**
- * Obtener todas las citas (con filtros opcionales)
- * GET /api/citas
- */
+// GET /api/citas con filtros opcionales
 export const getAllCitas = async (filters = {}) => {
   const response = await api.get('/citas', { params: filters });
   return response.data;
 };
 
-/**
- * Obtener cita por ID
- * GET /api/citas/:id
- */
+// GET /api/citas/:id
 export const getCitaById = async (citaId) => {
   const response = await api.get(`/citas/${citaId}`);
   return response.data;
 };
 
-/**
- * Actualizar cita
- * PUT /api/citas/:id
- */
+// PUT /api/citas/:id
 export const updateCita = async (citaId, citaData) => {
   const response = await api.put(`/citas/${citaId}`, citaData);
   return response.data;
 };
 
-/**
- * Cancelar cita
- * PUT /api/citas/:id/cancelar
- */
+// PUT /api/citas/:id/cancelar
 export const cancelarCita = async (citaId) => {
   const response = await api.put(`/citas/${citaId}/cancelar`);
   return response.data;
 };
 
-/**
- * Confirmar cita (Admin/Mecánico)
- * PUT /api/citas/:id/confirmar
- */
+// PUT /api/citas/:id/confirmar (solo admin/mecánico)
 export const confirmarCita = async (citaId) => {
   const response = await api.put(`/citas/${citaId}/confirmar`);
   return response.data;
 };
 
-/**
- * Completar cita (Admin/Mecánico)
- * PUT /api/citas/:id/completar
- */
+// PUT /api/citas/:id/completar (solo admin/mecánico)
 export const completarCita = async (citaId) => {
   const response = await api.put(`/citas/${citaId}/completar`);
   return response.data;

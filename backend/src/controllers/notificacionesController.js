@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE NOTIFICACIONES
-// ============================================================================
+// Controlador de notificaciones
 
 const notificacionesService = require('../services/notificacionesService');
 const { success } = require('../utils/responses');
 
-/**
- * GET /api/notificaciones
- * Obtener notificaciones del usuario autenticado
- */
+// GET /api/notificaciones — notificaciones del usuario autenticado
 const getNotificaciones = async (req, res, next) => {
   try {
     const usuarioId = req.user.id;
@@ -25,10 +20,7 @@ const getNotificaciones = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/notificaciones/no-leidas
- * Obtener notificaciones no leídas
- */
+// GET /api/notificaciones/no-leidas — solo las que aún no se leyeron
 const getNoLeidas = async (req, res, next) => {
   try {
     const usuarioId = req.user.id;
@@ -41,10 +33,7 @@ const getNoLeidas = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/notificaciones/contador
- * Contar notificaciones no leídas
- */
+// GET /api/notificaciones/contador — cuántas no leídas hay (para el badge)
 const contarNoLeidas = async (req, res, next) => {
   try {
     const usuarioId = req.user.id;
@@ -57,10 +46,7 @@ const contarNoLeidas = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/notificaciones/:id/leer
- * Marcar notificación como leída
- */
+// PUT /api/notificaciones/:id/leer — marca una notificación como leída
 const marcarComoLeida = async (req, res, next) => {
   try {
     const notificacionId = parseInt(req.params.id);
@@ -73,10 +59,7 @@ const marcarComoLeida = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/notificaciones/leer-todas
- * Marcar todas las notificaciones como leídas
- */
+// PUT /api/notificaciones/leer-todas — marca todas como leídas de una vez
 const marcarTodasComoLeidas = async (req, res, next) => {
   try {
     const usuarioId = req.user.id;
@@ -89,10 +72,7 @@ const marcarTodasComoLeidas = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE /api/notificaciones/:id
- * Eliminar notificación
- */
+// DELETE /api/notificaciones/:id — elimina una notificación
 const deleteNotificacion = async (req, res, next) => {
   try {
     const notificacionId = parseInt(req.params.id);
@@ -105,10 +85,7 @@ const deleteNotificacion = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE /api/notificaciones/limpiar-leidas
- * Eliminar todas las notificaciones leídas
- */
+// DELETE /api/notificaciones/limpiar-leidas — limpia todas las ya leídas
 const deleteTodasLeidas = async (req, res, next) => {
   try {
     const usuarioId = req.user.id;

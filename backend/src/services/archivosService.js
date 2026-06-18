@@ -1,13 +1,9 @@
-// ============================================================================
-// SERVICIO DE ARCHIVOS
-// ============================================================================
+// Servicio para gestionar archivos adjuntos a órdenes de trabajo
 
 const { query } = require('../config/database');
 const { deleteFile, getFileUrl } = require('../config/multer');
 
-/**
- * Guardar referencia de archivo en BD
- */
+// Guarda los metadatos del archivo en la BD
 const saveArchivo = async (archivoData) => {
   const {
     orden_trabajo_id,
@@ -38,9 +34,7 @@ const saveArchivo = async (archivoData) => {
   return result.insertId;
 };
 
-/**
- * Obtener archivos de una orden
- */
+// Devuelve los archivos de una orden con su URL pública
 const getArchivosByOrden = async (ordenTrabajoId) => {
   const archivos = await query(
     `SELECT a.*, u.nombre_completo as subido_por_nombre
@@ -51,16 +45,14 @@ const getArchivosByOrden = async (ordenTrabajoId) => {
     [ordenTrabajoId]
   );
 
-  // Agregar URL completa a cada archivo
+  // Agrega la URL pública a cada archivo para que el frontend pueda acceder
   return archivos.map(archivo => ({
     ...archivo,
     url: getFileUrl(archivo.ruta_archivo)
   }));
 };
 
-/**
- * Obtener archivo por ID
- */
+// Busca un archivo por ID y le agrega su URL
 const getArchivoById = async (archivoId) => {
   const [archivo] = await query(
     `SELECT a.*, u.nombre_completo as subido_por_nombre
@@ -79,25 +71,18 @@ const getArchivoById = async (archivoId) => {
   return archivo;
 };
 
-/**
- * Eliminar archivo
- */
+// Borra el archivo del disco y también su registro en la BD
 const deleteArchivo = async (archivoId) => {
-  // Obtener info del archivo
   const archivo = await getArchivoById(archivoId);
 
-  // Eliminar archivo físico
   const deleted = deleteFile(archivo.ruta_archivo);
 
-  // Eliminar registro de BD
   await query('DELETE FROM archivos WHERE id = ?', [archivoId]);
 
   return deleted;
 };
 
-/**
- * Actualizar descripción de archivo
- */
+// Actualiza la descripción del archivo
 const updateDescripcion = async (archivoId, descripcion) => {
   await query(
     'UPDATE archivos SET descripcion = ? WHERE id = ?',
@@ -107,9 +92,7 @@ const updateDescripcion = async (archivoId, descripcion) => {
   return await getArchivoById(archivoId);
 };
 
-/**
- * Obtener estadísticas de archivos
- */
+// Devuelve totales de archivos y espacio en MB
 const getEstadisticas = async () => {
   const [stats] = await query(`
     SELECT 

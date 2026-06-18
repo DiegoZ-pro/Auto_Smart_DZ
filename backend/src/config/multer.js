@@ -1,24 +1,22 @@
-// ============================================================================
-// CONFIGURACIÓN DE MULTER - UPLOAD DE ARCHIVOS
-// ============================================================================
+// Configuración de multer para subir archivos
 
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Crear directorio de uploads si no existe
+// Si la carpeta de uploads no existe la crea
 const uploadsDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Configuración de almacenamiento
+// Define dónde se guardan los archivos y cómo se llaman
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadsDir);
   },
   filename: (req, file, cb) => {
-    // Generar nombre único: timestamp-random-originalname
+    // Nombre único para evitar colisiones: timestamp + número aleatorio
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     const ext = path.extname(file.originalname);
     const nameWithoutExt = path.basename(file.originalname, ext);
@@ -26,9 +24,8 @@ const storage = multer.diskStorage({
   }
 });
 
-// Filtro de archivos permitidos
+// Solo acepta los tipos de archivo que queremos
 const fileFilter = (req, file, cb) => {
-  // Tipos MIME permitidos
   const allowedTypes = [
     'image/jpeg',
     'image/jpg',
@@ -51,7 +48,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-// Configuración de Multer
+// Instancia principal de multer con sus opciones
 const upload = multer({
   storage: storage,
   fileFilter: fileFilter,
@@ -60,19 +57,13 @@ const upload = multer({
   }
 });
 
-/**
- * Middleware para un solo archivo
- */
+// Para subir un solo archivo
 const uploadSingle = upload.single('file');
 
-/**
- * Middleware para múltiples archivos
- */
-const uploadMultiple = upload.array('files', 10); // Máximo 10 archivos
+// Para subir varios archivos a la vez (máximo 10)
+const uploadMultiple = upload.array('files', 10);
 
-/**
- * Eliminar archivo físico del servidor
- */
+// Borra el archivo del disco si existe
 const deleteFile = (filePath) => {
   try {
     const fullPath = path.join(uploadsDir, path.basename(filePath));
@@ -87,9 +78,7 @@ const deleteFile = (filePath) => {
   }
 };
 
-/**
- * Obtener URL pública del archivo
- */
+// Devuelve la URL pública con la que se puede acceder al archivo
 const getFileUrl = (filename) => {
   const baseUrl = process.env.BASE_URL || 'http://localhost:5000';
   return `${baseUrl}/uploads/${filename}`;

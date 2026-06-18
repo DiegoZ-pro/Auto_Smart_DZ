@@ -1,15 +1,10 @@
-// ============================================================================
-// CONTROLADOR DE ARCHIVOS
-// ============================================================================
+// Controlador para subir y gestionar archivos de órdenes
 
 const archivosService = require('../services/archivosService');
 const { success, error, notFound } = require('../utils/responses');
 const { uploadMultiple } = require('../config/multer');
 
-/**
- * POST /api/archivos/upload
- * Subir archivos para una orden
- */
+// POST /api/archivos/upload — sube uno o varios archivos para una orden
 const uploadArchivos = async (req, res, next) => {
   uploadMultiple(req, res, async (err) => {
     if (err) {
@@ -28,7 +23,7 @@ const uploadArchivos = async (req, res, next) => {
         return error(res, 'No se proporcionaron archivos', 400);
       }
 
-      // Guardar referencias de todos los archivos
+      // Guarda cada archivo en BD y lo agrega a la respuesta
       const archivosGuardados = [];
 
       for (const file of req.files) {
@@ -53,10 +48,7 @@ const uploadArchivos = async (req, res, next) => {
   });
 };
 
-/**
- * GET /api/archivos/orden/:ordenId
- * Obtener archivos de una orden
- */
+// GET /api/archivos/orden/:ordenId — lista los archivos de una orden
 const getArchivosByOrden = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.ordenId);
@@ -69,10 +61,7 @@ const getArchivosByOrden = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/archivos/:id
- * Obtener archivo por ID
- */
+// GET /api/archivos/:id — obtiene un archivo por su ID
 const getArchivoById = async (req, res, next) => {
   try {
     const archivoId = parseInt(req.params.id);
@@ -88,10 +77,7 @@ const getArchivoById = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE /api/archivos/:id
- * Eliminar archivo
- */
+// DELETE /api/archivos/:id — elimina el archivo del disco y de la BD
 const deleteArchivo = async (req, res, next) => {
   try {
     const archivoId = parseInt(req.params.id);
@@ -107,10 +93,7 @@ const deleteArchivo = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/archivos/:id/descripcion
- * Actualizar descripción de archivo
- */
+// PUT /api/archivos/:id/descripcion — actualiza solo la descripción del archivo
 const updateDescripcion = async (req, res, next) => {
   try {
     const archivoId = parseInt(req.params.id);
@@ -127,10 +110,7 @@ const updateDescripcion = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/archivos/estadisticas
- * Obtener estadísticas de archivos
- */
+// GET /api/archivos/estadisticas — resumen de espacio ocupado y cantidad de archivos
 const getEstadisticas = async (req, res, next) => {
   try {
     const stats = await archivosService.getEstadisticas();

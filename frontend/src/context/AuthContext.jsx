@@ -1,6 +1,4 @@
-// ============================================================================
-// AUTH CONTEXT - Manejo de autenticación global
-// ============================================================================
+// Contexto global de autenticación
 
 import { createContext, useContext, useState, useEffect } from 'react';
 import { authService } from '../services/authService';
@@ -8,7 +6,7 @@ import { MENSAJES } from '../utils/constants';
 
 const AuthContext = createContext(null);
 
-// Normaliza el objeto user del backend (snake_case) a camelCase consistente
+// Convierte los campos snake_case del backend a camelCase para usarlos en el frontend
 const normalizeUser = (raw) => {
   if (!raw) return null;
   return {
@@ -27,7 +25,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Cargar usuario del localStorage al iniciar
+  // Al montar el provider intenta restaurar la sesión desde localStorage
   useEffect(() => {
     const loadUser = () => {
       try {
@@ -50,7 +48,7 @@ export const AuthProvider = ({ children }) => {
     loadUser();
   }, []);
 
-  // Login
+  // Llama al servicio de login y guarda tokens y usuario en localStorage
   const login = async (email, password) => {
     try {
       setError(null);
@@ -61,7 +59,6 @@ export const AuthProvider = ({ children }) => {
       const { user: rawLoginUser, tokens } = response.data;
       const user = normalizeUser(rawLoginUser);
 
-      // Guardar en localStorage
       localStorage.setItem('autosmart_access_token', tokens.accessToken);
       localStorage.setItem('autosmart_refresh_token', tokens.refreshToken);
       localStorage.setItem('autosmart_user', JSON.stringify(user));
@@ -104,7 +101,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Register
+  // Registro de nuevo cliente
   const register = async (userData) => {
     try {
       setError(null);
@@ -115,13 +112,12 @@ export const AuthProvider = ({ children }) => {
       const { user: rawRegUser, tokens } = response.data;
       const user = normalizeUser(rawRegUser);
 
-      // Guardar en localStorage
       localStorage.setItem('autosmart_access_token', tokens.accessToken);
       localStorage.setItem('autosmart_refresh_token', tokens.refreshToken);
       localStorage.setItem('autosmart_user', JSON.stringify(user));
 
       setUser(user);
-      
+
       return { success: true, user };
     } catch (err) {
       console.error('[AuthContext] register error:', err.message, '| status:', err.status);
@@ -158,7 +154,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Logout
+  // Llama al endpoint de logout y limpia el estado local
   const logout = async () => {
     try {
       await authService.logout();
@@ -172,7 +168,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Actualizar usuario (normaliza siempre snake_case → camelCase)
+  // Actualiza el usuario en el estado y en localStorage (siempre normaliza a camelCase)
   const updateUser = (updatedUser) => {
     const normalized = normalizeUser(updatedUser);
     setUser(normalized);
@@ -196,7 +192,7 @@ export const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Hook personalizado para usar el AuthContext
+// Hook para consumir el contexto desde cualquier componente
 export const useAuth = () => {
   const context = useContext(AuthContext);
   

@@ -1,13 +1,8 @@
-// ============================================================================
-// SERVICIO DE COTIZACIONES
-// Conexión con backend /api/cotizaciones
-// ============================================================================
+// Servicio de cotizaciones del frontend
 
 import api from './api';
 
-/**
- * Obtener todas las cotizaciones con filtros opcionales
- */
+// Lista todas las cotizaciones con filtros opcionales
 const getAll = async (filters = {}) => {
   try {
     const params = new URLSearchParams();
@@ -27,9 +22,6 @@ const getAll = async (filters = {}) => {
   }
 };
 
-/**
- * Obtener cotización por ID
- */
 const getById = async (id) => {
   try {
     const response = await api.get(`/cotizaciones/${id}`);
@@ -40,9 +32,6 @@ const getById = async (id) => {
   }
 };
 
-/**
- * Obtener cotizaciones de una orden
- */
 const getByOrden = async (ordenId) => {
   try {
     const response = await api.get(`/cotizaciones/orden/${ordenId}`);
@@ -53,9 +42,6 @@ const getByOrden = async (ordenId) => {
   }
 };
 
-/**
- * Crear nueva cotización
- */
 const create = async (cotizacionData) => {
   try {
     const response = await api.post('/cotizaciones', cotizacionData);
@@ -66,9 +52,6 @@ const create = async (cotizacionData) => {
   }
 };
 
-/**
- * Actualizar cotización existente
- */
 const update = async (id, cotizacionData) => {
   try {
     const response = await api.put(`/cotizaciones/${id}`, cotizacionData);
@@ -79,9 +62,6 @@ const update = async (id, cotizacionData) => {
   }
 };
 
-/**
- * Marcar cotización como enviada
- */
 const enviar = async (id) => {
   try {
     const response = await api.post(`/cotizaciones/${id}/enviar`);
@@ -92,9 +72,6 @@ const enviar = async (id) => {
   }
 };
 
-/**
- * Aprobar cotización
- */
 const aprobar = async (id) => {
   try {
     const response = await api.post(`/cotizaciones/${id}/aprobar`);
@@ -105,9 +82,6 @@ const aprobar = async (id) => {
   }
 };
 
-/**
- * Rechazar cotización
- */
 const rechazar = async (id) => {
   try {
     const response = await api.post(`/cotizaciones/${id}/rechazar`);
@@ -118,9 +92,7 @@ const rechazar = async (id) => {
   }
 };
 
-/**
- * Obtener todas las órdenes (para el selector al crear cotización)
- */
+// Trae las órdenes disponibles para el selector al crear una cotización
 const getOrdenes = async () => {
   try {
     const response = await api.get('/ordenes');

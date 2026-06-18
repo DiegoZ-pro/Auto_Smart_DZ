@@ -56,7 +56,7 @@ export default function OrdenesTrabajoList() {
   const [nuevoEstado,   setNuevoEstado]   = useState('')
   const [cambiandoEst,  setCambiandoEst]  = useState(false)
 
-  // ─── carga ──────────────────────────────────────────────────────────────────
+  // Carga órdenes y catálogos al iniciar y cuando cambian los filtros
 
   const cargarTodo = useCallback(async () => {
     setLoading(true); setError('')
@@ -88,7 +88,7 @@ export default function OrdenesTrabajoList() {
     ? ordenes.filter(o => String(o.prioridad_nivel) === filtroPrio)
     : ordenes
 
-  // ─── modal ────────────────────────────────────────────────────────────────
+  // Lógica del modal de detalle de orden
 
   const abrirModal = async (orden) => {
     setLoadingModal(true); setModalOrden(orden); setNuevoEstado('')
@@ -118,8 +118,6 @@ export default function OrdenesTrabajoList() {
       setError(err.message || 'Error al cambiar estado')
     } finally { setCambiandoEst(false) }
   }
-
-  // ─── render ──────────────────────────────────────────────────────────────
 
   return (
     <div className={styles.wrapper}>

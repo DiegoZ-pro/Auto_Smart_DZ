@@ -1,6 +1,4 @@
-// ============================================================================
-// HEADER - ADMIN/MECÁNICO
-// ============================================================================
+// Header del área de taller con notificaciones y menú de usuario
 
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +10,7 @@ const Header = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [showUserDropdown, setShowUserDropdown] = useState(false);
-  const [notificationCount] = useState(3); // Temporal - conectar con API después
+  const [notificationCount] = useState(3); // TODO: conectar con el endpoint de notificaciones
 
   const handleLogout = () => {
     logout();
@@ -27,15 +25,12 @@ const Header = () => {
   return (
     <header className={styles.header}>
       <div className={styles.headerContent}>
-        {/* Logo */}
         <div className={styles.logo}>
           <span className={styles.logoAuto}>AUTO</span>
           <span className={styles.logoSmart}>SMART</span>
         </div>
 
-        {/* Right side */}
         <div className={styles.headerRight}>
-          {/* Notificaciones */}
           <button className={styles.notificationBtn}>
             <Bell size={20} />
             {notificationCount > 0 && (
@@ -43,7 +38,6 @@ const Header = () => {
             )}
           </button>
 
-          {/* User Dropdown */}
           <div className={styles.userDropdown}>
             <button 
               className={styles.userBtn}
@@ -58,7 +52,6 @@ const Header = () => {
               <ChevronDown size={16} />
             </button>
 
-            {/* Dropdown Menu */}
             {showUserDropdown && (
               <>
                 <div 

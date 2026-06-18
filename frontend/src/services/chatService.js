@@ -1,6 +1,4 @@
-// ============================================================================
-// SERVICIO DE CHAT IA
-// ============================================================================
+// Llama al endpoint del chatbot con timeout largo porque Ollama puede tardar
 
 import api from './api';
 

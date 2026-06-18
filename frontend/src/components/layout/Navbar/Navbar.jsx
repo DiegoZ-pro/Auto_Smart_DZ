@@ -1,6 +1,4 @@
-// ============================================================================
-// NAVBAR PRINCIPAL - DINÁMICO SEGÚN AUTENTICACIÓN
-// ============================================================================
+// Navbar del sitio público — se oculta para admin y mecánico
 
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -13,7 +11,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const [showDropdown, setShowDropdown] = useState(false);
 
-  // NO mostrar Navbar si el usuario es admin o mecánico
+  // El admin y mecánico tienen su propio header en el área de taller
   if (user && (user.rol === 'admin' || user.rol === 'mecanico')) {
     return null;
   }
@@ -32,13 +30,11 @@ const Navbar = () => {
   return (
     <nav className={styles.navbar}>
       <div className={styles.container}>
-        {/* Logo */}
         <Link to="/" className={styles.logo}>
           <span className={styles.logoBlue}>AUTO</span>
           <span className={styles.logoRed}>SMART</span>
         </Link>
 
-        {/* Navigation Links */}
         <div className={styles.navLinks}>
           <Link to="/" className={styles.navLink}>
             <Wrench size={18} />
@@ -60,9 +56,8 @@ const Navbar = () => {
             <span>Contacto</span>
           </Link>
 
-          {/* Auth Section */}
           {user ? (
-            // Usuario autenticado - Mostrar dropdown
+            // Si está autenticado muestra el menú de usuario
             <div className={styles.userMenu}>
               <button 
                 className={styles.userButton}
@@ -75,13 +70,12 @@ const Navbar = () => {
 
               {showDropdown && (
                 <>
-                  {/* Overlay para cerrar dropdown al hacer clic afuera */}
-                  <div 
+                  {/* Overlay transparente para cerrar el dropdown al hacer clic afuera */}
+                  <div
                     className={styles.dropdownOverlay}
                     onClick={() => setShowDropdown(false)}
                   />
 
-                  {/* Dropdown Menu */}
                   <div className={styles.dropdown}>
                     <button 
                       className={styles.dropdownItem}
@@ -105,7 +99,7 @@ const Navbar = () => {
               )}
             </div>
           ) : (
-            // Usuario NO autenticado - Mostrar "Iniciar Sesión"
+            // Si no está autenticado muestra el botón de login
             <Link to="/login" className={styles.loginButton}>
               <User size={18} />
               <span>Iniciar Sesión</span>

@@ -1,6 +1,4 @@
-// ============================================================================
-// UTILIDADES JWT - Generación y Verificación de Tokens
-// ============================================================================
+// Funciones para generar y verificar tokens JWT
 
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -10,27 +8,21 @@ const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const JWT_EXPIRE = process.env.JWT_EXPIRE || '24h';
 const JWT_REFRESH_EXPIRE = process.env.JWT_REFRESH_EXPIRE || '7d';
 
-/**
- * Generar Access Token (corta duración)
- */
+// Token de corta duración para acceso normal
 const generateAccessToken = (payload) => {
   return jwt.sign(payload, JWT_SECRET, {
     expiresIn: JWT_EXPIRE
   });
 };
 
-/**
- * Generar Refresh Token (larga duración)
- */
+// Token de larga duración para renovar el access token
 const generateRefreshToken = (payload) => {
   return jwt.sign(payload, JWT_REFRESH_SECRET, {
     expiresIn: JWT_REFRESH_EXPIRE
   });
 };
 
-/**
- * Generar ambos tokens
- */
+// Genera los dos tokens de una vez
 const generateTokens = (userId, email, rol) => {
   const payload = {
     id: userId,
@@ -44,9 +36,7 @@ const generateTokens = (userId, email, rol) => {
   return { accessToken, refreshToken };
 };
 
-/**
- * Verificar Access Token
- */
+// Verifica y decodifica el access token
 const verifyAccessToken = (token) => {
   try {
     return jwt.verify(token, JWT_SECRET);
@@ -58,9 +48,7 @@ const verifyAccessToken = (token) => {
   }
 };
 
-/**
- * Verificar Refresh Token
- */
+// Verifica y decodifica el refresh token
 const verifyRefreshToken = (token) => {
   try {
     return jwt.verify(token, JWT_REFRESH_SECRET);

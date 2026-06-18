@@ -1,13 +1,9 @@
-// ============================================================================
-// SERVICIO DE USUARIOS
-// ============================================================================
+// Servicio de usuarios
 
 const bcrypt = require('bcryptjs');
 const { query, transaction } = require('../config/database');
 
-/**
- * Obtener todos los usuarios
- */
+// Lista usuarios con filtros opcionales por rol, estado o búsqueda
 const getAllUsers = async (filters = {}) => {
   let sql = `
     SELECT u.id, u.email, u.nombre_completo, u.telefono, u.avatar_url,
@@ -22,7 +18,6 @@ const getAllUsers = async (filters = {}) => {
 
   const params = [];
 
-  // Filtros opcionales
   if (filters.rol_id) {
     sql += ' AND u.rol_id = ?';
     params.push(filters.rol_id);
@@ -44,9 +39,7 @@ const getAllUsers = async (filters = {}) => {
   return users;
 };
 
-/**
- * Obtener usuario por ID
- */
+// Devuelve un usuario por su ID con datos de rol y estado
 const getUserById = async (userId) => {
   const [user] = await query(
     `SELECT u.id, u.email, u.nombre_completo, u.telefono, u.avatar_url,
@@ -67,13 +60,10 @@ const getUserById = async (userId) => {
   return user;
 };
 
-/**
- * Crear usuario (solo admin puede crear mecánicos y admins)
- */
+// Crea un usuario nuevo — solo el admin puede llamar esto
 const createUser = async (userData, createdBy) => {
   const { email, password, nombreCompleto, telefono, rol_id } = userData;
 
-  // Verificar si el email ya existe
   const [existingUser] = await query(
     'SELECT id FROM usuarios WHERE email = ?',
     [email]
@@ -83,10 +73,8 @@ const createUser = async (userData, createdBy) => {
     throw new Error('El email ya está registrado');
   }
 
-  // Hash de la contraseña
   const passwordHash = await bcrypt.hash(password, 10);
 
-  // Insertar usuario
   const result = await query(
     `INSERT INTO usuarios (email, password_hash, nombre_completo, telefono, rol_id, estado_id)
      VALUES (?, ?, ?, ?, ?, 1)`,
@@ -95,14 +83,11 @@ const createUser = async (userData, createdBy) => {
 
   const userId = result.insertId;
 
-  // El trigger creará automáticamente el cliente si es rol cliente
-  // Obtener usuario creado
+  // Si es rol cliente, el trigger de MySQL crea el registro en clientes automáticamente
   return await getUserById(userId);
 };
 
-/**
- * Actualizar usuario
- */
+// Actualiza los campos del usuario que vengan en updateData
 const updateUser = async (userId, updateData) => {
   const { nombreCompleto, email, telefono, rol_id, estado_id, avatar_url, nueva_password } = updateData;
 
@@ -166,11 +151,8 @@ const updateUser = async (userId, updateData) => {
   return await getUserById(userId);
 };
 
-/**
- * Eliminar usuario (soft delete - cambiar estado a inactivo)
- */
+// Desactiva al usuario cambiando su estado a "inactivo" (no lo borra)
 const deleteUser = async (userId) => {
-  // Obtener ID del estado "inactivo"
   const [estadoInactivo] = await query(
     'SELECT id_estado FROM estados_usuario WHERE estado = ?',
     ['inactivo']
@@ -188,9 +170,7 @@ const deleteUser = async (userId) => {
   return true;
 };
 
-/**
- * Cambiar estado de usuario
- */
+// Cambia el estado del usuario (activo, inactivo, bloqueado)
 const changeUserStatus = async (userId, estadoId) => {
   await query(
     'UPDATE usuarios SET estado_id = ? WHERE id = ?',
@@ -200,9 +180,7 @@ const changeUserStatus = async (userId, estadoId) => {
   return await getUserById(userId);
 };
 
-/**
- * Obtener estadísticas de usuarios
- */
+// Totales de usuarios por rol y estado
 const getUserStats = async () => {
   const [stats] = await query(`
     SELECT 

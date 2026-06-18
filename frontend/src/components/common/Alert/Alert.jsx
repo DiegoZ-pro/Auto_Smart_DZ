@@ -1,6 +1,4 @@
-// ============================================================================
-// COMPONENTE ALERT - Alertas y mensajes visibles
-// ============================================================================
+// Componente de alerta reutilizable para mostrar mensajes de éxito, error, etc.
 
 import { AlertCircle, CheckCircle, Info, XCircle, X } from 'lucide-react';
 import styles from './Alert.module.css';

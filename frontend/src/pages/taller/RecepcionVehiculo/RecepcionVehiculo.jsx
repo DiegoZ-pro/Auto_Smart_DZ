@@ -1,7 +1,4 @@
-// ============================================================================
-// RECEPCIÓN DE VEHÍCULO - TALLER
-// Formulario con búsqueda de clientes y vehículos existentes
-// ============================================================================
+// Formulario de recepción de vehículo con búsqueda de clientes y vehículos existentes
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -281,12 +278,10 @@ const RecepcionVehiculo = () => {
         prioridad_id: 2
       };
 
-      // ==================== CLIENTE ====================
+      // Según el modo del cliente, envía el ID o los datos para crearlo
       if (clienteMode === 'search' && clienteSeleccionado) {
-        // Cliente existente - usar su ID
         ordenData.cliente_id = clienteSeleccionado.id;
       } else if (clienteMode === 'new') {
-        // Cliente nuevo - enviar datos para crearlo
         ordenData.cliente = {
           nombreCompleto: formData.nombreCliente.trim(),
           telefono: formData.telefonoCliente.trim(),
@@ -294,13 +289,11 @@ const RecepcionVehiculo = () => {
         };
       }
 
-      // ==================== VEHÍCULO ====================
+      // Según el modo del vehículo, envía el ID o los datos para crearlo
       if (vehiculoMode === 'select' && vehiculoSeleccionado) {
-        // Vehículo existente - usar su ID
         ordenData.vehiculo_id = vehiculoSeleccionado.id;
       } else if (vehiculoMode === 'new') {
-        // Vehículo nuevo - enviar datos para crearlo
-        ordenData.vehiculo_id = null; // Explícitamente null
+        ordenData.vehiculo_id = null;
         ordenData.vehiculo = {
           marca: formData.marca.trim(),
           modelo: formData.modelo.trim(),

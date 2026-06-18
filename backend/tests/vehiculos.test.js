@@ -1,4 +1,4 @@
-// tests del modulo de vehiculos
+// Tests del módulo de vehículos
 
 jest.mock('../src/config/database', () => ({
   query: jest.fn(),
@@ -42,7 +42,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de getAllVehiculos
+// Tests de listar vehículos
 describe('vehiculosService.getAllVehiculos', () => {
   test('retorna todos los vehiculos sin filtros', async () => {
     query.mockResolvedValueOnce([mockVehiculo, { ...mockVehiculo, id: 2 }]);
@@ -92,7 +92,7 @@ describe('vehiculosService.getAllVehiculos', () => {
   });
 });
 
-// tests de getVehiculoById
+// Tests de obtener vehículo por ID
 describe('vehiculosService.getVehiculoById', () => {
   test('retorna el vehiculo correcto', async () => {
     query.mockResolvedValueOnce([mockVehiculo]);
@@ -112,7 +112,7 @@ describe('vehiculosService.getVehiculoById', () => {
   });
 });
 
-// tests de getVehiculoByPlaca
+// Tests de buscar vehículo por placa
 describe('vehiculosService.getVehiculoByPlaca', () => {
   test('retorna vehiculo por placa', async () => {
     query.mockResolvedValueOnce([mockVehiculo]);
@@ -132,7 +132,7 @@ describe('vehiculosService.getVehiculoByPlaca', () => {
   });
 });
 
-// tests de createVehiculo
+// Tests de crear vehículo
 describe('vehiculosService.createVehiculo', () => {
   test('crea un vehiculo nuevo sin placa duplicada', async () => {
     query
@@ -168,7 +168,7 @@ describe('vehiculosService.createVehiculo', () => {
   });
 });
 
-// tests de updateVehiculo
+// Tests de actualizar vehículo
 describe('vehiculosService.updateVehiculo', () => {
   test('actualiza campos del vehiculo', async () => {
     query
@@ -208,7 +208,7 @@ describe('vehiculosService.updateVehiculo', () => {
   });
 });
 
-// tests de deleteVehiculo
+// Tests de desactivar vehículo
 describe('vehiculosService.deleteVehiculo', () => {
   test('marca el vehiculo como inactivo (soft delete)', async () => {
     query.mockResolvedValueOnce({ affectedRows: 1 });
@@ -223,7 +223,7 @@ describe('vehiculosService.deleteVehiculo', () => {
   });
 });
 
-// tests de getHistorialVehiculo
+// Tests del historial de órdenes del vehículo
 describe('vehiculosService.getHistorialVehiculo', () => {
   test('retorna historial de ordenes del vehiculo', async () => {
     const mockOrdenes = [
@@ -247,7 +247,7 @@ describe('vehiculosService.getHistorialVehiculo', () => {
   });
 });
 
-// tests de searchVehiculos
+// Tests de búsqueda de vehículos
 describe('vehiculosService.searchVehiculos', () => {
   test('retorna vehiculos que coinciden', async () => {
     query.mockResolvedValueOnce([mockVehiculo]);
@@ -268,7 +268,7 @@ describe('vehiculosService.searchVehiculos', () => {
   });
 });
 
-// tests de getMarcas
+// Tests de obtener marcas únicas
 describe('vehiculosService.getMarcas', () => {
   test('retorna lista de marcas unicas', async () => {
     query.mockResolvedValueOnce([

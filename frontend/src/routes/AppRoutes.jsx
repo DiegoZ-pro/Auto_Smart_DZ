@@ -1,6 +1,4 @@
-// ============================================================================
-// APP ROUTES - Configuración de todas las rutas
-// ============================================================================
+// Árbol de rutas de la aplicación
 
 import { Routes, Route, Navigate } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
@@ -18,10 +16,10 @@ import TerminosCondiciones from '../pages/public/TerminosCondiciones/TerminosCon
 import AgendarCita from '../pages/cliente/AgendarCita/AgendarCita';
 import MiPerfil from '../pages/cliente/MiPerfil/MiPerfil';
 
-// Layout para Admin/Mecánico
+// Layout con sidebar para el área de taller
 import MainLayout from '../components/layout/MainLayout/MainLayout';
 
-// Páginas de Taller (Admin/Mecánico)
+// Páginas del taller
 import MiPerfilTaller from '../pages/taller/MiPerfilTaller/MiPerfilTaller';
 import RecepcionVehiculo from '../pages/taller/RecepcionVehiculo/RecepcionVehiculo';
 import RecepcionLaboratorio from '../pages/taller/RecepcionLaboratorio/RecepcionLaboratorio';
@@ -38,12 +36,11 @@ import Escaneo3D from '../pages/taller/Escaneo3D/Escaneo3D';
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* ==================== RUTAS PÚBLICAS ==================== */}
-      
-      {/* Home - Redirige automáticamente si es admin/mecánico */}
+      {/* Rutas públicas */}
+
+      {/* Home: los usuarios autenticados se redirigen según su rol */}
       <Route path="/" element={<Home />} />
 
-      {/* Login */}
       <Route
         path="/login"
         element={
@@ -53,7 +50,6 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Register */}
       <Route
         path="/register"
         element={
@@ -63,17 +59,14 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Agendar Cita - No requiere PublicRoute porque maneja auth internamente */}
+      {/* Agendar cita maneja la autenticación internamente */}
       <Route path="/agendar-cita" element={<AgendarCita />} />
 
-      {/* Páginas informativas públicas */}
       <Route path="/quienes-somos" element={<QuienesSomos />} />
       <Route path="/contacto" element={<Contacto />} />
       <Route path="/terminos-condiciones" element={<TerminosCondiciones />} />
 
-      {/* ==================== RUTAS PRIVADAS - TALLER ==================== */}
-      
-      {/* Rutas del Taller - Admin y Mecánico */}
+      {/* Rutas privadas del taller — admin y mecánico */}
       <Route
         path="/taller"
         element={
@@ -82,7 +75,7 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       >
-        {/* Solo Admin */}
+        {/* Rutas solo para admin */}
         <Route path="recepcion-vehiculo" element={
           <PrivateRoute allowedRoles={['admin']}><RecepcionVehiculo /></PrivateRoute>
         } />
@@ -108,13 +101,13 @@ const AppRoutes = () => {
           <PrivateRoute allowedRoles={['admin']}><ConfiguracionTaller /></PrivateRoute>
         } />
 
-        {/* Admin y Mecánico */}
+        {/* Rutas para admin y mecánico */}
         <Route path="diagnostico-tecnico" element={<DiagnosticoTecnico />} />
         <Route path="escaneo-3d" element={<Escaneo3D />} />
         <Route path="kanban" element={<KanbanTareas />} />
         <Route path="mi-perfil" element={<MiPerfilTaller />} />
 
-        {/* Redirect /taller según rol */}
+        {/* Si accede a /taller sin subruta, redirige según rol */}
         <Route index element={
           <PrivateRoute allowedRoles={['admin']}>
             <Navigate to="/taller/kpis" replace />
@@ -122,9 +115,7 @@ const AppRoutes = () => {
         } />
       </Route>
 
-      {/* ==================== RUTAS PRIVADAS - CLIENTE ==================== */}
-      
-      {/* Mi Perfil */}
+      {/* Perfil del cliente */}
       <Route
         path="/mi-perfil"
         element={
@@ -134,7 +125,7 @@ const AppRoutes = () => {
         }
       />
 
-      {/* ==================== 404 - NOT FOUND ==================== */}
+      {/* Página 404 para rutas inexistentes */}
       <Route
         path="*"
         element={

@@ -1,12 +1,8 @@
-// ============================================================================
-// SERVICIO DE CLIENTES
-// ============================================================================
+// Servicio de clientes
 
 const { query, transaction } = require('../config/database');
 
-/**
- * Obtener todos los clientes
- */
+// Lista clientes con búsqueda por nombre, email o teléfono
 const getAllClientes = async (filters = {}) => {
   let sql = `
     SELECT c.*, u.email as email_usuario, u.telefono as telefono_usuario,
@@ -37,9 +33,7 @@ const getAllClientes = async (filters = {}) => {
   return clientes;
 };
 
-/**
- * Obtener cliente por ID
- */
+// Busca un cliente por su ID incluyendo datos del usuario asociado
 const getClienteById = async (clienteId) => {
   const [cliente] = await query(
     `SELECT c.*, u.email as email_usuario, u.telefono as telefono_usuario,
@@ -59,9 +53,7 @@ const getClienteById = async (clienteId) => {
   return cliente;
 };
 
-/**
- * Obtener cliente por usuario_id
- */
+// Busca el cliente a partir del id de usuario (útil para /clientes/me)
 const getClienteByUsuarioId = async (usuarioId) => {
   const [cliente] = await query(
     `SELECT c.*, u.email as email_usuario
@@ -74,10 +66,8 @@ const getClienteByUsuarioId = async (usuarioId) => {
   return cliente;
 };
 
-/**
- * Crear cliente (se crea automáticamente con trigger al crear usuario)
- * Esta función es por si necesitas actualizar datos adicionales
- */
+// El cliente se crea por trigger al registrar el usuario,
+// esta función solo actualiza los datos del perfil
 const updateCliente = async (clienteId, data) => {
   const { nombre_completo, telefono, email, empresa, nit_ci, direccion, ciudad, notas } = data;
 
@@ -138,9 +128,7 @@ const updateCliente = async (clienteId, data) => {
   return await getClienteById(clienteId);
 };
 
-/**
- * Obtener vehículos de un cliente
- */
+// Devuelve los vehículos activos del cliente
 const getVehiculosCliente = async (clienteId) => {
   const vehiculos = await query(
     `SELECT v.*, tc.combustible as tipo_combustible_nombre
@@ -154,10 +142,7 @@ const getVehiculosCliente = async (clienteId) => {
   return vehiculos;
 };
 
-/**
- * Obtener órdenes de trabajo de un cliente
- * CORREGIDO: Ahora incluye información del vehículo
- */
+// Devuelve las órdenes del cliente con info del vehículo y cotización más reciente
 const getOrdenesCliente = async (clienteId) => {
   const ordenes = await query(
     `SELECT ot.*,
@@ -169,7 +154,7 @@ const getOrdenesCliente = async (clienteId) => {
             v.modelo as modelo_vehiculo,
             v.placa as placa_vehiculo,
             v.anio as anio_vehiculo,
-            -- cotización más reciente visible (todo excepto borrador)
+            -- cotización más reciente visible para el cliente (excluye borradores)
             (SELECT cot2.id
                FROM cotizaciones cot2
               WHERE cot2.orden_trabajo_id = ot.id
@@ -215,12 +200,9 @@ const getOrdenesCliente = async (clienteId) => {
   return ordenes;
 };
 
-/**
- * Obtener estadísticas de un cliente
- * FIX: citas_pendientes se calcula en consulta separada para evitar error 500
- */
+// Estadísticas del cliente en dos consultas separadas para evitar joins problemáticos
 const getEstadisticasCliente = async (clienteId) => {
-  // consulta 1: vehículos, órdenes y totales
+  // Primera consulta: vehículos, órdenes y total gastado
   const [stats] = await query(
     `SELECT 
       COUNT(DISTINCT v.id) as total_vehiculos,
@@ -236,7 +218,7 @@ const getEstadisticasCliente = async (clienteId) => {
     [clienteId]
   );
 
-  // consulta 2: citas pendientes o confirmadas con fecha futura
+  // Segunda consulta: citas pendientes o confirmadas con fecha futura
   const [citasRow] = await query(
     `SELECT COUNT(*) as citas_pendientes
      FROM citas
@@ -258,10 +240,7 @@ const getEstadisticasCliente = async (clienteId) => {
   };
 };
 
-/**
- * Buscar clientes por término
- * FIX: solo muestra usuarios con rol cliente (rol_id = 1), excluye admins y mecánicos
- */
+// Busca clientes por nombre, teléfono, email o empresa — solo rol cliente
 const searchClientes = async (searchTerm) => {
   const clientes = await query(
     `SELECT c.id, c.nombre_completo, c.telefono, c.email, c.empresa

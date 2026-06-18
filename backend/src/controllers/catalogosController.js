@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE CATÁLOGOS
-// ============================================================================
+// Controlador de catálogos (roles, estados, prioridades, etc.)
 
 const catalogosService = require('../services/catalogosService');
 const { success } = require('../utils/responses');
 
-/**
- * GET /api/catalogos
- * Obtener todos los catálogos
- */
+// GET /api/catalogos — devuelve todos los catálogos en una sola llamada
 const getAllCatalogos = async (req, res, next) => {
   try {
     const catalogos = await catalogosService.getAllCatalogos();
@@ -18,9 +13,7 @@ const getAllCatalogos = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/roles
- */
+// GET /api/catalogos/roles
 const getRoles = async (req, res, next) => {
   try {
     const roles = await catalogosService.getRoles();
@@ -30,9 +23,7 @@ const getRoles = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/estados-usuario
- */
+// GET /api/catalogos/estados-usuario
 const getEstadosUsuario = async (req, res, next) => {
   try {
     const estados = await catalogosService.getEstadosUsuario();
@@ -42,9 +33,7 @@ const getEstadosUsuario = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/tipos-combustible
- */
+// GET /api/catalogos/tipos-combustible
 const getTiposCombustible = async (req, res, next) => {
   try {
     const tipos = await catalogosService.getTiposCombustible();
@@ -54,9 +43,7 @@ const getTiposCombustible = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/tipos-orden
- */
+// GET /api/catalogos/tipos-orden
 const getTiposOrden = async (req, res, next) => {
   try {
     const tipos = await catalogosService.getTiposOrden();
@@ -66,9 +53,7 @@ const getTiposOrden = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/estados-orden
- */
+// GET /api/catalogos/estados-orden
 const getEstadosOrden = async (req, res, next) => {
   try {
     const estados = await catalogosService.getEstadosOrden();
@@ -78,9 +63,7 @@ const getEstadosOrden = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/prioridades
- */
+// GET /api/catalogos/prioridades
 const getPrioridades = async (req, res, next) => {
   try {
     const prioridades = await catalogosService.getPrioridades();
@@ -90,9 +73,7 @@ const getPrioridades = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/estados-cotizacion
- */
+// GET /api/catalogos/estados-cotizacion
 const getEstadosCotizacion = async (req, res, next) => {
   try {
     const estados = await catalogosService.getEstadosCotizacion();
@@ -102,9 +83,7 @@ const getEstadosCotizacion = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/tipos-notificacion
- */
+// GET /api/catalogos/tipos-notificacion
 const getTiposNotificacion = async (req, res, next) => {
   try {
     const tipos = await catalogosService.getTiposNotificacion();
@@ -114,9 +93,7 @@ const getTiposNotificacion = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/catalogos/estados-cita
- */
+// GET /api/catalogos/estados-cita
 const getEstadosCita = async (req, res, next) => {
   try {
     const estados = await catalogosService.getEstadosCita();

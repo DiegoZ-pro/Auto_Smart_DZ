@@ -1,6 +1,4 @@
-// ============================================================================
-// MAIN LAYOUT - ADMIN/MECÁNICO
-// ============================================================================
+// Layout principal del área de taller: header + sidebar + contenido
 
 import { Outlet } from 'react-router-dom';
 import Header from '../Header/Header';

@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE COTIZACIONES
-// ============================================================================
+// Controlador de cotizaciones
 
 const cotizacionesService = require('../services/cotizacionesService');
 const { success, error, notFound } = require('../utils/responses');
 
-/**
- * GET /api/cotizaciones
- * Obtener todas las cotizaciones
- */
+// GET /api/cotizaciones — lista cotizaciones con filtros opcionales
 const getAllCotizaciones = async (req, res, next) => {
   try {
     const filters = {
@@ -26,10 +21,7 @@ const getAllCotizaciones = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/cotizaciones/:id
- * Obtener cotización por ID
- */
+// GET /api/cotizaciones/:id — cotización con todos sus datos e ítems
 const getCotizacionById = async (req, res, next) => {
   try {
     const cotizacionId = parseInt(req.params.id);
@@ -45,10 +37,7 @@ const getCotizacionById = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/cotizaciones/numero/:numero
- * Obtener cotización por número
- */
+// GET /api/cotizaciones/numero/:numero — busca por número de cotización
 const getCotizacionByNumero = async (req, res, next) => {
   try {
     const { numero } = req.params;
@@ -65,10 +54,7 @@ const getCotizacionByNumero = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/cotizaciones/orden/:ordenId
- * Obtener cotizaciones de una orden
- */
+// GET /api/cotizaciones/orden/:ordenId — cotizaciones de una orden específica
 const getCotizacionesByOrden = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.ordenId);
@@ -81,10 +67,7 @@ const getCotizacionesByOrden = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/cotizaciones
- * Crear nueva cotización
- */
+// POST /api/cotizaciones — crea una cotización con sus ítems y calcula los totales
 const createCotizacion = async (req, res, next) => {
   try {
     const cotizacionData = req.body;
@@ -103,10 +86,7 @@ const createCotizacion = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/cotizaciones/:id
- * Actualizar cotización
- */
+// PUT /api/cotizaciones/:id — actualiza ítems, totales o estado de la cotización
 const updateCotizacion = async (req, res, next) => {
   try {
     const cotizacionId = parseInt(req.params.id);
@@ -124,10 +104,7 @@ const updateCotizacion = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/cotizaciones/:id/enviar
- * Enviar cotización al cliente
- */
+// POST /api/cotizaciones/:id/enviar — cambia el estado a "enviada"
 const enviarCotizacion = async (req, res, next) => {
   try {
     const cotizacionId = parseInt(req.params.id);
@@ -143,10 +120,7 @@ const enviarCotizacion = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/cotizaciones/:id/aprobar
- * Aprobar cotización
- */
+// POST /api/cotizaciones/:id/aprobar — el cliente aprueba la cotización
 const aprobarCotizacion = async (req, res, next) => {
   try {
     const cotizacionId = parseInt(req.params.id);
@@ -162,10 +136,7 @@ const aprobarCotizacion = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/cotizaciones/:id/rechazar
- * Rechazar cotización
- */
+// POST /api/cotizaciones/:id/rechazar — el cliente rechaza la cotización
 const rechazarCotizacion = async (req, res, next) => {
   try {
     const cotizacionId = parseInt(req.params.id);

@@ -1,15 +1,8 @@
-// ============================================================================
-// SERVICIO DE DIAGNÓSTICO TÉCNICO
-// Usa el mismo patrón que ordenesService.js (import api from './api')
-// Endpoints reusados: PUT /api/ordenes/:id, GET /api/ordenes, etc.
-// ============================================================================
+// Servicio del módulo de diagnóstico técnico — reutiliza los endpoints de órdenes
 
 import api from './api';
 
-/**
- * Obtener órdenes para diagnóstico
- * Filtra por estados relevantes: recepcionado (1), en_diagnostico (2)
- */
+// Trae las órdenes relevantes para diagnóstico con filtros opcionales
 const getOrdenesParaDiagnostico = async (filters = {}) => {
   try {
     const params = new URLSearchParams();
@@ -27,9 +20,7 @@ const getOrdenesParaDiagnostico = async (filters = {}) => {
   }
 };
 
-/**
- * Obtener orden completa por ID (incluye diagnostico_tecnico, trabajo_realizado, etc.)
- */
+// Devuelve la orden completa con diagnóstico, trabajo realizado y más
 const getOrdenById = async (id) => {
   try {
     const response = await api.get(`/ordenes/${id}`);
@@ -39,12 +30,7 @@ const getOrdenById = async (id) => {
   }
 };
 
-/**
- * Guardar diagnóstico técnico de una orden
- * Campos: diagnostico_tecnico, trabajo_realizado, estado_id,
- *         mecanico_asignado_id, prioridad_id, costo_estimado,
- *         fecha_entrega_estimada, hora_entrega_estimada
- */
+// Guarda el diagnóstico técnico y los campos relacionados de la orden
 const guardarDiagnostico = async (ordenId, data) => {
   try {
     const response = await api.put(`/ordenes/${ordenId}`, data);
@@ -54,9 +40,7 @@ const guardarDiagnostico = async (ordenId, data) => {
   }
 };
 
-/**
- * Cambiar estado de una orden
- */
+// Cambia el estado de la orden
 const cambiarEstado = async (ordenId, estadoId) => {
   try {
     const response = await api.put(`/ordenes/${ordenId}/estado`, { estado_id: estadoId });
@@ -66,9 +50,7 @@ const cambiarEstado = async (ordenId, estadoId) => {
   }
 };
 
-/**
- * Asignar mecánico a una orden
- */
+// Asigna un mecánico a la orden
 const asignarMecanico = async (ordenId, mecanicoId) => {
   try {
     const response = await api.put(`/ordenes/${ordenId}/asignar-mecanico`, { mecanico_id: mecanicoId });
@@ -78,9 +60,7 @@ const asignarMecanico = async (ordenId, mecanicoId) => {
   }
 };
 
-/**
- * Obtener historial de estados de una orden
- */
+// Historial de cambios de estado de una orden
 const getHistorial = async (ordenId) => {
   try {
     const response = await api.get(`/ordenes/${ordenId}/historial`);
@@ -90,9 +70,7 @@ const getHistorial = async (ordenId) => {
   }
 };
 
-/**
- * Obtener mecánicos disponibles (usuarios con rol mecanico)
- */
+// Trae los usuarios con rol mecánico para asignar a órdenes
 const getMecanicos = async () => {
   try {
     const response = await api.get('/usuarios/mecanicos');
@@ -102,9 +80,7 @@ const getMecanicos = async () => {
   }
 };
 
-/**
- * Obtener estados de orden del catálogo
- */
+// Trae los estados de orden del catálogo
 const getEstadosOrden = async () => {
   try {
     const response = await api.get('/catalogos/estados-orden');

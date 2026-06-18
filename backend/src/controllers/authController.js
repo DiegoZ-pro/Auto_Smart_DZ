@@ -1,15 +1,10 @@
-// ============================================================================
-// CONTROLADOR DE AUTENTICACIÓN
-// ============================================================================
+// Controlador de autenticación
 
 const authService = require('../services/authService');
 const usuariosService = require('../services/usuariosService');
 const { success, error } = require('../utils/responses');
 
-/**
- * POST /api/auth/register
- * Registrar nuevo usuario (cliente)
- */
+// POST /api/auth/register — registro de nuevos clientes
 const register = async (req, res, next) => {
   try {
     const { email, password, nombreCompleto, telefono } = req.body;
@@ -25,10 +20,7 @@ const register = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/auth/login
- * Iniciar sesión
- */
+// POST /api/auth/login — inicio de sesión
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -47,10 +39,7 @@ const login = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/auth/refresh
- * Renovar access token
- */
+// POST /api/auth/refresh — renueva el access token usando el refresh token
 const refresh = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
@@ -70,10 +59,7 @@ const refresh = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/auth/logout
- * Cerrar sesión (requiere autenticación)
- */
+// POST /api/auth/logout — cierra la sesión e invalida el refresh token
 const logout = async (req, res, next) => {
   try {
     await authService.logout(req.user.id);
@@ -84,10 +70,7 @@ const logout = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/auth/change-password
- * Cambiar contraseña (requiere autenticación)
- */
+// POST /api/auth/change-password — cambia la contraseña del usuario autenticado
 const changePassword = async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body;
@@ -103,10 +86,7 @@ const changePassword = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/auth/me
- * Obtener información completa del usuario autenticado
- */
+// GET /api/auth/me — devuelve los datos del usuario autenticado
 const getMe = async (req, res, next) => {
   try {
     const user = await usuariosService.getUserById(req.user.id);
@@ -116,10 +96,7 @@ const getMe = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/auth/profile
- * Actualizar perfil propio (cualquier usuario autenticado)
- */
+// PUT /api/auth/profile — actualiza nombre y teléfono del perfil propio
 const updateProfile = async (req, res, next) => {
   try {
     const { nombreCompleto, telefono } = req.body;

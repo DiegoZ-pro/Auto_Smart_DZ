@@ -1,6 +1,4 @@
-// ============================================================================
-// SERVICIO DE CONFIGURACIÓN DEL TALLER
-// ============================================================================
+// Guarda y lee la configuración del taller en un archivo JSON local
 
 const fs = require('fs');
 const path = require('path');
@@ -42,7 +40,7 @@ const getConfig = () => {
       return { ...DEFAULT_CONFIG, ...JSON.parse(data) };
     }
   } catch {
-    // si el archivo está corrupto devolver default
+    // si el archivo está corrupto devolvemos la configuración por defecto
   }
   return DEFAULT_CONFIG;
 };

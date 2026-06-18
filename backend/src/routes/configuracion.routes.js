@@ -1,6 +1,4 @@
-// ============================================================================
-// RUTAS DE CONFIGURACIÓN DEL TALLER
-// ============================================================================
+// Rutas de configuración del taller
 
 const express = require('express');
 const router = express.Router();

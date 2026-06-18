@@ -1,6 +1,4 @@
-// ============================================================================
-// CONTROLADOR DE CONFIGURACIÓN DEL TALLER
-// ============================================================================
+// Controlador de la configuración del taller (nombre, horarios, etc.)
 
 const configuracionService = require('../services/configuracionService');
 const { success, error } = require('../utils/responses');

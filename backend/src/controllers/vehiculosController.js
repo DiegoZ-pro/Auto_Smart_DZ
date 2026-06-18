@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE VEHÍCULOS
-// ============================================================================
+// Controlador de vehículos
 
 const vehiculosService = require('../services/vehiculosService');
 const { success, error, notFound } = require('../utils/responses');
 
-/**
- * GET /api/vehiculos
- * Obtener todos los vehículos
- */
+// GET /api/vehiculos — lista vehículos activos con filtros opcionales
 const getAllVehiculos = async (req, res, next) => {
   try {
     const filters = {
@@ -25,10 +20,7 @@ const getAllVehiculos = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/vehiculos/search?q=
- * Buscar vehículos
- */
+// GET /api/vehiculos/search?q= — busca por placa, marca o modelo
 const searchVehiculos = async (req, res, next) => {
   try {
     const { q } = req.query;
@@ -45,10 +37,7 @@ const searchVehiculos = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/vehiculos/marcas
- * Obtener marcas únicas
- */
+// GET /api/vehiculos/marcas — marcas únicas para filtros desplegables
 const getMarcas = async (req, res, next) => {
   try {
     const marcas = await vehiculosService.getMarcas();
@@ -59,10 +48,7 @@ const getMarcas = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/vehiculos/:id
- * Obtener vehículo por ID
- */
+// GET /api/vehiculos/:id — devuelve un vehículo con datos del cliente y combustible
 const getVehiculoById = async (req, res, next) => {
   try {
     const vehiculoId = parseInt(req.params.id);
@@ -78,10 +64,7 @@ const getVehiculoById = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/vehiculos/placa/:placa
- * Buscar vehículo por placa
- */
+// GET /api/vehiculos/placa/:placa — busca un vehículo por su número de placa
 const getVehiculoByPlaca = async (req, res, next) => {
   try {
     const { placa } = req.params;
@@ -98,10 +81,7 @@ const getVehiculoByPlaca = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/vehiculos
- * Crear vehículo
- */
+// POST /api/vehiculos — registra un nuevo vehículo
 const createVehiculo = async (req, res, next) => {
   try {
     const vehiculoData = req.body;
@@ -117,10 +97,7 @@ const createVehiculo = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/vehiculos/:id
- * Actualizar vehículo
- */
+// PUT /api/vehiculos/:id — actualiza datos del vehículo
 const updateVehiculo = async (req, res, next) => {
   try {
     const vehiculoId = parseInt(req.params.id);
@@ -140,10 +117,7 @@ const updateVehiculo = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE /api/vehiculos/:id
- * Eliminar vehículo (soft delete)
- */
+// DELETE /api/vehiculos/:id — desactiva el vehículo sin borrarlo de la BD
 const deleteVehiculo = async (req, res, next) => {
   try {
     const vehiculoId = parseInt(req.params.id);
@@ -156,10 +130,7 @@ const deleteVehiculo = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/vehiculos/:id/historial
- * Obtener historial de órdenes de un vehículo
- */
+// GET /api/vehiculos/:id/historial — órdenes de trabajo anteriores del vehículo
 const getHistorialVehiculo = async (req, res, next) => {
   try {
     const vehiculoId = parseInt(req.params.id);

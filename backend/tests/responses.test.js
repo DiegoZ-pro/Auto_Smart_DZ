@@ -1,8 +1,8 @@
-// tests de utilidades de respuestas HTTP
+// Tests de las utilidades de respuesta HTTP
 
 const responses = require('../src/utils/responses');
 
-// mock de objeto res de Express
+// Simula el objeto res de Express
 const mockRes = () => {
   const res = {};
   res.status = jest.fn().mockReturnValue(res);

@@ -1,6 +1,4 @@
-// ============================================================================
-// PÁGINA DE LOGIN
-// ============================================================================
+// Página de login
 
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
@@ -42,11 +40,9 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    // Limpiar errores previos
     setSubmitError('');
     setErrors({});
-    
-    // Validar formulario
+
     const validation = validateLoginForm(formData.email, formData.password);
     
     if (!validation.isValid) {

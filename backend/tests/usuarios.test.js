@@ -1,4 +1,4 @@
-// tests del modulo de usuarios
+// Tests del módulo de usuarios
 
 const bcrypt = require('bcryptjs');
 
@@ -30,7 +30,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de getAllUsers
+// Tests de listar usuarios
 describe('usuariosService.getAllUsers', () => {
   test('retorna todos los usuarios sin filtros', async () => {
     query.mockResolvedValueOnce([mockUser, { ...mockUser, id: 2 }]);
@@ -80,7 +80,7 @@ describe('usuariosService.getAllUsers', () => {
   });
 });
 
-// tests de getUserById
+// Tests de obtener usuario por ID
 describe('usuariosService.getUserById', () => {
   test('retorna el usuario correcto', async () => {
     query.mockResolvedValueOnce([mockUser]);
@@ -100,7 +100,7 @@ describe('usuariosService.getUserById', () => {
   });
 });
 
-// tests de createUser
+// Tests de crear usuario
 describe('usuariosService.createUser', () => {
   test('crea usuario correctamente', async () => {
     bcrypt.hash.mockResolvedValueOnce('$2a$10$hashdetest');
@@ -134,7 +134,7 @@ describe('usuariosService.createUser', () => {
   });
 });
 
-// tests de updateUser
+// Tests de actualizar usuario
 describe('usuariosService.updateUser', () => {
   test('actualiza nombre y telefono', async () => {
     query
@@ -173,7 +173,7 @@ describe('usuariosService.updateUser', () => {
   });
 });
 
-// tests de deleteUser
+// Tests de desactivar usuario
 describe('usuariosService.deleteUser', () => {
   test('cambia el estado del usuario a inactivo', async () => {
     query
@@ -197,7 +197,7 @@ describe('usuariosService.deleteUser', () => {
   });
 });
 
-// tests de changeUserStatus
+// Tests de cambiar estado del usuario
 describe('usuariosService.changeUserStatus', () => {
   test('cambia el estado y retorna usuario actualizado', async () => {
     query
@@ -212,7 +212,7 @@ describe('usuariosService.changeUserStatus', () => {
   });
 });
 
-// tests de getUserStats
+// Tests de estadísticas de usuarios
 describe('usuariosService.getUserStats', () => {
   test('retorna estadisticas de usuarios', async () => {
     query.mockResolvedValueOnce([{

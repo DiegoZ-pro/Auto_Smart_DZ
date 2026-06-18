@@ -1,6 +1,4 @@
-// ============================================================================
-// FOOTER - COMPONENTE PRINCIPAL
-// ============================================================================
+// Footer del sitio público — también se oculta para admin y mecánico
 
 import { Link } from 'react-router-dom';
 import { Facebook, Instagram, Youtube, MapPin, Phone, Mail, Clock } from 'lucide-react';
@@ -10,7 +8,7 @@ import styles from './Footer.module.css';
 const Footer = () => {
   const { user } = useAuth();
 
-  // NO mostrar Footer si el usuario es admin o mecánico
+  // El área de taller tiene su propio layout sin footer
   if (user && (user.rol === 'admin' || user.rol === 'mecanico')) {
     return null;
   }
@@ -18,7 +16,6 @@ const Footer = () => {
   return (
     <footer className={styles.footer}>
       <div className={styles.container}>
-        {/* Columna 1: Logo y descripción */}
         <div className={styles.column}>
           <div className={styles.logo}>
             <span className={styles.logoText}>AUTO</span>
@@ -58,7 +55,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Columna 2: Enlaces Rápidos */}
         <div className={styles.column}>
           <h3 className={styles.columnTitle}>Enlaces Rápidos</h3>
           <ul className={styles.linkList}>
@@ -80,7 +76,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Columna 3: Contacto Principal */}
         <div className={styles.column}>
           <h3 className={styles.columnTitle}>Contacto Principal</h3>
           <ul className={styles.contactList}>
@@ -106,7 +101,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Columna 4: Horario de Atención */}
         <div className={styles.column}>
           <h3 className={styles.columnTitle}>
             <Clock size={20} className={styles.titleIcon} />
@@ -129,7 +123,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Copyright Bar */}
       <div className={styles.copyright}>
         <p>© {new Date().getFullYear()} AutoSmart. Todos los derechos reservados.</p>
         <Link to="/terminos-condiciones" className={styles.termsLink}>

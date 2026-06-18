@@ -1,6 +1,4 @@
-// ============================================================================
-// CONTROLADOR DE CHAT IA
-// ============================================================================
+// Controlador del chat con AutoBot IA
 
 const { chat } = require('../services/chatService');
 const { success } = require('../utils/responses');

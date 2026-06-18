@@ -1,6 +1,4 @@
-// ============================================================================
-// COMPONENTE BUTTON - Botón reutilizable
-// ============================================================================
+// Botón reutilizable con soporte para variantes, loading e íconos
 
 import styles from './Button.module.css';
 

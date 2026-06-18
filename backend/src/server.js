@@ -1,6 +1,4 @@
-// ============================================================================
-// SERVIDOR PRINCIPAL - AUTOSMART BACKEND
-// ============================================================================
+// Servidor principal de AutoSmart
 
 const express = require('express');
 const helmet = require('helmet');
@@ -13,19 +11,12 @@ const { testConnection } = require('./config/database');
 const { errorHandler, notFound } = require('./middlewares/errorHandler');
 const routes = require('./routes');
 
-// Crear aplicación Express
 const app = express();
 
-// ============================================================================
-// CONFIGURACIÓN DE MIDDLEWARES
-// ============================================================================
-
-// Seguridad con Helmet
+// Cabeceras de seguridad HTTP
 app.use(helmet());
 
-// ============================================================================
-// CORS CONFIGURATION - Permite frontend desde localhost e IP local
-// ============================================================================
+// Configuración de CORS para permitir el frontend desde localhost e IP local
 const cors = require('cors');
 
 app.use(cors({
@@ -51,28 +42,28 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 
-// Body parser DESPUÉS de CORS
+// Body parser siempre después de CORS
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Parser de JSON
+// Límite de tamaño del body para no saturar el servidor
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
-// Compresión de respuestas
+// Comprime las respuestas para que pesen menos
 app.use(compression());
 
-// Logging de peticiones (solo en desarrollo)
+// Logs de requests en consola
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 } else {
   app.use(morgan('combined'));
 }
 
-// Rate Limiting - Limitar peticiones por IP
+// Limita las peticiones por IP para evitar abuso
 const limiter = rateLimit({
-  windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000, // 15 minutos
-  max: process.env.RATE_LIMIT_MAX || 100, // 100 requests por ventana
+  windowMs: (process.env.RATE_LIMIT_WINDOW || 15) * 60 * 1000,
+  max: process.env.RATE_LIMIT_MAX || 100,
   message: {
     success: false,
     message: 'Demasiadas peticiones desde esta IP, intenta de nuevo más tarde'
@@ -81,17 +72,13 @@ const limiter = rateLimit({
   legacyHeaders: false
 });
 
-// Aplicar rate limiting a todas las rutas excepto health
+// Aplica el rate limiting solo a la API
 app.use('/api', limiter);
 
-// Servir archivos estáticos (uploads)
+// Sirve los archivos subidos directamente desde la carpeta uploads
 app.use('/uploads', express.static('uploads'));
 
-// ============================================================================
-// RUTAS
-// ============================================================================
-
-// Ruta raíz
+// Ruta de info básica en la raíz
 app.get('/', (req, res) => {
   res.json({
     success: true,
@@ -102,28 +89,20 @@ app.get('/', (req, res) => {
   });
 });
 
-// Rutas de la API
+// Todas las rutas de la API
 app.use('/api', routes);
 
-// ============================================================================
-// MANEJO DE ERRORES
-// ============================================================================
-
-// Ruta no encontrada (404)
+// Ruta no encontrada
 app.use(notFound);
 
-// Manejador global de errores
+// Manejador global de errores (siempre va al final)
 app.use(errorHandler);
-
-// ============================================================================
-// INICIAR SERVIDOR
-// ============================================================================
 
 const PORT = process.env.PORT || 5001;
 
 const startServer = async () => {
   try {
-    // Probar conexión a la base de datos
+    // Primero verifica que la base de datos esté disponible
     const dbConnected = await testConnection();
 
     if (!dbConnected) {
@@ -132,7 +111,6 @@ const startServer = async () => {
       process.exit(1);
     }
 
-    // Iniciar servidor
     app.listen(PORT, () => {
       console.log('\n' + '='.repeat(60));
       console.log('AutoSmart Backend - Sistema de Gestión de Talleres');
@@ -150,7 +128,7 @@ const startServer = async () => {
   }
 };
 
-// Manejar errores no capturados
+// Si hay una promesa rechazada sin catch, se cierra el servidor limpiamente
 process.on('unhandledRejection', (err) => {
   console.error('Error no manejado:', err);
   console.error('Cerrando servidor...');
@@ -163,7 +141,6 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-// Iniciar servidor
 startServer();
 
 module.exports = app;

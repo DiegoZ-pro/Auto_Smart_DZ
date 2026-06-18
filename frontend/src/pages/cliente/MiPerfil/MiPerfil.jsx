@@ -1,6 +1,4 @@
-// ============================================================================
-// MI PERFIL - DASHBOARD DEL CLIENTE
-// ============================================================================
+// Dashboard del perfil del cliente — ver órdenes, citas, cotizaciones y editar datos
 
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -22,7 +20,7 @@ import citasService from '../../../services/citasService';
 import styles from './MiPerfil.module.css';
 import { cotizacionesService } from '../../../services/cotizacionesService';
 
-// ─── configuración de badges de cotización ────────────────────────────────────
+// Colores y etiquetas de los badges de estado de cotización
 const COT_ESTADOS = {
   borrador:  { label: 'Borrador',  bg: '#f1f5f9', color: '#64748b' },
   enviada:   { label: 'Enviada',   bg: '#eff6ff', color: '#2563eb' },
@@ -105,9 +103,7 @@ const MiPerfil = () => {
   const [citasFilter, setCitasFilter] = useState('todas');
   const [ordenesFilter, setOrdenesFilter] = useState('todas');
 
-  // ============================================================================
-  // HELPERS
-  // ============================================================================
+  // Helpers de formato y parsing
 
   const parseMotivo = (motivo) => {
     try {
@@ -192,9 +188,7 @@ const MiPerfil = () => {
   );
 };
 
-  // ============================================================================
-  // EFFECTS
-  // ============================================================================
+  // Effects de carga inicial
 
   useEffect(() => {
     if (!user) navigate('/login');
@@ -322,9 +316,7 @@ const MiPerfil = () => {
     });
   };
 
-  // ============================================================================
-  // MODALES
-  // ============================================================================
+  // Funciones para abrir y cerrar los modales de detalle
 
   const handleOpenCitaModal  = (cita)  => { setSelectedCita(cita);   setShowCitaModal(true);  };
   const handleCloseCitaModal = ()      => { setSelectedCita(null);   setShowCitaModal(false); };
@@ -446,9 +438,7 @@ const handleRechazarCotizacion = (orden) => {
   setShowConfirmModal(true);
 };
 
-  // ============================================================================
-  // FORMATO
-  // ============================================================================
+  // Helpers para formatear moneda y fechas en los textos de la UI
 
   const formatCurrency = (amount) => `Bs. ${parseFloat(amount || 0).toFixed(2)}`;
 
@@ -480,9 +470,7 @@ const handleRechazarCotizacion = (orden) => {
     );
   };
 
-  // ============================================================================
-  // RENDER TABS
-  // ============================================================================
+  // Renderiza el contenido de la pestaña activa
 
   const renderTabContent = () => {
     switch (activeTab) {

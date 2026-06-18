@@ -1,8 +1,8 @@
-// tests del modulo de autenticacion
+// Tests del módulo de autenticación
 
 const bcrypt = require('bcryptjs');
 
-// mocks
+// Mocks necesarios para no tocar la BD ni los tokens reales
 jest.mock('bcryptjs');
 jest.mock('../src/config/database', () => ({
   query: jest.fn(),
@@ -17,7 +17,7 @@ const { query, transaction } = require('../src/config/database');
 const { generateTokens, verifyAccessToken } = require('../src/utils/jwt');
 const authService = require('../src/services/authService');
 
-// constantes que se reutilizan
+// Hash falso que se usa en varios tests
 const HASH = '$2a$10$hashedpassword';
 
 const mockTokens = {
@@ -25,7 +25,7 @@ const mockTokens = {
   refreshToken: 'mock.refresh.token',
 };
 
-// mocks de usuario nuevo
+// Genera un usuario de prueba limpio para cada test que lo necesite
 const freshUser = () => ({
   id: 1,
   email: 'juan@example.com',
@@ -42,7 +42,7 @@ beforeEach(() => {
   generateTokens.mockReturnValue(mockTokens);
 });
 
-// tests de login
+// Tests del login
 describe('authService.login', () => {
   test('login exitoso con credenciales válidas', async () => {
     query.mockResolvedValueOnce([freshUser()]);
@@ -52,7 +52,7 @@ describe('authService.login', () => {
     const result = await authService.login('juan@example.com', 'password123');
 
     expect(query).toHaveBeenCalledTimes(2);
-    // se usa HASH directo porque el servicio elimina el password_hash
+    // El servicio borra password_hash antes de devolver el usuario, así que usamos HASH para la comparación
     expect(bcrypt.compare).toHaveBeenCalledWith('password123', HASH);
     expect(generateTokens).toHaveBeenCalledWith(1, 'juan@example.com', 'cliente');
     expect(result).toHaveProperty('tokens', mockTokens);
@@ -89,7 +89,7 @@ describe('authService.login', () => {
   });
 });
 
-// tests de registro
+// Tests del registro
 describe('authService.register', () => {
   const setupRegisterMocks = () => {
     query.mockResolvedValueOnce([]); // email no existe
@@ -134,7 +134,7 @@ describe('authService.register', () => {
   });
 });
 
-// tests de logout
+// Tests del logout
 describe('authService.logout', () => {
   test('elimina el refresh token', async () => {
     query.mockResolvedValueOnce({ affectedRows: 1 });
@@ -149,7 +149,7 @@ describe('authService.logout', () => {
   });
 });
 
-// tests de cambio de contraseña
+// Tests del cambio de contraseña
 describe('authService.changePassword', () => {
   test('cambio de contraseña correcto', async () => {
     query.mockResolvedValueOnce([{ password_hash: '$2a$10$oldhash' }]);
@@ -173,7 +173,7 @@ describe('authService.changePassword', () => {
   });
 });
 
-// tests del middleware authenticate
+// Tests del middleware authenticate
 describe('Middleware authenticate', () => {
   const { authenticate } = require('../src/middlewares/auth');
 

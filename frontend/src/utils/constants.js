@@ -1,6 +1,4 @@
-// ============================================================================
-// CONSTANTES GLOBALES
-// ============================================================================
+// Constantes globales usadas en toda la aplicación
 
 export const ROLES = {
   ADMIN: 'admin',
@@ -50,19 +48,14 @@ export const ESTADOS_CITA = {
 };
 
 export const RUTAS = {
-  // Rutas públicas
   HOME: '/',
   LOGIN: '/login',
   REGISTER: '/register',
   NOTICIAS: '/noticias',
-
-  // Rutas de cliente
   AGENDAR_CITA: '/agendar-cita',
   MI_PERFIL: '/mi-perfil',
   MIS_VEHICULOS: '/mis-vehiculos',
   MIS_ORDENES: '/mis-ordenes',
-
-  // Rutas de taller (Admin/Mecánico)
   DASHBOARD: '/dashboard',
   RECEPCION_VEHICULO: '/recepcion-vehiculo',
   RECEPCION_LABORATORIO: '/recepcion-laboratorio',

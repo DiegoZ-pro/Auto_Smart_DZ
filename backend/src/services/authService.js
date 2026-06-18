@@ -1,16 +1,12 @@
-// ============================================================================
-// SERVICIO DE AUTENTICACIÓN
-// ============================================================================
+// Lógica de autenticación: registro, login, tokens y contraseñas
 
 const bcrypt = require('bcryptjs');
 const { query, transaction } = require('../config/database');
 const { generateTokens } = require('../utils/jwt');
 
-/**
- * Registrar nuevo usuario (solo clientes pueden auto-registrarse)
- */
+// Registra un nuevo cliente y devuelve sus tokens
 const register = async (email, password, nombreCompleto, telefono) => {
-  // Verificar si el email ya existe
+  // Verifica que el email no esté en uso
   const existingUser = await query(
     'SELECT id FROM usuarios WHERE email = ?',
     [email]
@@ -20,10 +16,9 @@ const register = async (email, password, nombreCompleto, telefono) => {
     throw new Error('El email ya está registrado');
   }
 
-  // Hash de la contraseña
   const passwordHash = await bcrypt.hash(password, 10);
 
-  // Obtener ID del rol "cliente"
+  // Obtiene el id del rol cliente para asignarlo al nuevo usuario
   const [roleResult] = await query(
     'SELECT id_rol FROM roles WHERE rol = ?',
     ['cliente']
@@ -33,9 +28,7 @@ const register = async (email, password, nombreCompleto, telefono) => {
     throw new Error('Error al obtener rol de cliente');
   }
 
-  // Iniciar transacción
   const result = await transaction(async (connection) => {
-    // Insertar usuario
     const [userResult] = await connection.execute(
       `INSERT INTO usuarios (email, password_hash, nombre_completo, telefono, rol_id, estado_id) 
        VALUES (?, ?, ?, ?, ?, 1)`,
@@ -44,8 +37,8 @@ const register = async (email, password, nombreCompleto, telefono) => {
 
     const userId = userResult.insertId;
 
-    // El trigger creará automáticamente el registro en clientes
-    // Pero vamos a asegurarnos de que tenga los datos correctos
+    // El trigger de MySQL crea el registro en clientes automáticamente,
+    // pero hay que actualizar el teléfono y email que no se pasan en el trigger
     await connection.execute(
       `UPDATE clientes SET telefono = ?, email = ? WHERE usuario_id = ?`,
       [telefono, email, userId]
@@ -54,16 +47,15 @@ const register = async (email, password, nombreCompleto, telefono) => {
     return userId;
   });
 
-  // Generar tokens
   const tokens = generateTokens(result, email, 'cliente');
 
-  // Guardar refresh token en BD
+  // Guarda el refresh token en BD para poder validarlo después
   await query(
     'UPDATE usuarios SET refresh_token = ? WHERE id = ?',
     [tokens.refreshToken, result]
   );
 
-  // Obtener datos del usuario
+  // Devuelve los datos del usuario recién creado
   const [user] = await query(
     `SELECT u.id, u.email, u.nombre_completo, u.telefono, r.rol
      FROM usuarios u
@@ -78,11 +70,8 @@ const register = async (email, password, nombreCompleto, telefono) => {
   };
 };
 
-/**
- * Iniciar sesión
- */
+// Verifica credenciales y devuelve los tokens si son correctas
 const login = async (email, password) => {
-  // Buscar usuario por email
   const [user] = await query(
     `SELECT u.*, r.rol, eu.estado
      FROM usuarios u
@@ -96,7 +85,7 @@ const login = async (email, password) => {
     throw new Error('Credenciales inválidas');
   }
 
-  // Verificar estado del usuario
+  // No se puede loguear si está bloqueado o inactivo
   if (user.estado === 'bloqueado') {
     throw new Error('Usuario bloqueado. Contacte al administrador');
   }
@@ -105,23 +94,21 @@ const login = async (email, password) => {
     throw new Error('Usuario inactivo. Contacte al administrador');
   }
 
-  // Verificar contraseña
   const isValidPassword = await bcrypt.compare(password, user.password_hash);
 
   if (!isValidPassword) {
     throw new Error('Credenciales inválidas');
   }
 
-  // Generar tokens
   const tokens = generateTokens(user.id, user.email, user.rol);
 
-  // Guardar refresh token y actualizar último acceso
+  // Actualiza el refresh token y la fecha del último acceso
   await query(
     'UPDATE usuarios SET refresh_token = ?, ultimo_acceso = NOW() WHERE id = ?',
     [tokens.refreshToken, user.id]
   );
 
-  // Remover datos sensibles
+  // No se deben devolver datos sensibles al frontend
   delete user.password_hash;
   delete user.refresh_token;
 
@@ -131,11 +118,8 @@ const login = async (email, password) => {
   };
 };
 
-/**
- * Renovar access token usando refresh token
- */
+// Genera un nuevo par de tokens usando el refresh token almacenado en BD
 const refreshToken = async (refreshToken) => {
-  // Buscar usuario con ese refresh token
   const [user] = await query(
     `SELECT u.id, u.email, r.rol, eu.estado
      FROM usuarios u
@@ -149,15 +133,14 @@ const refreshToken = async (refreshToken) => {
     throw new Error('Refresh token inválido');
   }
 
-  // Verificar estado
+  // No renueva el token si el usuario fue bloqueado o desactivado
   if (user.estado !== 'activo') {
     throw new Error('Usuario no activo');
   }
 
-  // Generar nuevos tokens
   const tokens = generateTokens(user.id, user.email, user.rol);
 
-  // Actualizar refresh token en BD
+  // Reemplaza el refresh token viejo
   await query(
     'UPDATE usuarios SET refresh_token = ? WHERE id = ?',
     [tokens.refreshToken, user.id]
@@ -166,9 +149,7 @@ const refreshToken = async (refreshToken) => {
   return tokens;
 };
 
-/**
- * Cerrar sesión
- */
+// Invalida el refresh token del usuario para cerrar la sesión
 const logout = async (userId) => {
   await query(
     'UPDATE usuarios SET refresh_token = NULL WHERE id = ?',
@@ -178,11 +159,8 @@ const logout = async (userId) => {
   return true;
 };
 
-/**
- * Cambiar contraseña
- */
+// Verifica la contraseña actual y la reemplaza si es correcta
 const changePassword = async (userId, oldPassword, newPassword) => {
-  // Obtener usuario
   const [user] = await query(
     'SELECT password_hash FROM usuarios WHERE id = ?',
     [userId]
@@ -192,17 +170,14 @@ const changePassword = async (userId, oldPassword, newPassword) => {
     throw new Error('Usuario no encontrado');
   }
 
-  // Verificar contraseña actual
   const isValidPassword = await bcrypt.compare(oldPassword, user.password_hash);
 
   if (!isValidPassword) {
     throw new Error('Contraseña actual incorrecta');
   }
 
-  // Hash de la nueva contraseña
   const newPasswordHash = await bcrypt.hash(newPassword, 10);
 
-  // Actualizar contraseña
   await query(
     'UPDATE usuarios SET password_hash = ? WHERE id = ?',
     [newPasswordHash, userId]

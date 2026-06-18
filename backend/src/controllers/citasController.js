@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE CITAS
-// ============================================================================
+// Controlador de citas
 
 const citasService = require('../services/citasService');
 const { success, error, notFound } = require('../utils/responses');
 
-/**
- * GET /api/citas
- * Obtener todas las citas
- */
+// GET /api/citas — lista todas las citas con filtros opcionales
 const getAllCitas = async (req, res, next) => {
   try {
     const filters = {
@@ -27,10 +22,7 @@ const getAllCitas = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/citas/horarios-disponibles
- * Obtener horarios disponibles para una fecha
- */
+// GET /api/citas/horarios-disponibles — horarios libres para agendar en una fecha
 const getHorariosDisponibles = async (req, res, next) => {
   try {
     const { fecha } = req.query;
@@ -47,10 +39,7 @@ const getHorariosDisponibles = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/citas/estadisticas
- * Obtener estadísticas de citas
- */
+// GET /api/citas/estadisticas — resumen de citas por estado en un rango de fechas
 const getEstadisticas = async (req, res, next) => {
   try {
     const fechaInicio = req.query.fecha_inicio || new Date(new Date().setDate(1)).toISOString().split('T')[0];
@@ -64,10 +53,7 @@ const getEstadisticas = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/citas/:id
- * Obtener cita por ID
- */
+// GET /api/citas/:id — obtiene una cita por su ID
 const getCitaById = async (req, res, next) => {
   try {
     const citaId = parseInt(req.params.id);
@@ -83,10 +69,7 @@ const getCitaById = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/citas/cliente/:clienteId
- * Obtener citas de un cliente
- */
+// GET /api/citas/cliente/:clienteId — citas asociadas a un cliente
 const getCitasByCliente = async (req, res, next) => {
   try {
     const clienteId = parseInt(req.params.clienteId);
@@ -99,15 +82,11 @@ const getCitasByCliente = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/citas
- * Crear nueva cita
- * MODIFICADO: Ahora pasa req.user.id al servicio para obtener cliente_id automáticamente
- */
+// POST /api/citas — crea una nueva cita, el cliente_id se obtiene del token
 const createCita = async (req, res, next) => {
   try {
     const citaData = req.body;
-    const usuarioId = req.user.id;  // ✅ Del middleware authenticate
+    const usuarioId = req.user.id;
 
     const citaId = await citasService.createCita(citaData, usuarioId);
 
@@ -125,10 +104,7 @@ const createCita = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/citas/:id
- * Actualizar cita
- */
+// PUT /api/citas/:id — actualiza datos de una cita existente
 const updateCita = async (req, res, next) => {
   try {
     const citaId = parseInt(req.params.id);
@@ -148,10 +124,7 @@ const updateCita = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/citas/:id/confirmar
- * Confirmar cita
- */
+// PUT /api/citas/:id/confirmar — confirma la cita
 const confirmarCita = async (req, res, next) => {
   try {
     const citaId = parseInt(req.params.id);
@@ -167,10 +140,7 @@ const confirmarCita = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/citas/:id/cancelar
- * Cancelar cita
- */
+// PUT /api/citas/:id/cancelar — cancela la cita
 const cancelarCita = async (req, res, next) => {
   try {
     const citaId = parseInt(req.params.id);
@@ -186,10 +156,7 @@ const cancelarCita = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/citas/:id/completar
- * Completar cita
- */
+// PUT /api/citas/:id/completar — marca la cita como completada
 const completarCita = async (req, res, next) => {
   try {
     const citaId = parseInt(req.params.id);

@@ -1,14 +1,11 @@
-// ============================================================================
-// SERVICIO DE CHAT IA - AutoBot con Ollama
-// Consulta la BD por rol y llama a Ollama para generar respuestas contextuales
-// ============================================================================
+// Servicio del chatbot AutoBot — consulta la BD según el rol y llama a Ollama
 
 const { query } = require('../config/database');
 
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 const OLLAMA_MODEL = process.env.OLLAMA_MODEL || 'llama3.2';
 
-// ─── Contexto por rol ────────────────────────────────────────────────────────
+// Funciones que arman el contexto personalizado según el rol del usuario
 
 const getClienteContext = async (userId) => {
   const rows = await query('SELECT id, nombre_completo FROM clientes WHERE usuario_id = ?', [userId]);
@@ -142,7 +139,7 @@ const getAdminContext = async (userId) => {
      ORDER BY ordenes_activas DESC`
   );
 
-  // Órdenes activas con detalle completo para que el admin pueda consultarlas
+  // Lista de órdenes activas con todo el detalle para que el admin pueda consultarlas
   const ordenesActivas = await query(
     `SELECT ot.numero_orden, eo.estado, p.prioridad, p.nivel as prioridad_nivel,
             ot.descripcion_problema, ot.fecha_recepcion, ot.fecha_entrega_estimada,
@@ -165,7 +162,7 @@ const getAdminContext = async (userId) => {
   return { usuario, stats, citasStats, cotizacionesStats, mecanicos, ordenesActivas };
 };
 
-// ─── Construcción del system prompt ─────────────────────────────────────────
+// Arma el system prompt con los datos del usuario para que el modelo tenga contexto
 
 const fmt = (date) => date ? new Date(date).toLocaleDateString('es-ES') : 'Por definir';
 const fmtMoney = (val) => val != null ? `Bs. ${Number(val).toFixed(2)}` : 'Por definir';
@@ -286,7 +283,7 @@ INSTRUCCIONES:
   return `Eres AutoBot, el asistente de AutoSmart. Responde siempre en español. IMPORTANTE: No inventes datos del sistema — si no tienes información específica, dilo claramente.`;
 };
 
-// ─── Función principal ───────────────────────────────────────────────────────
+// Función principal que orquesta el contexto y llama al modelo de Ollama
 
 const chat = async (userId, rol, message, history = []) => {
   let context = null;
@@ -309,7 +306,7 @@ const chat = async (userId, rol, message, history = []) => {
 
   const systemPrompt = buildSystemPrompt(rol, nombre, context);
 
-  // Log del contexto enviado al modelo (visible en la consola del backend)
+  // Muestra en consola un preview del prompt para debug
   console.log(`\n[AutoBot] rol=${rol} usuario=${nombre}`);
   console.log('[AutoBot] System prompt preview:\n' + systemPrompt.slice(0, 400) + '...\n');
 

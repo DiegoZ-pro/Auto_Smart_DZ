@@ -4,7 +4,7 @@ import config from '../config/config';
 
 const IA_URL = import.meta.env.VITE_IA_URL || 'http://localhost:8000';
 
-// helper interno — equivalente a api.js pero apuntando al microservicio
+// Equivalente a api.js pero apuntando al microservicio de IA
 const fetchIA = async (endpoint, options = {}) => {
   const token = localStorage.getItem(config.storageKeys.accessToken);
 
@@ -16,7 +16,7 @@ const fetchIA = async (endpoint, options = {}) => {
     },
   });
 
-  // token expirado — mismo comportamiento que api.js
+  // Si el token expiró, limpia el storage y redirige al login igual que api.js
   if (response.status === 401) {
     localStorage.removeItem(config.storageKeys.accessToken);
     localStorage.removeItem(config.storageKeys.refreshToken);
@@ -34,15 +34,8 @@ const fetchIA = async (endpoint, options = {}) => {
   return data;
 };
 
-// ============================================================================
-// API pública del servicio
-// ============================================================================
-
 const iaService = {
-  /**
-   * verifica que el microservicio esté disponible
-   * @returns {Promise<boolean>}
-   */
+  // Verifica que el microservicio de IA esté respondiendo
   verificarConexion: async () => {
     try {
       const resp = await fetch(`${IA_URL}/health`, { method: 'GET' });
@@ -52,18 +45,7 @@ const iaService = {
     }
   },
 
-  /**
-   * analiza una imagen de pieza automotriz
-   * @param {File} archivo — imagen JPG/PNG/WEBP de la pieza
-   * @returns {Promise<{
-   *   success: boolean,
-   *   estado: 'defectuosa'|'buena'|'no_detectada',
-   *   total: number,
-   *   detecciones: Array,
-   *   imagen_anotada: string,
-   *   meta: object
-   * }>}
-   */
+  // Envía una imagen al modelo y devuelve el resultado del análisis
   analizarPieza: async (archivo) => {
     const form = new FormData();
     form.append('imagen', archivo);

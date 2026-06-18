@@ -1,12 +1,8 @@
-// ============================================================================
-// SERVICIO DE VEHÍCULOS
-// ============================================================================
+// Servicio de vehículos
 
 const { query } = require('../config/database');
 
-/**
- * Obtener todos los vehículos
- */
+// Lista vehículos activos con filtros opcionales
 const getAllVehiculos = async (filters = {}) => {
   let sql = `
     SELECT v.*, 
@@ -43,9 +39,7 @@ const getAllVehiculos = async (filters = {}) => {
   return vehiculos;
 };
 
-/**
- * Obtener vehículo por ID
- */
+// Devuelve un vehículo por su ID con datos del cliente y combustible
 const getVehiculoById = async (vehiculoId) => {
   const [vehiculo] = await query(
     `SELECT v.*, 
@@ -67,9 +61,7 @@ const getVehiculoById = async (vehiculoId) => {
   return vehiculo;
 };
 
-/**
- * Buscar vehículo por placa
- */
+// Busca un vehículo activo por su número de placa
 const getVehiculoByPlaca = async (placa) => {
   const [vehiculo] = await query(
     `SELECT v.*, 
@@ -85,9 +77,7 @@ const getVehiculoByPlaca = async (placa) => {
   return vehiculo;
 };
 
-/**
- * Crear vehículo
- */
+// Registra un nuevo vehículo verificando que la placa no exista
 const createVehiculo = async (vehiculoData) => {
   const {
     cliente_id,
@@ -102,7 +92,7 @@ const createVehiculo = async (vehiculoData) => {
     observaciones
   } = vehiculoData;
 
-  // Verificar si ya existe un vehículo con esa placa
+  // Verifica la placa solo si se provee una
   if (placa) {
     const existente = await getVehiculoByPlaca(placa);
     if (existente) {
@@ -134,9 +124,7 @@ const createVehiculo = async (vehiculoData) => {
   return await getVehiculoById(vehiculoId);
 };
 
-/**
- * Actualizar vehículo
- */
+// Actualiza los campos del vehículo que vengan en vehiculoData
 const updateVehiculo = async (vehiculoId, vehiculoData) => {
   const {
     marca,
@@ -169,7 +157,7 @@ const updateVehiculo = async (vehiculoId, vehiculoData) => {
   }
 
   if (placa !== undefined) {
-    // Verificar que no exista otro vehículo con esa placa
+    // Si se cambia la placa, verifica que no pertenezca a otro vehículo
     if (placa) {
       const existente = await getVehiculoByPlaca(placa);
       if (existente && existente.id !== vehiculoId) {
@@ -219,9 +207,7 @@ const updateVehiculo = async (vehiculoId, vehiculoData) => {
   return await getVehiculoById(vehiculoId);
 };
 
-/**
- * Eliminar vehículo (soft delete)
- */
+// Desactiva el vehículo sin borrarlo de la BD (soft delete)
 const deleteVehiculo = async (vehiculoId) => {
   await query(
     'UPDATE vehiculos SET activo = FALSE WHERE id = ?',
@@ -231,9 +217,7 @@ const deleteVehiculo = async (vehiculoId) => {
   return true;
 };
 
-/**
- * Obtener historial de órdenes de un vehículo
- */
+// Historial de órdenes de trabajo de un vehículo
 const getHistorialVehiculo = async (vehiculoId) => {
   const ordenes = await query(
     `SELECT ot.*, 
@@ -252,9 +236,7 @@ const getHistorialVehiculo = async (vehiculoId) => {
   return ordenes;
 };
 
-/**
- * Buscar vehículos
- */
+// Busca vehículos por placa, marca, modelo o VIN
 const searchVehiculos = async (searchTerm) => {
   const vehiculos = await query(
     `SELECT v.id, v.marca, v.modelo, v.placa, v.anio,
@@ -270,9 +252,7 @@ const searchVehiculos = async (searchTerm) => {
   return vehiculos;
 };
 
-/**
- * Obtener marcas únicas
- */
+// Devuelve la lista de marcas únicas para los filtros del frontend
 const getMarcas = async () => {
   const marcas = await query(
     `SELECT DISTINCT marca 

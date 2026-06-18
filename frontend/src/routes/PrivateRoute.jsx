@@ -1,6 +1,4 @@
-// ============================================================================
-// PRIVATE ROUTE - Protección de rutas autenticadas
-// ============================================================================
+// Protege rutas que requieren autenticación y roles específicos
 
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
@@ -8,7 +6,7 @@ import { useAuth } from '../context/AuthContext';
 const PrivateRoute = ({ children, allowedRoles = [] }) => {
   const { user, loading } = useAuth();
 
-  // Mostrar loading mientras se verifica autenticación
+  // Muestra un spinner mientras se restaura la sesión
   if (loading) {
     return (
       <div style={{
@@ -28,12 +26,12 @@ const PrivateRoute = ({ children, allowedRoles = [] }) => {
     );
   }
 
-  // Si no hay usuario, redirigir a login
+  // Si no hay sesión activa, manda al login
   if (!user) {
     return <Navigate to="/login" replace />;
   }
 
-  // Si hay roles específicos permitidos, verificar
+  // Si la ruta tiene restricción de roles, redirige según el rol del usuario
   if (allowedRoles.length > 0 && !allowedRoles.includes(user.rol)) {
     if (user.rol === 'cliente') return <Navigate to="/" replace />;
     if (user.rol === 'mecanico') return <Navigate to="/taller/diagnostico-tecnico" replace />;

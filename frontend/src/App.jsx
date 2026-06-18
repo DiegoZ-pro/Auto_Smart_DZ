@@ -1,6 +1,4 @@
-// ============================================================================
-// APP PRINCIPAL - AUTOSMART
-// ============================================================================
+// Componente raíz de la aplicación
 
 import { BrowserRouter } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';

@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE USUARIOS
-// ============================================================================
+// Controlador de usuarios
 
 const usuariosService = require('../services/usuariosService');
 const { success, error, notFound } = require('../utils/responses');
 
-/**
- * GET /api/usuarios
- * Obtener todos los usuarios
- */
+// GET /api/usuarios — lista todos los usuarios con filtros opcionales
 const getAllUsers = async (req, res, next) => {
   try {
     const filters = {
@@ -25,10 +20,7 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/usuarios/:id
- * Obtener usuario por ID
- */
+// GET /api/usuarios/:id — devuelve un usuario por su ID
 const getUserById = async (req, res, next) => {
   try {
     const userId = parseInt(req.params.id);
@@ -44,10 +36,7 @@ const getUserById = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/usuarios
- * Crear nuevo usuario (solo admin)
- */
+// POST /api/usuarios — solo el admin puede crear mecánicos u otros admins
 const createUser = async (req, res, next) => {
   try {
     const userData = req.body;
@@ -64,10 +53,7 @@ const createUser = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/usuarios/:id
- * Actualizar usuario
- */
+// PUT /api/usuarios/:id — actualiza datos del usuario
 const updateUser = async (req, res, next) => {
   try {
     const userId = parseInt(req.params.id);
@@ -87,10 +73,7 @@ const updateUser = async (req, res, next) => {
   }
 };
 
-/**
- * DELETE /api/usuarios/:id
- * Eliminar usuario (soft delete)
- */
+// DELETE /api/usuarios/:id — desactiva el usuario (no lo borra realmente)
 const deleteUser = async (req, res, next) => {
   try {
     const userId = parseInt(req.params.id);
@@ -103,10 +86,7 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/usuarios/:id/estado
- * Cambiar estado de usuario
- */
+// PUT /api/usuarios/:id/estado — cambia el estado del usuario (activo, bloqueado, etc.)
 const changeUserStatus = async (req, res, next) => {
   try {
     const userId = parseInt(req.params.id);
@@ -120,10 +100,7 @@ const changeUserStatus = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/usuarios/mecanicos
- * Obtener lista de mecánicos (accesible a admin y mecánico)
- */
+// GET /api/usuarios/mecanicos — lista de mecánicos para asignar a órdenes
 const getMecanicos = async (req, res, next) => {
   try {
     const users = await usuariosService.getAllUsers({ rol_id: 2 });
@@ -133,10 +110,7 @@ const getMecanicos = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/usuarios/stats
- * Obtener estadísticas de usuarios
- */
+// GET /api/usuarios/stats — totales de usuarios por rol y estado
 const getUserStats = async (req, res, next) => {
   try {
     const stats = await usuariosService.getUserStats();

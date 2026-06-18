@@ -9,7 +9,7 @@ import { authService } from '../../../services/authService';
 import Alert from '../../../components/common/Alert/Alert';
 import styles from './MiPerfilTaller.module.css';
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// Constantes y helpers del módulo
 
 const ESTADOS_EN_PROCESO  = ['en_diagnostico', 'en_reparacion', 'esperando_repuestos'];
 const ESTADOS_COMPLETADAS = ['completado', 'entregado'];
@@ -35,7 +35,7 @@ const fmtFecha = (str) => {
   return new Date(str).toLocaleDateString('es-BO', { day: '2-digit', month: 'short', year: 'numeric' });
 };
 
-// ─── Tab: Resumen ─────────────────────────────────────────────────────────────
+// Pestaña de resumen
 
 function ResumenTab() {
   const { user } = useAuth();
@@ -141,7 +141,7 @@ function ResumenTab() {
   );
 }
 
-// ─── Tab: Datos Personales ────────────────────────────────────────────────────
+// Pestaña de datos personales
 
 function DatosPersonalesTab() {
   const { user, updateUser } = useAuth();
@@ -351,7 +351,7 @@ function DatosPersonalesTab() {
   );
 }
 
-// ─── Tab: Órdenes Asignadas ───────────────────────────────────────────────────
+// Pestaña de órdenes asignadas al mecánico
 
 function OrdenesAsignadasTab() {
   const { user } = useAuth();
@@ -487,7 +487,7 @@ function OrdenesAsignadasTab() {
   );
 }
 
-// ─── Componente principal ─────────────────────────────────────────────────────
+// Componente principal del perfil del taller
 
 const MiPerfilTaller = () => {
   const [activeTab, setActiveTab] = useState('resumen');

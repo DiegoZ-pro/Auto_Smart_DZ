@@ -1,4 +1,4 @@
-// tests del modulo de catalogos
+// Tests del módulo de catálogos
 
 jest.mock('../src/config/database', () => ({
   query: jest.fn(),
@@ -11,7 +11,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de catalogos individuales
+// Cada función de catálogo probada individualmente
 describe('catalogosService — catalogos individuales', () => {
   test('getRoles retorna lista de roles', async () => {
     const mockRoles = [
@@ -135,10 +135,10 @@ describe('catalogosService — catalogos individuales', () => {
   });
 });
 
-// tests de getAllCatalogos
+// getAllCatalogos llama a todas las funciones en paralelo con Promise.all
 describe('catalogosService.getAllCatalogos', () => {
   test('retorna todos los catalogos en paralelo', async () => {
-    // getAllCatalogos usa Promise.all con 9 queries
+    // 9 mocks porque son 9 queries en paralelo
     const mockData = [
       [{ id_rol: 1, rol: 'cliente' }],          // roles
       [{ id_estado: 1, estado: 'activo' }],      // estadosUsuario

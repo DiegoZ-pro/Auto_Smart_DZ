@@ -1,12 +1,8 @@
-// ============================================================================
-// SERVICIO DE NOTIFICACIONES
-// ============================================================================
+// Servicio de notificaciones
 
 const { query } = require('../config/database');
 
-/**
- * Crear notificación
- */
+// Crea una nueva notificación para un usuario
 const createNotificacion = async (notificacionData) => {
   const {
     usuario_id,
@@ -24,7 +20,7 @@ const createNotificacion = async (notificacionData) => {
       usuario_id,
       titulo,
       mensaje,
-      tipo_id || 1, // Default: info
+      tipo_id || 1, // por defecto es tipo "info"
       orden_trabajo_id || null
     ]
   );
@@ -32,9 +28,7 @@ const createNotificacion = async (notificacionData) => {
   return result.insertId;
 };
 
-/**
- * Obtener notificaciones de un usuario
- */
+// Notificaciones de un usuario con filtro opcional por estado de lectura
 const getNotificacionesByUsuario = async (usuarioId, filters = {}) => {
   let sql = `
     SELECT n.*, 
@@ -50,7 +44,7 @@ const getNotificacionesByUsuario = async (usuarioId, filters = {}) => {
 
   const params = [usuarioId];
 
-  // Filtro por leída/no leída
+  // Permite filtrar solo las leídas o solo las no leídas
   if (filters.leida !== undefined) {
     sql += ' AND n.leida = ?';
     params.push(filters.leida);
@@ -58,7 +52,7 @@ const getNotificacionesByUsuario = async (usuarioId, filters = {}) => {
 
   sql += ' ORDER BY n.fecha_creacion DESC';
 
-  // Límite
+  // Limita la cantidad si se pasa el parámetro
   if (filters.limit) {
     sql += ' LIMIT ?';
     params.push(parseInt(filters.limit));
@@ -68,16 +62,12 @@ const getNotificacionesByUsuario = async (usuarioId, filters = {}) => {
   return notificaciones;
 };
 
-/**
- * Obtener notificaciones no leídas
- */
+// Atajo para traer solo las no leídas
 const getNotificacionesNoLeidas = async (usuarioId) => {
   return await getNotificacionesByUsuario(usuarioId, { leida: false });
 };
 
-/**
- * Contar notificaciones no leídas
- */
+// Devuelve el número de notificaciones sin leer (para el badge del header)
 const contarNoLeidas = async (usuarioId) => {
   const [result] = await query(
     'SELECT COUNT(*) as total FROM notificaciones WHERE usuario_id = ? AND leida = FALSE',
@@ -87,9 +77,7 @@ const contarNoLeidas = async (usuarioId) => {
   return result.total;
 };
 
-/**
- * Marcar notificación como leída
- */
+// Marca una notificación específica como leída
 const marcarComoLeida = async (notificacionId) => {
   await query(
     'UPDATE notificaciones SET leida = TRUE WHERE id = ?',
@@ -99,9 +87,7 @@ const marcarComoLeida = async (notificacionId) => {
   return true;
 };
 
-/**
- * Marcar todas como leídas
- */
+// Marca todas las no leídas como leídas de una vez
 const marcarTodasComoLeidas = async (usuarioId) => {
   await query(
     'UPDATE notificaciones SET leida = TRUE WHERE usuario_id = ? AND leida = FALSE',
@@ -111,17 +97,13 @@ const marcarTodasComoLeidas = async (usuarioId) => {
   return true;
 };
 
-/**
- * Eliminar notificación
- */
+// Borra una notificación por su ID
 const deleteNotificacion = async (notificacionId) => {
   await query('DELETE FROM notificaciones WHERE id = ?', [notificacionId]);
   return true;
 };
 
-/**
- * Eliminar todas las notificaciones leídas de un usuario
- */
+// Limpia todas las notificaciones leídas de un usuario
 const deleteTodasLeidas = async (usuarioId) => {
   await query(
     'DELETE FROM notificaciones WHERE usuario_id = ? AND leida = TRUE',
@@ -131,11 +113,8 @@ const deleteTodasLeidas = async (usuarioId) => {
   return true;
 };
 
-/**
- * Crear notificación para cambio de estado de orden
- */
+// Notifica al cliente cuando su orden cambia de estado
 const notificarCambioEstado = async (ordenId, nuevoEstadoId, estadoNombre) => {
-  // Obtener info de la orden
   const [orden] = await query(
     `SELECT ot.cliente_id, ot.numero_orden, c.usuario_id
      FROM ordenes_trabajo ot
@@ -146,7 +125,7 @@ const notificarCambioEstado = async (ordenId, nuevoEstadoId, estadoNombre) => {
 
   if (!orden) return false;
 
-  // Mensajes según el estado
+  // Mensaje personalizado según el nuevo estado
   const mensajes = {
     1: 'Su orden ha sido recepcionada y está pendiente de diagnóstico',
     2: 'Estamos realizando el diagnóstico de su orden',
@@ -167,16 +146,14 @@ const notificarCambioEstado = async (ordenId, nuevoEstadoId, estadoNombre) => {
     usuario_id: orden.usuario_id,
     titulo: `Actualización de orden ${orden.numero_orden}`,
     mensaje: mensaje,
-    tipo_id: nuevoEstadoId === 11 ? 4 : (nuevoEstadoId === 10 ? 2 : 1), // error si cancelado, éxito si entregado, info otros
+    tipo_id: nuevoEstadoId === 11 ? 4 : (nuevoEstadoId === 10 ? 2 : 1), // 4=error si cancelado, 2=éxito si entregado, 1=info el resto
     orden_trabajo_id: ordenId
   });
 
   return true;
 };
 
-/**
- * Crear notificación para nueva cotización
- */
+// Notifica al cliente cuando se genera una cotización para su orden
 const notificarNuevaCotizacion = async (cotizacionId) => {
   const [cotizacion] = await query(
     `SELECT cot.numero_cotizacion, ot.numero_orden, ot.cliente_id, c.usuario_id

@@ -1,13 +1,8 @@
-// ============================================================================
-// SERVICIO DE ÓRDENES DE TRABAJO
-// Conexión con backend /api/ordenes
-// ============================================================================
+// Servicio de órdenes de trabajo del frontend
 
 import api from './api';
 
-/**
- * Obtener todas las órdenes con filtros opcionales
- */
+// Lista las órdenes con filtros opcionales
 const getAll = async (filters = {}) => {
   try {
     const params = new URLSearchParams();
@@ -31,9 +26,7 @@ const getAll = async (filters = {}) => {
   }
 };
 
-/**
- * Obtener orden por ID
- */
+// Obtiene una orden por su ID
 const getById = async (ordenId) => {
   try {
     const response = await api.get(`/ordenes/${ordenId}`);
@@ -44,9 +37,7 @@ const getById = async (ordenId) => {
   }
 };
 
-/**
- * Crear nueva orden
- */
+// Crea una nueva orden
 const create = async (ordenData) => {
   try {
     const response = await api.post('/ordenes', ordenData);
@@ -57,9 +48,7 @@ const create = async (ordenData) => {
   }
 };
 
-/**
- * Actualizar orden
- */
+// Actualiza una orden existente
 const update = async (ordenId, ordenData) => {
   try {
     const response = await api.put(`/ordenes/${ordenId}`, ordenData);
@@ -70,9 +59,7 @@ const update = async (ordenId, ordenData) => {
   }
 };
 
-/**
- * Cambiar estado de orden
- */
+// Cambia el estado de la orden
 const cambiarEstado = async (ordenId, estadoId) => {
   try {
     const response = await api.put(`/ordenes/${ordenId}/estado`, { estado_id: estadoId });
@@ -83,9 +70,7 @@ const cambiarEstado = async (ordenId, estadoId) => {
   }
 };
 
-/**
- * Asignar mecánico a orden
- */
+// Asigna un mecánico a la orden
 const asignarMecanico = async (ordenId, mecanicoId) => {
   try {
     const response = await api.put(`/ordenes/${ordenId}/asignar-mecanico`, { mecanico_id: mecanicoId });
@@ -96,9 +81,7 @@ const asignarMecanico = async (ordenId, mecanicoId) => {
   }
 };
 
-/**
- * Obtener historial de estados de una orden
- */
+// Historial de cambios de estado de la orden
 const getHistorial = async (ordenId) => {
   try {
     const response = await api.get(`/ordenes/${ordenId}/historial`);
@@ -109,9 +92,7 @@ const getHistorial = async (ordenId) => {
   }
 };
 
-/**
- * Obtener órdenes para Kanban
- */
+// Órdenes agrupadas por estado para el tablero Kanban
 const getKanban = async (tipoOrdenId) => {
   try {
     const params = tipoOrdenId ? `?tipo_orden_id=${tipoOrdenId}` : '';
@@ -123,9 +104,7 @@ const getKanban = async (tipoOrdenId) => {
   }
 };
 
-/**
- * Obtener estadísticas de órdenes
- */
+// Estadísticas de órdenes por período
 const getEstadisticas = async (fechaInicio, fechaFin) => {
   try {
     const params = new URLSearchParams();

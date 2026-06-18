@@ -1,6 +1,4 @@
-// ============================================================================
-// AGENDAR CITA - PÁGINA PÚBLICA (requiere autenticación)
-// ============================================================================
+// Página para que el cliente agende una cita (requiere estar autenticado)
 
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
@@ -16,18 +14,12 @@ const AgendarCita = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  // Estado del calendario
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-
-  // Estado de alert
   const [alert, setAlert] = useState(null);
-  
-  // Estado de loading
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Estado del formulario
   const [formData, setFormData] = useState({
     nombreCompleto: user?.nombreCompleto || '',
     telefono: '',
@@ -43,7 +35,6 @@ const AgendarCita = () => {
     detallesAdicionales: ''
   });
 
-  // Horarios disponibles
   const horariosDisponibles = [
     '09:00', '10:00', '11:00', '14:00', '15:00', '16:00'
   ];
@@ -71,7 +62,7 @@ const AgendarCita = () => {
   const handleDateSelect = (day) => {
     const selected = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), day);
     setSelectedDate(selected);
-    setSelectedTime(null); // Reset time when date changes
+    setSelectedTime(null); // Si cambia la fecha hay que elegir la hora de nuevo
   };
 
   const handleCheckboxChange = (e) => {
@@ -102,12 +93,11 @@ const AgendarCita = () => {
         message: 'Por favor seleccione una fecha y hora para su cita'
       });
       
-      // Scroll hacia arriba para ver la alerta
       window.scrollTo({ top: 0, behavior: 'smooth' });
       return;
     }
 
-    // Validar que se haya seleccionado al menos un motivo
+    // Al menos un motivo es obligatorio
     const motivosSeleccionados = Object.values(formData.motivoCita).some(val => val === true);
     if (!motivosSeleccionados) {
       setAlert({
@@ -121,7 +111,6 @@ const AgendarCita = () => {
     setIsSubmitting(true);
 
     try {
-      // Preparar los datos para enviar al backend
       const citaData = {
         nombre_cliente: formData.nombreCompleto,
         telefono_cliente: formData.telefono,
@@ -129,7 +118,7 @@ const AgendarCita = () => {
         marca_vehiculo: formData.marcaVehiculo,
         modelo_vehiculo: formData.modeloVehiculo,
         
-        // Convertir el objeto de motivos a un array de strings para JSON
+        // Convierte los checkboxes marcados a un array de strings
         motivo: Object.entries(formData.motivoCita)
           .filter(([key, value]) => value === true)
           .map(([key]) => {
@@ -144,25 +133,20 @@ const AgendarCita = () => {
         
         detalles: formData.detallesAdicionales || null,
         
-        // Formatear fecha como YYYY-MM-DD
-        fecha_cita: selectedDate.toISOString().split('T')[0],
-        
-        // Formatear hora como HH:MM:SS
-        hora_cita: selectedTime + ':00'
+        fecha_cita: selectedDate.toISOString().split('T')[0],  // formato YYYY-MM-DD
+        hora_cita: selectedTime + ':00'                         // formato HH:MM:SS
       };
 
       const response = await citasService.crearCita(citaData);
 
-      // Mostrar alerta de éxito
       setAlert({
         type: 'success',
         message: `¡Cita agendada exitosamente para el ${selectedDate.toLocaleDateString()} a las ${selectedTime}!`
       });
 
-      // Scroll hacia arriba para ver la alerta
       window.scrollTo({ top: 0, behavior: 'smooth' });
 
-      // Limpiar formulario después de 3 segundos
+      // Limpia el formulario 3 segundos después del éxito
       setTimeout(() => {
         setSelectedDate(null);
         setSelectedTime(null);
@@ -186,7 +170,6 @@ const AgendarCita = () => {
     } catch (error) {
       console.error('[AgendarCita] Cita creation failed:', error.message);
       
-      // Mostrar mensaje de error
       const errorMessage = error.response?.data?.message || 
                           error.message || 
                           'Error al agendar la cita. Por favor intente nuevamente.';
@@ -209,7 +192,7 @@ const AgendarCita = () => {
     'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
   ];
 
-  // Si NO hay usuario, mostrar aviso de autenticación
+  // Si no hay sesión muestra un aviso en lugar del formulario
   if (!user) {
     return (
       <div className={styles.pageWrapper}>
@@ -241,7 +224,7 @@ const AgendarCita = () => {
     );
   }
 
-  // Si SÍ hay usuario, mostrar formulario completo
+  // Usuario autenticado: muestra el formulario completo
   return (
     <div className={styles.pageWrapper}>
       <Navbar />

@@ -1,14 +1,9 @@
-// ============================================================================
-// CONTROLADOR DE ÓRDENES DE TRABAJO
-// ============================================================================
+// Controlador de órdenes de trabajo
 
 const ordenesService = require('../services/ordenesService');
 const { success, error, notFound } = require('../utils/responses');
 
-/**
- * GET /api/ordenes
- * Obtener todas las órdenes
- */
+// GET /api/ordenes — lista órdenes con filtros opcionales
 const getAllOrdenes = async (req, res, next) => {
   try {
     const filters = {
@@ -29,13 +24,10 @@ const getAllOrdenes = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/ordenes/kanban
- * Obtener órdenes agrupadas para Kanban
- */
+// GET /api/ordenes/kanban — órdenes agrupadas por estado para el tablero Kanban
 const getOrdenesKanban = async (req, res, next) => {
   try {
-    const tipoOrdenId = req.query.tipo_orden_id || 1; // Default: vehículo
+    const tipoOrdenId = req.query.tipo_orden_id || 1;
 
     const kanban = await ordenesService.getOrdenesKanban(parseInt(tipoOrdenId));
 
@@ -45,10 +37,7 @@ const getOrdenesKanban = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/ordenes/estadisticas
- * Obtener estadísticas de órdenes
- */
+// GET /api/ordenes/estadisticas — resumen de órdenes e ingresos en un período
 const getEstadisticas = async (req, res, next) => {
   try {
     const fechaInicio = req.query.fecha_inicio || new Date(new Date().setDate(1)).toISOString().split('T')[0];
@@ -62,10 +51,7 @@ const getEstadisticas = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/ordenes/:id
- * Obtener orden por ID
- */
+// GET /api/ordenes/:id — devuelve una orden con toda su información
 const getOrdenById = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.id);
@@ -81,10 +67,7 @@ const getOrdenById = async (req, res, next) => {
   }
 };
 
-/**
- * POST /api/ordenes
- * Crear nueva orden
- */
+// POST /api/ordenes — crea una nueva orden, puede crear cliente y vehículo si no existen
 const createOrden = async (req, res, next) => {
   try {
     const ordenData = req.body;
@@ -100,10 +83,7 @@ const createOrden = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/ordenes/:id
- * Actualizar orden
- */
+// PUT /api/ordenes/:id — actualiza los datos de una orden existente
 const updateOrden = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.id);
@@ -121,10 +101,7 @@ const updateOrden = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/ordenes/:id/estado
- * Cambiar estado de orden (Kanban drag & drop)
- */
+// PUT /api/ordenes/:id/estado — cambia el estado de la orden (se usa en el Kanban)
 const cambiarEstado = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.id);
@@ -146,10 +123,7 @@ const cambiarEstado = async (req, res, next) => {
   }
 };
 
-/**
- * PUT /api/ordenes/:id/asignar-mecanico
- * Asignar mecánico a orden
- */
+// PUT /api/ordenes/:id/asignar-mecanico — asigna un mecánico a la orden
 const asignarMecanico = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.id);
@@ -171,10 +145,7 @@ const asignarMecanico = async (req, res, next) => {
   }
 };
 
-/**
- * GET /api/ordenes/:id/historial
- * Obtener historial de estados de una orden
- */
+// GET /api/ordenes/:id/historial — cambios de estado de la orden
 const getHistorialEstados = async (req, res, next) => {
   try {
     const ordenId = parseInt(req.params.id);

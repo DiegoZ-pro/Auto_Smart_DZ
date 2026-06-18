@@ -1,13 +1,11 @@
-// ============================================================================
-// CHATBOT FLOTANTE - AutoBot IA
-// ============================================================================
+// Chatbot flotante AutoBot IA
 
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '@context/AuthContext';
 import { sendChatMessage } from '@services/chatService';
 import styles from './ChatBot.module.css';
 
-// ── Iconos SVG inline ────────────────────────────────────────────────────────
+// Iconos SVG definidos inline para no depender de una librería externa
 
 const IconBot = ({ size = 20 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -39,7 +37,7 @@ const IconChat = () => (
   </svg>
 );
 
-// ── Mensajes de bienvenida ───────────────────────────────────────────────────
+// Mensaje de bienvenida personalizado según el rol
 
 const WELCOME = {
   cliente: '¡Hola! Soy AutoBot. Puedo ayudarte con el estado de tus vehículos, órdenes de trabajo y citas. ¿En qué te ayudo?',
@@ -47,7 +45,7 @@ const WELCOME = {
   admin: '¡Hola! Soy AutoBot. Puedo darte resúmenes del taller, KPIs y análisis de operaciones. ¿Qué necesitas saber?'
 };
 
-// ── Componente ───────────────────────────────────────────────────────────────
+// Componente principal del chatbot
 
 const ChatBot = () => {
   const { user, isAuthenticated } = useAuth();

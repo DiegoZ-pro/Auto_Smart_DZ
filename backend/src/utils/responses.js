@@ -1,10 +1,6 @@
-// ============================================================================
-// UTILIDAD DE RESPUESTAS HTTP ESTANDARIZADAS
-// ============================================================================
+// Respuestas HTTP estandarizadas para toda la API
 
-/**
- * Respuesta exitosa
- */
+// Respuesta cuando todo salió bien
 const success = (res, data, message = 'Operación exitosa', statusCode = 200) => {
   return res.status(statusCode).json({
     success: true,
@@ -13,9 +9,7 @@ const success = (res, data, message = 'Operación exitosa', statusCode = 200) =>
   });
 };
 
-/**
- * Respuesta de error
- */
+// Respuesta de error con código HTTP configurable
 const error = (res, message = 'Error en la operación', statusCode = 500, errors = null) => {
   const response = {
     success: false,
@@ -29,9 +23,7 @@ const error = (res, message = 'Error en la operación', statusCode = 500, errors
   return res.status(statusCode).json(response);
 };
 
-/**
- * Respuesta de validación fallida
- */
+// Cuando los datos del request no pasan la validación
 const validationError = (res, errors) => {
   return res.status(400).json({
     success: false,
@@ -40,9 +32,7 @@ const validationError = (res, errors) => {
   });
 };
 
-/**
- * Respuesta de no autorizado
- */
+// El usuario no está autenticado o el token es inválido
 const unauthorized = (res, message = 'No autorizado') => {
   return res.status(401).json({
     success: false,
@@ -50,9 +40,7 @@ const unauthorized = (res, message = 'No autorizado') => {
   });
 };
 
-/**
- * Respuesta de prohibido
- */
+// El usuario está autenticado pero no tiene permisos
 const forbidden = (res, message = 'Acceso prohibido') => {
   return res.status(403).json({
     success: false,
@@ -60,9 +48,7 @@ const forbidden = (res, message = 'Acceso prohibido') => {
   });
 };
 
-/**
- * Respuesta de no encontrado
- */
+// El recurso solicitado no existe
 const notFound = (res, message = 'Recurso no encontrado') => {
   return res.status(404).json({
     success: false,
@@ -70,9 +56,7 @@ const notFound = (res, message = 'Recurso no encontrado') => {
   });
 };
 
-/**
- * Respuesta de conflicto
- */
+// Conflicto, por ejemplo cuando ya existe un registro con el mismo email o placa
 const conflict = (res, message = 'Conflicto en la operación') => {
   return res.status(409).json({
     success: false,

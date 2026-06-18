@@ -1,12 +1,9 @@
-// ============================================================================
-// ENRUTADOR PRINCIPAL
-// Agrupa todas las rutas de la API
-// ============================================================================
+// Enrutador principal que agrupa todas las rutas de la API
 
 const express = require('express');
 const router = express.Router();
 
-// Importar rutas
+// Rutas de cada módulo
 const authRoutes = require('./auth.routes');
 const usuariosRoutes = require('./usuarios.routes');
 const catalogosRoutes = require('./catalogos.routes');
@@ -20,11 +17,7 @@ const citasRoutes = require('./citas.routes');
 const configuracionRoutes = require('./configuracion.routes');
 const chatRoutes = require('./chat.routes');
 
-/**
- * @route   GET /api
- * @desc    Endpoint de bienvenida
- * @access  Public
- */
+// Endpoint de bienvenida con lista de rutas disponibles
 router.get('/', (req, res) => {
   res.json({
     success: true,
@@ -46,11 +39,7 @@ router.get('/', (req, res) => {
   });
 });
 
-/**
- * @route   GET /api/health
- * @desc    Health check
- * @access  Public
- */
+// Health check para verificar que el servidor responde
 router.get('/health', (req, res) => {
   res.json({
     success: true,
@@ -59,7 +48,7 @@ router.get('/health', (req, res) => {
   });
 });
 
-// Registrar rutas
+// Registro de todas las rutas
 router.use('/auth', authRoutes);
 router.use('/usuarios', usuariosRoutes);
 router.use('/catalogos', catalogosRoutes);

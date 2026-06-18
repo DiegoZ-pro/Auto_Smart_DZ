@@ -1,6 +1,5 @@
-// tests del modulo de citas — cobertura extendida
+// Tests del módulo de citas
 
-// mocks
 jest.mock('../src/config/database', () => ({
   query: jest.fn(),
 }));
@@ -8,7 +7,7 @@ jest.mock('../src/config/database', () => ({
 const { query } = require('../src/config/database');
 const citasService = require('../src/services/citasService');
 
-// datos de prueba
+// Datos de prueba
 const mockCita = {
   id: 1,
   cliente_id: 5,
@@ -41,7 +40,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-// tests de crear cita
+// Tests de crear cita
 describe('citasService.createCita', () => {
   test('crea cita cuando el horario esta libre', async () => {
     query
@@ -53,7 +52,7 @@ describe('citasService.createCita', () => {
 
     expect(citaId).toBe(1);
 
-    // verifica que se busco el cliente
+    // Verifica que primero busca el cliente antes de insertar
     expect(query).toHaveBeenNthCalledWith(
       1,
       'SELECT id FROM clientes WHERE usuario_id = ?',
@@ -78,7 +77,7 @@ describe('citasService.createCita', () => {
   });
 });
 
-// tests de obtener cita por id
+// Tests de obtener cita por id
 describe('citasService.getCitaById', () => {
   test('retorna cita y parsea motivo', async () => {
     query.mockResolvedValueOnce([mockCita]);
@@ -87,7 +86,7 @@ describe('citasService.getCitaById', () => {
 
     expect(result).toBeDefined();
     expect(result.id).toBe(1);
-    // el motivo debe convertirse a array
+    // El motivo viene como JSON string en la BD y debe parsearse a array
     expect(Array.isArray(result.motivo)).toBe(true);
     expect(result.motivo).toContain('Revisión de Frenos');
   });
@@ -100,7 +99,7 @@ describe('citasService.getCitaById', () => {
   });
 });
 
-// tests de disponibilidad
+// Tests de disponibilidad de horarios
 describe('citasService.verificarDisponibilidad (via getHorariosDisponibles)', () => {
   test('retorna todos los horarios si no hay citas', async () => {
     query.mockResolvedValueOnce([]); // sin ocupados
@@ -139,7 +138,7 @@ describe('citasService.verificarDisponibilidad (via getHorariosDisponibles)', ()
   });
 });
 
-// tests de cambios de estado
+// Tests de cambios de estado de la cita
 describe('citasService - cambios de estado', () => {
   const citaBase = { ...mockCita };
 
@@ -189,7 +188,7 @@ describe('citasService - cambios de estado', () => {
   });
 });
 
-// tests de citas por cliente
+// Tests de citas por cliente
 describe('citasService.getCitasByCliente', () => {
   test('retorna lista de citas', async () => {
     query.mockResolvedValueOnce([mockCita, { ...mockCita, id: 2 }]);
@@ -210,7 +209,7 @@ describe('citasService.getCitasByCliente', () => {
   });
 });
 
-// tests de getAllCitas
+// Tests del filtrado en getAllCitas
 describe('citasService.getAllCitas', () => {
   test('retorna todas las citas sin filtros', async () => {
     query.mockResolvedValueOnce([mockCita, { ...mockCita, id: 2 }]);
@@ -273,7 +272,7 @@ describe('citasService.getAllCitas', () => {
   });
 });
 
-// tests de updateCita
+// Tests de actualización de cita
 describe('citasService.updateCita', () => {
   test('actualiza nombre y telefono del cliente en la cita', async () => {
     query
@@ -317,7 +316,7 @@ describe('citasService.updateCita', () => {
   });
 });
 
-// tests de getEstadisticas de citas
+// Tests de estadísticas de citas
 describe('citasService.getEstadisticas', () => {
   test('retorna estadisticas entre dos fechas', async () => {
     query.mockResolvedValueOnce([{

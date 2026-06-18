@@ -36,7 +36,7 @@ const ORDEN_ESTADO_COLOR = {
   entregado:           '#475569',
 }
 
-// ─── PDF ──────────────────────────────────────────────────────────────────────
+// Generador de PDF de la cotización
 
 const generarReporteHTML = (cot) => {
   const fecha = (str) => str ? new Date(str).toLocaleDateString('es-BO', { year: 'numeric', month: 'long', day: 'numeric' }) : '—'
@@ -130,7 +130,6 @@ const imprimirConIframe = (html) => {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
 
 export default function Cotizaciones() {
   const [cotizaciones, setCotizaciones] = useState([])
@@ -158,7 +157,7 @@ export default function Cotizaciones() {
   const [terminos, setTerminos]   = useState(TERMINOS_DEFAULT)
   const [guardando, setGuardando] = useState(false)
 
-  // ─── carga inicial — ambas en paralelo ────────────────────────────────────
+  // Carga órdenes y cotizaciones en paralelo al montar el componente
 
   const cargarTodo = useCallback(async () => {
     setLoading(true); setError('')
@@ -176,7 +175,7 @@ export default function Cotizaciones() {
 
   useEffect(() => { cargarTodo() }, [cargarTodo])
 
-  // ─── helpers ──────────────────────────────────────────────────────────────
+  // Helpers de formato y cálculo
 
   const subtotal    = items.reduce((acc, it) => acc + parseFloat(it.cantidad) * parseFloat(it.precio_unitario), 0)
   const manoObraNum = parseFloat(manoObra) || 0
@@ -208,7 +207,7 @@ export default function Cotizaciones() {
     return [o.tipo_pieza, o.marca_pieza].filter(Boolean).join(' · ') || '—'
   }
 
-  // ─── seleccionar orden — carga cotización existente si tiene ──────────────
+  // Al seleccionar una orden carga su cotización si ya tiene una
 
   const handleSeleccionarOrden = async (orden) => {
     if (ordenSeleccionada?.id === orden.id) return   // ya seleccionada
@@ -253,7 +252,7 @@ export default function Cotizaciones() {
     setTerminos(TERMINOS_DEFAULT)
   }
 
-  // ─── ítems ────────────────────────────────────────────────────────────────
+  // Manejo de los ítems de la cotización (agregar, cambiar, quitar)
 
   const handleAgregarItem = () => {
     if (!itemTemp.descripcion.trim() || !itemTemp.precio_unitario) return
@@ -267,7 +266,7 @@ export default function Cotizaciones() {
 
   const handleEliminarItem = (idx) => setItems(prev => prev.filter((_, i) => i !== idx))
 
-  // ─── guardar ──────────────────────────────────────────────────────────────
+  // Guarda o actualiza la cotización en el backend
 
   const handleGuardar = async () => {
     if (!ordenSeleccionada) { setError('Selecciona una orden de la lista'); return }
@@ -300,7 +299,7 @@ export default function Cotizaciones() {
     } finally { setGuardando(false) }
   }
 
-  // ─── whatsapp ─────────────────────────────────────────────────────────────
+  // Genera y abre el link de WhatsApp con el resumen de la cotización
 
   const handleWhatsApp = async (cotId, telefono) => {
     try {
@@ -346,7 +345,6 @@ Para aprobar o consultar comuníquese con nosotros. ¡Gracias por confiar en Aut
     } catch (err) { setError(err.message || 'Error al generar el reporte') }
   }
 
-  // ─── render ───────────────────────────────────────────────────────────────
 
   return (
     <div className={styles.wrapper}>

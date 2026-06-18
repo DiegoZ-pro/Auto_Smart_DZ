@@ -63,7 +63,7 @@ export default function GestionUsuarios() {
   const [usuarioDel,  setUsuarioDel]  = useState(null)
   const [eliminando,  setEliminando]  = useState(false)
 
-  // ─── carga ──────────────────────────────────────────────────────────────────
+  // Carga la lista de usuarios con filtros aplicados
 
   const cargar = useCallback(async () => {
     setLoading(true); setError('')
@@ -88,7 +88,7 @@ export default function GestionUsuarios() {
 
   const mostrarExito = (msg) => { setExito(msg); setTimeout(() => setExito(''), 3500) }
 
-  // ─── crear ──────────────────────────────────────────────────────────────────
+  // Lógica del modal para crear usuario
 
   const abrirCrear = () => { setFormCrear(FORM_VACIO); setVerPass(false); setShowCrear(true) }
   const cerrarCrear = () => { setShowCrear(false); setError('') }
@@ -118,7 +118,7 @@ export default function GestionUsuarios() {
     } finally { setGuardando(false) }
   }
 
-  // ─── editar ─────────────────────────────────────────────────────────────────
+  // Lógica del modal para editar usuario
 
   const abrirEditar = (usuario) => {
     setUsuarioEdit(usuario)
@@ -163,7 +163,7 @@ export default function GestionUsuarios() {
     } finally { setActualizando(false) }
   }
 
-  // ─── eliminar ────────────────────────────────────────────────────────────────
+  // Lógica del modal para eliminar (desactivar) usuario
 
   const abrirEliminar = (usuario) => { setUsuarioDel(usuario); setShowConfirm(true) }
   const cerrarEliminar = () => { setShowConfirm(false); setUsuarioDel(null) }
@@ -182,7 +182,7 @@ export default function GestionUsuarios() {
     } finally { setEliminando(false) }
   }
 
-  // ─── cambiar estado ──────────────────────────────────────────────────────────
+  // Alterna el estado activo/inactivo del usuario
 
   const toggleEstado = async (usuario) => {
     const nuevoEstado = usuario.estado_id === 1 ? 2 : 1
@@ -194,8 +194,6 @@ export default function GestionUsuarios() {
       setError(err.message || 'Error al cambiar estado')
     }
   }
-
-  // ─── render ──────────────────────────────────────────────────────────────────
 
   const emailsTemp = usuarios.filter(u => esEmailTemporal(u.email)).length
 

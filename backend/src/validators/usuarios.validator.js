@@ -1,13 +1,9 @@
-// ============================================================================
-// VALIDADORES DE USUARIOS
-// ============================================================================
+// Validadores del módulo de usuarios
 
 const Joi = require('joi');
 const { validationError } = require('../utils/responses');
 
-/**
- * Validar creación de usuario
- */
+// Valida el body para crear un usuario nuevo
 const validateCreateUser = (req, res, next) => {
   const schema = Joi.object({
     email: Joi.string().email().required().messages({
@@ -48,9 +44,7 @@ const validateCreateUser = (req, res, next) => {
   next();
 };
 
-/**
- * Validar actualización de usuario
- */
+// Valida el body para actualizar un usuario (todos los campos son opcionales)
 const validateUpdateUser = (req, res, next) => {
   const schema = Joi.object({
     nombreCompleto: Joi.string().min(3).max(150).messages({
@@ -95,9 +89,7 @@ const validateUpdateUser = (req, res, next) => {
   next();
 };
 
-/**
- * Validar cambio de estado
- */
+// Valida que venga el estado_id para cambiar el estado del usuario
 const validateChangeStatus = (req, res, next) => {
   const schema = Joi.object({
     estado_id: Joi.number().integer().min(1).max(3).required().messages({

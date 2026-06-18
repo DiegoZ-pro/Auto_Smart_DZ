@@ -41,7 +41,7 @@ export default function KanbanTareas() {
   const dragging    = useRef(null)  // { ordenId, fromEstadoId }
   const [dragOver,  setDragOver]    = useState(null) // estadoId de la columna bajo el cursor
 
-  // ─── carga ─────────────────────────────────────────────────────────────────
+  // Carga las órdenes agrupadas para el tablero
 
   const cargar = useCallback(async () => {
     setLoading(true); setError('')
@@ -55,7 +55,7 @@ export default function KanbanTareas() {
 
   useEffect(() => { cargar() }, [cargar])
 
-  // ─── búsqueda local ────────────────────────────────────────────────────────
+  // Filtra las órdenes localmente sin llamar al backend
 
   const filtrarOrdenes = (ordenes) => {
     if (!busqueda) return ordenes
@@ -68,7 +68,7 @@ export default function KanbanTareas() {
     )
   }
 
-  // ─── drag & drop ──────────────────────────────────────────────────────────
+  // Manejadores para el drag & drop de tarjetas entre columnas
 
   const handleDragStart = (e, orden, fromEstadoId) => {
     dragging.current = { orden, fromEstadoId }
@@ -119,7 +119,6 @@ export default function KanbanTareas() {
     }
   }
 
-  // ─── render ────────────────────────────────────────────────────────────────
 
   const totalVisible = Object.values(kanban).reduce((s, arr) => s + (Array.isArray(arr) ? arr.length : 0), 0)
 

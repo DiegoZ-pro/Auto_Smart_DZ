@@ -1,12 +1,8 @@
-// ============================================================================
-// SERVICIO DE CITAS
-// ============================================================================
+// Servicio de citas
 
 const { query } = require('../config/database');
 
-/**
- * Obtener todas las citas
- */
+// Lista las citas aplicando los filtros que se pasen
 const getAllCitas = async (filters = {}) => {
   let sql = `
     SELECT ci.*,
@@ -53,9 +49,7 @@ const getAllCitas = async (filters = {}) => {
   return citas;
 };
 
-/**
- * Obtener cita por ID
- */
+// Busca una cita por su ID y parsea el motivo si viene en JSON
 const getCitaById = async (citaId) => {
   const [cita] = await query(
     `SELECT ci.*,
@@ -74,22 +68,19 @@ const getCitaById = async (citaId) => {
     throw new Error('Cita no encontrada');
   }
 
-  // Parsear motivo si es JSON string
+  // El motivo se guarda como JSON string en la BD
   if (typeof cita.motivo === 'string') {
     try {
       cita.motivo = JSON.parse(cita.motivo);
     } catch (e) {
-      // Si no es JSON válido, dejarlo como está
+      // Si no es JSON válido lo dejamos como string
     }
   }
 
   return cita;
 };
 
-/**
- * Crear cita
- * MODIFICADO: Ahora recibe usuarioId y obtiene cliente_id automáticamente
- */
+// Crea una cita obteniendo el cliente_id a partir del usuario autenticado
 const createCita = async (citaData, usuarioId) => {
   const {
     nombre_cliente,
@@ -103,7 +94,7 @@ const createCita = async (citaData, usuarioId) => {
     hora_cita
   } = citaData;
 
-  // ✅ OBTENER cliente_id desde la base de datos usando el usuarioId
+  // Obtiene el cliente asociado al usuario del token
   const [cliente] = await query(
     'SELECT id FROM clientes WHERE usuario_id = ?',
     [usuarioId]
@@ -115,7 +106,7 @@ const createCita = async (citaData, usuarioId) => {
 
   const cliente_id = cliente.id;
 
-  // Verificar disponibilidad
+  // Verifica que el horario no esté ocupado antes de insertar
   const disponible = await verificarDisponibilidad(fecha_cita, hora_cita);
   if (!disponible) {
     throw new Error('Ya existe una cita en este horario');
@@ -144,9 +135,7 @@ const createCita = async (citaData, usuarioId) => {
   return result.insertId;
 };
 
-/**
- * Actualizar cita
- */
+// Actualiza solo los campos que vengan en citaData
 const updateCita = async (citaId, citaData) => {
   const {
     nombre_cliente,
@@ -200,7 +189,7 @@ const updateCita = async (citaId, citaData) => {
   }
 
   if (fecha_cita !== undefined && hora_cita !== undefined) {
-    // Verificar disponibilidad si se cambia fecha/hora
+    // Solo verifica disponibilidad si cambia la fecha o la hora
     const citaActual = await getCitaById(citaId);
     if (fecha_cita !== citaActual.fecha_cita || hora_cita !== citaActual.hora_cita) {
       const disponible = await verificarDisponibilidad(fecha_cita, hora_cita, citaId);
@@ -232,9 +221,7 @@ const updateCita = async (citaId, citaData) => {
   return await getCitaById(citaId);
 };
 
-/**
- * Cambiar estado de cita
- */
+// Función interna para cambiar el estado de una cita
 const cambiarEstado = async (citaId, estadoId) => {
   await query(
     'UPDATE citas SET estado_id = ? WHERE id = ?',
@@ -244,38 +231,28 @@ const cambiarEstado = async (citaId, estadoId) => {
   return await getCitaById(citaId);
 };
 
-/**
- * Confirmar cita
- */
+// Los IDs de estado son: 2 = confirmada, 3 = cancelada, 4 = completada
 const confirmarCita = async (citaId) => {
-  return await cambiarEstado(citaId, 2); // 2 = confirmada
+  return await cambiarEstado(citaId, 2);
 };
 
-/**
- * Cancelar cita
- */
 const cancelarCita = async (citaId) => {
-  return await cambiarEstado(citaId, 3); // 3 = cancelada
+  return await cambiarEstado(citaId, 3);
 };
 
-/**
- * Completar cita
- */
 const completarCita = async (citaId) => {
-  return await cambiarEstado(citaId, 4); // 4 = completada
+  return await cambiarEstado(citaId, 4);
 };
 
-/**
- * Verificar disponibilidad de horario
- */
+// Devuelve true si el horario está libre (considera solo pendientes y confirmadas)
 const verificarDisponibilidad = async (fecha, hora, excludeCitaId = null) => {
   let sql = `
-    SELECT COUNT(*) as total 
-    FROM citas 
-    WHERE fecha_cita = ? 
-      AND hora_cita = ? 
+    SELECT COUNT(*) as total
+    FROM citas
+    WHERE fecha_cita = ?
+      AND hora_cita = ?
       AND estado_id IN (1, 2)
-  `; // Solo pendientes y confirmadas
+  `;
 
   const params = [fecha, hora];
 
@@ -289,17 +266,14 @@ const verificarDisponibilidad = async (fecha, hora, excludeCitaId = null) => {
   return result.total === 0;
 };
 
-/**
- * Obtener horarios disponibles para una fecha
- */
+// Devuelve los horarios libres para una fecha dada (8:00 a 17:00, cada hora)
 const getHorariosDisponibles = async (fecha) => {
-  // Horarios del taller: 8:00 - 18:00, cada hora
   const horarios = [
     '08:00:00', '09:00:00', '10:00:00', '11:00:00', '12:00:00',
     '13:00:00', '14:00:00', '15:00:00', '16:00:00', '17:00:00'
   ];
 
-  // Obtener citas ocupadas
+  // Horarios que ya tienen cita confirmada o pendiente
   const citasOcupadas = await query(
     `SELECT hora_cita 
      FROM citas 
@@ -309,15 +283,12 @@ const getHorariosDisponibles = async (fecha) => {
 
   const horasOcupadas = citasOcupadas.map(c => c.hora_cita);
 
-  // Filtrar horarios disponibles
   const disponibles = horarios.filter(h => !horasOcupadas.includes(h));
 
   return disponibles;
 };
 
-/**
- * Obtener citas de un cliente
- */
+// Citas de un cliente ordenadas por fecha más reciente
 const getCitasByCliente = async (clienteId) => {
   const citas = await query(
     `SELECT ci.*, ec.estado as estado_nombre
@@ -331,9 +302,7 @@ const getCitasByCliente = async (clienteId) => {
   return citas;
 };
 
-/**
- * Obtener estadísticas de citas
- */
+// Estadísticas de citas agrupadas por estado en un rango de fechas
 const getEstadisticas = async (fechaInicio, fechaFin) => {
   const [stats] = await query(
     `SELECT 
